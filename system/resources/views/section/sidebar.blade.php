@@ -29,6 +29,11 @@
                             font-size: 14px;
                         "></i>Cari
                                 Arsip</a></li>
+                        <li><a href="{{ url('#') }}"><i class="mdi mdi-microsoft-excel"
+                                    style="
+                                    font-size: 14px;
+                        "></i>Impor/Ekspor
+                                Arsip</a></li>
                     </ul>
         </div>
         <!-- Sidebar -->

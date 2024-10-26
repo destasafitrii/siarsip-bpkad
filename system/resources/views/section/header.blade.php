@@ -2,7 +2,7 @@
     <div class="navbar-header">
         <!-- Logo -->
         <div class="navbar-logo-box">
-            <a href="index.html" class="logo logo-dark">
+            <a class="logo logo-dark">
                 <span class="logo-sm">
                     <img src="{{url('public')}}/assets/images/logo-ktg.png" alt="logo-sm-dark" height="45">
                 </span>
