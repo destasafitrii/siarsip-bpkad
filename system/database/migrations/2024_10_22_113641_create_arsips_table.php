@@ -53,6 +53,6 @@ class CreateArsipsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('arsip_produksi');
+        Schema::dropIfExists('arsip');
     }
 }

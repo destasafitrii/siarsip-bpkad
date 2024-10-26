@@ -9,41 +9,45 @@ class ArsipController extends Controller
 {
     // Menampilkan daftar data arsip
     public function index(Request $request)
-{
-    // Membuat query dasar untuk model Arsip
-    $query = Arsip::query();
+    {
+        // Membuat query dasar untuk model Arsip
+        $query = Arsip::query();
 
-    // Memeriksa apakah ada parameter pencarian yang dikirimkan
-    if ($request->filled('nomor_surat')) {
-        $query->where('nomor_surat', 'like', '%' . $request->nomor_surat . '%');
+        if ($request->filled('nama_arsip')) {
+            $query->where('nama_arsip', 'like', '%' . $request->nama_arsip . '%');
+        }
+
+        // Memeriksa apakah ada parameter pencarian yang dikirimkan
+        if ($request->filled('nomor_surat')) {
+            $query->where('nomor_surat', 'like', '%' . $request->nomor_surat . '%');
+        }
+
+        if ($request->filled('tanggal')) {
+            $query->whereDate('tanggal', $request->tanggal);
+        }
+
+        if ($request->filled('bidang')) {
+            $query->where('bidang', $request->bidang);
+        }
+
+        if ($request->filled('jenis_arsip')) {
+            $query->where('jenis_arsip', 'like', '%' . $request->jenis_arsip . '%');
+        }
+
+        if ($request->filled('tujuan_dari')) {
+            $query->where('tujuan_dari', 'like', '%' . $request->tujuan_dari . '%');
+        }
+
+        if ($request->filled('no_berkas')) {
+            $query->where('no_berkas', 'like', '%' . $request->no_berkas . '%');
+        }
+
+        // Mendapatkan data arsip berdasarkan query yang telah disaring
+        $data['list_arsip'] = $query->paginate(10); // Gunakan paginate jika data banyak
+
+        // Mengembalikan view dengan data arsip yang telah difilter
+        return view('content.arsip.index', $data);
     }
-
-    if ($request->filled('tanggal')) {
-        $query->whereDate('tanggal', $request->tanggal);
-    }
-
-    if ($request->filled('bidang')) {
-        $query->where('bidang', $request->bidang);
-    }
-
-    if ($request->filled('jenis_arsip')) {
-        $query->where('jenis_arsip', 'like', '%' . $request->jenis_arsip . '%');
-    }
-
-    if ($request->filled('tujuan_dari')) {
-        $query->where('tujuan_dari', 'like', '%' . $request->tujuan_dari . '%');
-    }
-
-    if ($request->filled('no_berkas')) {
-        $query->where('no_berkas', 'like', '%' . $request->no_berkas . '%');
-    }
-
-    // Mendapatkan data arsip berdasarkan query yang telah disaring
-    $data['list_arsip'] = $query->paginate(10); // Gunakan paginate jika data banyak
-
-    // Mengembalikan view dengan data arsip yang telah difilter
-    return view('content.arsip.index', $data);
-}
 
     // Menampilkan form untuk membuat data arsip baru
     public function create()
@@ -57,6 +61,7 @@ class ArsipController extends Controller
         // Validasi input berdasarkan kombinasi bidang dan jenis arsip
         $validatedData = $request->validate([
             'nomor_surat' => 'required|unique:arsip',
+
             'tanggal' => 'required|date',
             'bidang' => 'required|in:anggaran,pembendaharaan,akuntansi,sekretariat',
             'jenis_arsip' => [
@@ -81,6 +86,7 @@ class ArsipController extends Controller
             'urutan' => 'required|integer',
             'lokasi' => 'required|string',
             'keterangan' => 'nullable|string',
+            'nama_arsip' => 'nullable|string',
         ]);
 
         // Simpan data jika validasi berhasil
@@ -126,6 +132,7 @@ class ArsipController extends Controller
             'urutan' => 'required|integer',
             'lokasi' => 'required|string',
             'keterangan' => 'nullable|string',
+            'nama_arsip' => 'nullable|string',
         ]);
 
         // Temukan data arsip berdasarkan ID
@@ -142,6 +149,7 @@ class ArsipController extends Controller
             'urutan' => $request->urutan,
             'lokasi' => $request->lokasi,
             'keterangan' => $request->keterangan,
+            'nama_arsip' => $request->nama_arsip,
         ]);
 
         // Redirect ke halaman daftar arsip dengan pesan sukses

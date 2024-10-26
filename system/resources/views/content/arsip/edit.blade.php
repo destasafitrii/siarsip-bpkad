@@ -32,6 +32,11 @@
                             @method('PUT')
                             
                             <div class="mb-3">
+                                <label for="nama_arsip" class="form-label">Nama Arsip</label>
+                                <input type="text" name="nama_arsip" class="form-control" id="nama_arsip" value="{{ $arsip->nama_arsip }}" required>
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="nomor_surat" class="form-label">Nomor Surat</label>
                                 <input type="text" name="nomor_surat" class="form-control" id="nomor_surat" value="{{ $arsip->nomor_surat }}" required>
                             </div>

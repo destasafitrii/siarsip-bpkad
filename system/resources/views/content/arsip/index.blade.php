@@ -8,7 +8,6 @@
             <div class="col-12">
                 <div class="page-title-box d-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0">CARI ARSIPAN</h4>
-
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="javascript: void(0);">Datatable</a></li>
@@ -31,6 +30,12 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="mb-3">
+                                        <label for="nama_arsip" class="form-label">Nama Arsip</label>
+                                        <input type="text" id="nama_arsip" name="nama_arsip" class="form-control" value="{{ request('nama_arsip') }}" placeholder="Masukkan Nama Arsip">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
                                         <label for="nomor_surat" class="form-label">Nomor Surat</label>
                                         <input type="text" id="nomor_surat" name="nomor_surat" class="form-control" value="{{ request('nomor_surat') }}" placeholder="Masukkan Nomor Surat">
                                     </div>
@@ -41,6 +46,9 @@
                                         <input type="date" id="tanggal" name="tanggal" class="form-control" value="{{ request('tanggal') }}">
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="row">
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="bidang" class="form-label">Bidang</label>
@@ -53,9 +61,6 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="jenis_arsip" class="form-label">Jenis Arsip</label>
@@ -76,6 +81,9 @@
                                         <input type="text" id="tujuan_dari" name="tujuan_dari" class="form-control" value="{{ request('tujuan_dari') }}" placeholder="Masukkan Tujuan/Dari">
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="row">
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="no_berkas" class="form-label">Nomor Berkas</label>
@@ -107,6 +115,8 @@
                         <table id="datatable" class="table table-hover table-bordered table-striped dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
+                                    <th>No</th>
+                                    <th>Nama Arsip</th>
                                     <th>Nomor Surat</th>
                                     <th>Tanggal</th>
                                     <th>Bidang</th>
@@ -122,6 +132,8 @@
                             <tbody>
                                 @foreach($list_arsip as $arsip)
                                 <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $arsip->nama_arsip }}</td>
                                     <td>{{ $arsip->nomor_surat }}</td>
                                     <td>{{ $arsip->tanggal }}</td>
                                     <td>{{ $arsip->bidang }}</td>

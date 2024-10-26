@@ -11,6 +11,7 @@ class Arsip extends Model
     protected $primaryKey = 'arsip_id';
 
     protected $fillable = [
+        'nama_arsip',
         'nomor_surat',
         'tanggal',
         'bidang',
