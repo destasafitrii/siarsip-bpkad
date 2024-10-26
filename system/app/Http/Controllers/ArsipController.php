@@ -8,11 +8,42 @@ use Illuminate\Http\Request;
 class ArsipController extends Controller
 {
     // Menampilkan daftar data arsip
-    public function index()
-    {
-        $data['list_arsip'] = Arsip::all();
-        return view('content.arsip.index', $data);
+    public function index(Request $request)
+{
+    // Membuat query dasar untuk model Arsip
+    $query = Arsip::query();
+
+    // Memeriksa apakah ada parameter pencarian yang dikirimkan
+    if ($request->filled('nomor_surat')) {
+        $query->where('nomor_surat', 'like', '%' . $request->nomor_surat . '%');
     }
+
+    if ($request->filled('tanggal')) {
+        $query->whereDate('tanggal', $request->tanggal);
+    }
+
+    if ($request->filled('bidang')) {
+        $query->where('bidang', $request->bidang);
+    }
+
+    if ($request->filled('jenis_arsip')) {
+        $query->where('jenis_arsip', 'like', '%' . $request->jenis_arsip . '%');
+    }
+
+    if ($request->filled('tujuan_dari')) {
+        $query->where('tujuan_dari', 'like', '%' . $request->tujuan_dari . '%');
+    }
+
+    if ($request->filled('no_berkas')) {
+        $query->where('no_berkas', 'like', '%' . $request->no_berkas . '%');
+    }
+
+    // Mendapatkan data arsip berdasarkan query yang telah disaring
+    $data['list_arsip'] = $query->paginate(10); // Gunakan paginate jika data banyak
+
+    // Mengembalikan view dengan data arsip yang telah difilter
+    return view('content.arsip.index', $data);
+}
 
     // Menampilkan form untuk membuat data arsip baru
     public function create()
