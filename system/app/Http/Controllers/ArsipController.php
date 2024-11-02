@@ -60,8 +60,7 @@ class ArsipController extends Controller
     {
         // Validasi input berdasarkan kombinasi bidang dan jenis arsip
         $validatedData = $request->validate([
-            'nomor_surat' => 'required|unique:arsip',
-
+            'nomor_surat' => 'required|string',
             'tanggal' => 'required|date',
             'bidang' => 'required|in:anggaran,pembendaharaan,akuntansi,sekretariat',
             'jenis_arsip' => [
@@ -83,17 +82,18 @@ class ArsipController extends Controller
             ],
             'tujuan_dari' => 'required|string',
             'no_berkas' => 'required|string',
-            'urutan' => 'required|integer',
+            'urutan' => 'required|string',
             'lokasi' => 'required|string',
             'keterangan' => 'nullable|string',
-            'nama_arsip' => 'nullable|string',
+            'nama_arsip' => 'required|string',
+            'file_arsip' => 'required|file|mimes:pdf,doc,docx|max:2048', // Validasi untuk file
         ]);
 
         // Simpan data jika validasi berhasil
         $arsip = new Arsip($validatedData);
         $arsip->save();
 
-        return redirect()->route('arsip.index')->with('success', 'Data Berhasil Ditambahkan');
+        return redirect()->route('arsip.index')->with('success', 'Data Berhasil Ditambahkan' );
     }
 
     public function edit($id)
@@ -132,7 +132,7 @@ class ArsipController extends Controller
             'urutan' => 'required|integer',
             'lokasi' => 'required|string',
             'keterangan' => 'nullable|string',
-            'nama_arsip' => 'nullable|string',
+            'nama_arsip' => 'required|string',
         ]);
 
         // Temukan data arsip berdasarkan ID
