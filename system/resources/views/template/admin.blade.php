@@ -4,14 +4,20 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Badan Pengelola Keuangan dan Aset Daerah</title>
+    <title>Pengelola Arsip Perangkat Daerah</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Codebucks" name="author" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{url('public')}}/assets/images/logo-ktg.png" height="50">
 
-    
+     <!-- DataTables -->
+     {{-- <link href="{{url('public')}}/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" /> --}}
+
+     <!-- Responsive datatable examples -->
+     <link href="{{url('public')}}/assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet" type="text/css" />
+
+
     <!-- dark layout js -->
     <script src="{{url('public')}}/assets/js/pages/layout.js"></script>
 
@@ -45,7 +51,9 @@
     <div class="main-content">
         @include('utils.notif')
 
+        <!-- Page-content -->
         @yield('content')
+
         <!-- End Page-content -->
 
         @include('section.footer')
@@ -57,6 +65,8 @@
 
 
 <!-- JAVASCRIPT -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script src="{{url('public')}}/assets/libs/jquery/jquery.min.js"></script>
 <script src="{{url('public')}}/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="{{url('public')}}/assets/libs/metismenu/metisMenu.min.js"></script>
@@ -80,6 +90,9 @@
 <script src="{{url('public')}}/assets/js/pages/toaster.init.js"></script>
 
 <script src="{{url('public')}}/assets/js/pages/dashboard.init.js"></script>
+
+<!-- Datatable init js -->
+{{-- <script src="{{url('public')}}/assets/js/pages/datatables-base.init.js"></script> --}}
 
 <!-- App js -->
 <script src="{{url('public')}}/assets/js/app.js"></script>

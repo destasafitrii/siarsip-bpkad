@@ -7,7 +7,7 @@
                     <img src="{{url('public')}}/assets/images/logo-ktg.png" alt="logo-sm-dark" height="45">
                 </span>
                 <span class="logo-lg">
-                    <img src="{{url('public')}}/assets/images/download.jpeg" alt="logo-dark" height="100">
+                    <img src="{{url('public')}}/assets/images/logo-ktg.png" alt="logo-dark" height="50">
                 </span>
             </a>
             <a href="index.html" class="logo logo-light">
