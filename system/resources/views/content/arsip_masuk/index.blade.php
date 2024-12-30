@@ -41,8 +41,10 @@
                                             <td>{{ $arsip_surat_masuk->no_surat_masuk }}</td>
                                             <td>{{ $arsip_surat_masuk->nama_surat_masuk }}</td>
                                             <td>{{ $arsip_surat_masuk->tanggal_surat_masuk }}</td>
-                                            <td>{{ $arsip_surat_masuk->bidang }}</td>
-                                            <td>{{ $arsip_surat_masuk->jenis_arsip }}</td>
+                                            <td>{{ $arsip_surat_masuk->bidang ? $arsip_surat_masuk->bidang->nama_bidang : 'Tidak ada bidang' }}
+                                            </td>
+                                            <td>{{ $arsip_surat_masuk->kategori ? $arsip_surat_masuk->kategori->nama_kategori : 'Tidak ada kategori' }}
+                                            </td>
                                             <td>{{ $arsip_surat_masuk->asal_surat_masuk }}</td>
                                             <td>{{ $arsip_surat_masuk->no_berkas_surat_masuk }}</td>
                                             <td>{{ $arsip_surat_masuk->urutan_surat_masuk }}</td>

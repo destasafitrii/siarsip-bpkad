@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-
+@yield('style')
     <meta charset="utf-8" />
     <title>Pengelola Arsip Perangkat Daerah</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

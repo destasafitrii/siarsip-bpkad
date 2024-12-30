@@ -29,11 +29,11 @@
                                 </tr>
                                 <tr>
                                     <th>Bidang</th>
-                                    <td>{{ $arsip_surat_masuk->bidang }}</td>
+                                    <td>{{ $arsip_surat_masuk->bidang->nama_bidang ?? 'Tidak Diketahui' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Jenis Arsip</th>
-                                    <td>{{ $arsip_surat_masuk->jenis_arsip }}</td>
+                                    <td>{{ $arsip_surat_masuk->kategori->nama_kategori ?? 'Tidak Diketahui' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Asal Surat</th>

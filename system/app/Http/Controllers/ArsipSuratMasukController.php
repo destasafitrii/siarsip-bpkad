@@ -38,14 +38,21 @@ class ArsipSuratMasukController extends Controller
             'no_berkas_surat_masuk' => 'required',
             'urutan_surat_masuk' => 'required',
             'lokasi_surat_masuk' => 'required',
+            'file_surat_masuk' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
             'keterangan' => 'nullable',
         ]);
+
+        // Menyimpan file jika ada
+        if ($request->hasFile('file_surat_masuk')) {
+            $validatedData['file_surat_masuk'] = $request->file('file_surat_masuk')->store('uploads/surat_masuk');
+        }
 
         // Membuat arsip surat masuk baru berdasarkan input yang sudah divalidasi
         ArsipSuratMasuk::create($validatedData);
 
         // Redirect ke halaman arsip surat masuk dengan pesan sukses
         return redirect()->route('arsip_masuk.index')->with('success', 'Data berhasil ditambahkan!');
+
     }
 
     public function show($id)
@@ -55,14 +62,24 @@ class ArsipSuratMasukController extends Controller
         return view('content.arsip_masuk.show', compact('arsip_surat_masuk'));
     }
 
-    public function edit($id)
-    {
-        // Menampilkan arsip surat masuk yang akan diedit
-        $arsip_surat_masuk = ArsipSuratMasuk::findOrFail($id);
-        $list_bidang = Bidang::all();
-        $list_kategori = Kategori::all();
-        return view('content.arsip_masuk.edit', compact('arsip_surat_masuk', 'list_bidang', 'list_kategori'));
-    }
+    // Controller untuk mengedit arsip surat masuk
+// Controller untuk mengedit arsip surat masuk
+public function edit($id)
+{
+    $arsip_surat_masuk = ArsipSuratMasuk::with(['bidang', 'kategori'])->findOrFail($id);
+
+    // Mendapatkan semua bidang
+    $list_bidang = Bidang::all();
+
+    // Memuat kategori berdasarkan bidang yang sedang dipilih
+    $list_kategori = Kategori::where('bidang_id', $arsip_surat_masuk->bidang_id)->get();
+
+    return view('content.arsip_masuk.edit', compact('arsip_surat_masuk', 'list_bidang', 'list_kategori'));
+}
+
+
+
+
 
     public function update(Request $request, $id)
     {
@@ -77,6 +94,7 @@ class ArsipSuratMasukController extends Controller
             'no_berkas_surat_masuk' => 'required',
             'urutan_surat_masuk' => 'required',
             'lokasi_surat_masuk' => 'required',
+            'file_surat_masuk' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
             'keterangan' => 'nullable',
         ]);
 
@@ -101,8 +119,13 @@ class ArsipSuratMasukController extends Controller
     // Fungsi untuk mendapatkan kategori berdasarkan bidang yang dipilih
     public function getKategoriByBidang($bidang_id)
     {
-        $list_kategori = Kategori::where('bidang_id', $bidang_id)->get();
-        Log::info($list_kategori);  // Menambahkan log untuk debugging
-        return response()->json($list_kategori);
+        $list_kategori = Kategori::where('bidang_id', $bidang_id)->get(['kategori_id', 'nama_kategori']);
+
+        if ($list_kategori->isEmpty()) {
+            Log::info("Tidak ada kategori ditemukan untuk bidang_id: " . $bidang_id);
+            return response()->json([], 200);
+        }
+
+        return response()->json($list_kategori, 200);
     }
 }

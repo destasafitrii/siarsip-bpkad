@@ -14,11 +14,21 @@
                 </li>
                 <li class="menu-title">Menu Utama</li>
                 <li>
+                    <a href="javascript: void(0);" class="has-arrow ">
+                        <i class="mdi mdi-email"></i>
+                        <span>Arsip Surat Masuk</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ url('arsip_masuk')}}"><i class="mdi mdi-checkbox-blank-circle align-middle"></i> Daftar Arsip Masuk </a></li>
+                        <li><a href="{{ url('pencarian-arsip-masuk')}}"><i class="mdi mdi-checkbox-blank-circle align-middle"></i> Pencarian Arsip Masuk</a></li>
+                    </ul>
+                </li>
+                {{-- <li>
                     <a href="{{ url('arsip_masuk') }}" class="">
                         <i class="mdi mdi-email"></i>
                         <span>Arsip Surat Masuk</span>
                     </a>
-                </li>
+                </li> --}}
                 <li>
                     <a href="{{ url('arsip_keluar') }}" class="">
                         <i class="mdi mdi-email-open"></i>

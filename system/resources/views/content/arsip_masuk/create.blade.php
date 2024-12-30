@@ -14,20 +14,31 @@
                         <div class="card-body">
                             <form action="{{ route('arsip_masuk.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
+                                <!-- Menampilkan Pesan Validasi jika ada error -->
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+
                                 <div class="mb-3">
                                     <label for="no_surat_masuk" class="form-label">Nomor Surat</label>
                                     <input type="text" class="form-control" id="no_surat_masuk" name="no_surat_masuk"
-                                        placeholder="Masukkan nomor surat" required>
+                                        placeholder="Masukkan nomor surat" required value="{{ old('no_surat_masuk') }}">
                                 </div>
                                 <div class="mb-3">
                                     <label for="nama_surat_masuk" class="form-label">Nama Surat</label>
                                     <input type="text" class="form-control" id="nama_surat_masuk" name="nama_surat_masuk"
-                                        placeholder="Masukkan nama surat" required>
+                                        placeholder="Masukkan nama surat" required value="{{ old('nama_surat_masuk') }}">
                                 </div>
                                 <div class="mb-3">
                                     <label for="tanggal_surat_masuk" class="form-label">Tanggal</label>
                                     <input type="date" class="form-control" id="tanggal_surat_masuk"
-                                        name="tanggal_surat_masuk" required>
+                                        name="tanggal_surat_masuk" required value="{{ old('tanggal_surat_masuk') }}">
                                 </div>
                                 <!-- Formulir Pilih Bidang -->
                                 <div class="mb-3">
@@ -35,7 +46,10 @@
                                     <select name="bidang_id" id="bidang_id" class="form-control" required>
                                         <option value="">-- Pilih Bidang --</option>
                                         @foreach ($list_bidang as $bidang)
-                                            <option value="{{ $bidang->bidang_id }}">{{ $bidang->nama_bidang }}</option>
+                                            <option value="{{ $bidang->bidang_id }}"
+                                                {{ old('bidang_id') == $bidang->bidang_id ? 'selected' : '' }}>
+                                                {{ $bidang->nama_bidang }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -47,11 +61,25 @@
                                         <option value="">-- Pilih Kategori --</option>
                                     </select>
                                 </div>
-
+                                <div class="mb-3">
+                                    <label for="asal_surat_masuk" class="form-label">Asal</label>
+                                    <input type="text" class="form-control" id="asal_surat_masuk"
+                                        name="asal_surat_masuk" placeholder="Masukkan asal" required value="{{ old('asal_surat_masuk') }}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="no_berkas_surat_masuk" class="form-label">No Berkas</label>
+                                    <input type="text" class="form-control" id="no_berkas_surat_masuk"
+                                        name="no_berkas_surat_masuk" placeholder="Masukkan No Berkas" required value="{{ old('no_berkas_surat_masuk') }}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="urutan_surat_masuk" class="form-label">Urutan</label>
+                                    <input type="text" class="form-control" id="urutan_surat_masuk"
+                                        name="urutan_surat_masuk" placeholder="Masukkan lokasi" required value="{{ old('urutan_surat_masuk') }}">
+                                </div>
                                 <div class="mb-3">
                                     <label for="lokasi_surat_masuk" class="form-label">Lokasi</label>
                                     <input type="text" class="form-control" id="lokasi_surat_masuk"
-                                        name="lokasi_surat_masuk" placeholder="Masukkan lokasi" required>
+                                        name="lokasi_surat_masuk" placeholder="Masukkan lokasi" required value="{{ old('lokasi_surat_masuk') }}">
                                 </div>
                                 <div class="mb-3">
                                     <label for="file_surat_masuk" class="form-label">Unggah File</label>
@@ -66,43 +94,34 @@
             </div>
         </div>
     </div>
-@endsection
 
-@push('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Ketika bidang dipilih
+            // Ketika bidang_id dipilih
             $('#bidang_id').change(function() {
-                var bidang_id = $(this).val(); // Ambil nilai bidang yang dipilih
+                var bidang_id = $(this).val();
 
-                // Jika bidang_id ada (tidak kosong)
                 if (bidang_id) {
                     $.ajax({
-                        url: '/getKategoriByBidang/' + bidang_id, // URL ke route
+                        url: 'getKategoriByBidang/' + bidang_id,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
-                            // Kosongkan pilihan kategori
-                            $('#kategori_id').empty();
-                            $('#kategori_id').append(
-                                '<option value="">-- Pilih Kategori --</option>');
+                            $('#kategori_id').empty();  // Kosongkan kategori sebelumnya
+                            $('#kategori_id').append('<option value="">-- Pilih Kategori --</option>');
 
-                            // Periksa apakah data kategori ada
                             if (data.length > 0) {
-                                // Menambahkan kategori ke dropdown
                                 $.each(data, function(key, value) {
-                                    $('#kategori_id').append('<option value="' + value
-                                        .kategori_id + '">' + value.nama_kategori +
-                                        '</option>');
+                                    $('#kategori_id').append('<option value="' + value.kategori_id + '">' + value.nama_kategori + '</option>');
                                 });
                             } else {
-                                $('#kategori_id').append(
-                                    '<option value="">Kategori tidak ditemukan</option>');
+                                $('#kategori_id').append('<option value="">Kategori tidak ditemukan</option>');
                             }
                         },
                         error: function(xhr, status, error) {
-                            // Menampilkan pesan kesalahan jika terjadi masalah
-                            alert('Terjadi kesalahan: ' + error);
+                            console.error('Terjadi kesalahan: ' + error); // Debugging di console
+                            alert('Terjadi kesalahan: ' + error); // Menampilkan error di alert
                         }
                     });
                 } else {
@@ -112,4 +131,4 @@
             });
         });
     </script>
-@endpush
+@endsection

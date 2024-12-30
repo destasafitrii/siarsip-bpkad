@@ -6,6 +6,7 @@ use App\Http\Controllers\ArsipSuratKeluarController;
 use App\Http\Controllers\PencarianArsipController;
 use App\Http\Controllers\BidangController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\PencarianArsipSuratMasukController;
 
 Route::get('dashboard', function () {
     return view('content.index');
@@ -15,7 +16,6 @@ Route::get('dashboard', function () {
 Route::get('/notif', function () {
     return view('utils.notif');
 });
-
 Route::controller(ArsipSuratMasukController::class)->group(function () {
     Route::get('arsip_masuk', 'index')->name('arsip_masuk.index');
     Route::get('arsip_masuk/create', 'create')->name('arsip_masuk.create');
@@ -24,8 +24,7 @@ Route::controller(ArsipSuratMasukController::class)->group(function () {
     Route::put('arsip_masuk/{arsip_masuk}', 'update')->name('arsip_masuk.update');
     Route::delete('arsip_masuk/{arsip_masuk}', 'destroy')->name('arsip_masuk.destroy');
     Route::get('arsip_masuk/{arsip_masuk}', 'show')->name('arsip_masuk.show');
-    
-
+    Route::get('/arsip_masuk/getKategoriByBidang/{bidang_id}', 'getKategoriByBidang')->name('getKategoriByBidang');
 });
 
 Route::controller(ArsipSuratKeluarController::class)->group(function () {
@@ -60,13 +59,11 @@ Route::controller(KategoriController::class)->group(function () {
     Route::get('kategori/{kategori}/delete', 'destroy');
     
     // Menambahkan route untuk mendapatkan kategori berdasarkan bidang
-    Route::get('getKategoriByBidang/{bidang_id}', [ArsipSuratMasukController::class, 'getKategoriByBidang']);
+    
 });
 
-
-
-
-
-
-
+Route::controller(PencarianArsipSuratMasukController::class)->group(function () {
+    Route::get('pencarian-arsip-masuk', 'index')->name('pencarian-arsip-masuk');
+    Route::get('/kategoris/bidang/{bidang_id}', 'getKategorisByBidang');
+});
 
