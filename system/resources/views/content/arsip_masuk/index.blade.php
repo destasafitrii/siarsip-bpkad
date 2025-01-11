@@ -30,7 +30,6 @@
                                         <th>Nomor Berkas</th>
                                         <th>Urutan</th>
                                         <th>Lokasi</th>
-                                        <th>Keterangan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -49,7 +48,6 @@
                                             <td>{{ $arsip_surat_masuk->no_berkas_surat_masuk }}</td>
                                             <td>{{ $arsip_surat_masuk->urutan_surat_masuk }}</td>
                                             <td>{{ $arsip_surat_masuk->lokasi_surat_masuk }}</td>
-                                            <td>{{ $arsip_surat_masuk->keterangan }}</td>
                                             <td>
                                                 <a href="{{ route('arsip_masuk.show', $arsip_surat_masuk->surat_masuk_id) }}"
                                                     class="btn btn-info btn-sm" title="Detail">

@@ -23,24 +23,22 @@
                         <li><a href="{{ url('pencarian-arsip-masuk')}}"><i class="mdi mdi-checkbox-blank-circle align-middle"></i> Pencarian Arsip Masuk</a></li>
                     </ul>
                 </li>
-                {{-- <li>
-                    <a href="{{ url('arsip_masuk') }}" class="">
-                        <i class="mdi mdi-email"></i>
-                        <span>Arsip Surat Masuk</span>
-                    </a>
-                </li> --}}
                 <li>
-                    <a href="{{ url('arsip_keluar') }}" class="">
+                    <a href="javascript: void(0);" class="has-arrow ">
                         <i class="mdi mdi-email-open"></i>
                         <span>Arsip Surat Keluar</span>
                     </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ url('arsip_keluar')}}"><i class="mdi mdi-checkbox-blank-circle align-middle"></i> Daftar Arsip Keluar </a></li>
+                        <li><a href="{{ url('pencarian-arsip-keluar')}}"><i class="mdi mdi-checkbox-blank-circle align-middle"></i> Pencarian Arsip Keluar</a></li>
+                    </ul>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="{{ url('pencarian_arsip') }}" class="">
                         <i class="mdi mdi-folder-search"></i>
                         <span>Pencarian Arsip</span>
                     </a>
-                </li>
+                </li> --}}
                 <li>
                     <a href="javascript: void(0);" class="has-arrow ">
                         <i class="fa fa-chart-bar"></i>

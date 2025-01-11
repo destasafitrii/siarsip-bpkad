@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ArsipSuratMasuk;
+use App\Models\ArsipSuratKeluar;
 use App\Models\Bidang;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 
-class PencarianArsipSuratMasukController extends Controller
+class PencarianArsipSuratKeluarController extends Controller
 {
     /**
-     * Menampilkan halaman pencarian arsip surat masuk.
+     * Menampilkan halaman pencarian arsip surat keluar.
      */
     public function index(Request $request)
     {
@@ -22,14 +22,15 @@ class PencarianArsipSuratMasukController extends Controller
             ? Kategori::where('bidang_id', $request->bidang_id)->get()
             : Kategori::all(); // Jika tidak ada bidang terpilih, ambil semua kategori
 
-        $query = ArsipSuratMasuk::query();
+        $query = ArsipSuratKeluar::query();
 
         // Filter berdasarkan keyword pencarian
         if ($request->has('keyword') && $request->keyword !== null) {
             $query->where(function ($q) use ($request) {
-                $q->where('no_surat_masuk', 'like', '%' . $request->keyword . '%')
-                    ->orWhere('nama_surat_masuk', 'like', '%' . $request->keyword . '%')
-                    ->orWhere('asal_surat_masuk', 'like', '%' . $request->keyword . '%')
+                $q->where('no_surat_keluar', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('nama_surat_keluar', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('tujuan_surat_keluar', 'like', '%' . $request->keyword . '%')
+                    // Menambahkan pencarian berdasarkan bidang dan kategori
                     ->orWhereHas('bidang', function ($q) use ($request) {
                         $q->where('nama_bidang', 'like', '%' . $request->keyword . '%');
                     })
@@ -40,7 +41,7 @@ class PencarianArsipSuratMasukController extends Controller
                 // Pencarian berdasarkan tahun jika ada dalam keyword
                 if (preg_match('/\d{4}/', $request->keyword, $matches)) {
                     $tahun = $matches[0]; // Ambil tahun yang ditemukan
-                    $q->orWhereYear('tanggal_surat_masuk', $tahun);
+                    $q->orWhereYear('tanggal_surat_keluar', $tahun);
                 }
             });
         }
@@ -59,15 +60,17 @@ class PencarianArsipSuratMasukController extends Controller
         }
 
         // Filter berdasarkan tanggal surat
-        if ($request->has('tanggal_surat_masuk') && $request->tanggal_surat_masuk !== null) {
-            $query->whereDate('tanggal_surat_masuk', $request->tanggal_surat_masuk);
+        if ($request->has('tanggal_surat_keluar') && $request->tanggal_surat_keluar !== null) {
+            $query->whereDate('tanggal_surat_keluar', $request->tanggal_surat_keluar);
         }
 
         // Ambil data dengan pagination
-        $arsipSuratMasuk = $query->paginate(10);
+        $ArsipSuratKeluar = $query->paginate(10);
 
-        return view('content.arsip_masuk.pencarian_arsip_masuk', compact('arsipSuratMasuk', 'bidangs', 'kategoris'));
+        return view('content.arsip_keluar.pencarian_arsip_keluar', compact('ArsipSuratKeluar', 'bidangs', 'kategoris'));
     }
+
+
 
     /**
      * Mengambil kategori berdasarkan bidang_id

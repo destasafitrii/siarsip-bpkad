@@ -30,7 +30,6 @@
                                         <th>Nomor Berkas</th>
                                         <th>Urutan</th>
                                         <th>Lokasi</th>
-                                        <th>Keterangan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -41,13 +40,14 @@
                                             <td>{{ $arsip_surat_keluar->no_surat_keluar }}</td>
                                             <td>{{ $arsip_surat_keluar->nama_surat_keluar }}</td>
                                             <td>{{ $arsip_surat_keluar->tanggal_surat_keluar }}</td>
-                                            <td>{{ $arsip_surat_keluar->bidang }}</td>
-                                            <td>{{ $arsip_surat_keluar->jenis_arsip }}</td>
+                                            <td>{{ $arsip_surat_keluar->bidang ? $arsip_surat_keluar->bidang->nama_bidang : 'Tidak ada bidang' }}
+                                            </td>
+                                            <td>{{ $arsip_surat_keluar->kategori ? $arsip_surat_keluar->kategori->nama_kategori : 'Tidak ada kategori' }}
+                                            </td>
                                             <td>{{ $arsip_surat_keluar->tujuan_surat_keluar }}</td>
                                             <td>{{ $arsip_surat_keluar->no_berkas_surat_keluar }}</td>
                                             <td>{{ $arsip_surat_keluar->urutan_surat_keluar }}</td>
                                             <td>{{ $arsip_surat_keluar->lokasi_surat_keluar }}</td>
-                                            <td>{{ $arsip_surat_keluar->keterangan }}</td>
                                             <td>
                                                 <a href="{{ route('arsip_keluar.show', $arsip_surat_keluar->surat_keluar_id) }}"
                                                     class="btn btn-info btn-sm" title="Detail">

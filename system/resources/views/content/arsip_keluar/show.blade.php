@@ -28,11 +28,11 @@
                                 </tr>
                                 <tr>
                                     <th>Bidang</th>
-                                    <td>{{ $arsip_surat_keluar->bidang }}</td>
+                                    <td>{{ $arsip_surat_keluar->bidang->nama_bidang ?? 'Tidak Diketahui' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Jenis Arsip</th>
-                                    <td>{{ $arsip_surat_keluar->jenis_arsip }}</td>
+                                    <td>{{ $arsip_surat_keluar->kategori->nama_kategori ?? 'Tidak Diketahui' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Tujuan Surat</th>
@@ -52,7 +52,7 @@
                                 </tr>
                                 <tr>
                                     <th>Keterangan</th>
-                                    <td>{{ $arsip_surat_keluar->keterangan }}</td>
+                                    <td>{{ $arsip_surat_keluar->keterangan_surat_keluar }}</td>
                                 </tr>
                                 <tr>
                                     <th>File Arsip</th>

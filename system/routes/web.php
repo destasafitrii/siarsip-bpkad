@@ -7,7 +7,7 @@ use App\Http\Controllers\PencarianArsipController;
 use App\Http\Controllers\BidangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PencarianArsipSuratMasukController;
-
+use App\Http\Controllers\PencarianArsipSuratKeluarController;
 Route::get('dashboard', function () {
     return view('content.index');
 });
@@ -35,6 +35,7 @@ Route::controller(ArsipSuratKeluarController::class)->group(function () {
     Route::put('arsip_keluar/{arsip_keluar}', 'update')->name('arsip_keluar.update');
     Route::delete('arsip_keluar/{arsip_keluar}', 'destroy')->name('arsip_keluar.destroy');
     Route::get('arsip_keluar/{arsip_keluar}', 'show')->name('arsip_keluar.show');
+    Route::get('/arsip_keluar/getKategoriByBidang/{bidang_id}', 'getKategoriByBidang')->name('getKategoriByBidang');
 });
 
 
@@ -66,4 +67,10 @@ Route::controller(PencarianArsipSuratMasukController::class)->group(function () 
     Route::get('pencarian-arsip-masuk', 'index')->name('pencarian-arsip-masuk');
     Route::get('/kategoris/bidang/{bidang_id}', 'getKategorisByBidang');
 });
+
+Route::controller(PencarianArsipSuratKeluarController::class)->group(function () {
+    Route::get('pencarian-arsip-keluar', 'index')->name('pencarian-arsip-keluar');
+    Route::get('/kategoris/bidang/{bidang_id}', 'getKategorisByBidang');
+});
+
 

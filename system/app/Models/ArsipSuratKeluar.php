@@ -14,12 +14,14 @@ class ArsipSuratKeluar extends Model
         'no_surat_keluar',
         'nama_surat_keluar',
         'tanggal_surat_keluar',
+        'bidang_id',
+        'kategori_id',
         'tujuan_surat_keluar',
         'no_berkas_surat_keluar',
         'urutan_surat_keluar',
         'lokasi_surat_keluar',
         'file_surat_keluar',
-        'keterangan',
+        'keterangan_surat_keluar',
     ];
     public function bidang()
     {

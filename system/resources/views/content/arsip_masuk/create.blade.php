@@ -82,6 +82,11 @@
                                         name="lokasi_surat_masuk" placeholder="Masukkan lokasi" required value="{{ old('lokasi_surat_masuk') }}">
                                 </div>
                                 <div class="mb-3">
+                                    <label for="keterangan" class="form-label">Keterangan</label>
+                                    <input type="text" class="form-control" id="keterangan"
+                                        name="keterangan" placeholder="Masukkan keterangan" required value="{{ old('keterangan') }}">
+                                </div>
+                                <div class="mb-3">
                                     <label for="file_surat_masuk" class="form-label">Unggah File</label>
                                     <input type="file" class="form-control" id="file_surat_masuk"
                                         name="file_surat_masuk">

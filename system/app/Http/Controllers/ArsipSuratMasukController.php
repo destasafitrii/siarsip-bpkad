@@ -52,7 +52,6 @@ class ArsipSuratMasukController extends Controller
 
         // Redirect ke halaman arsip surat masuk dengan pesan sukses
         return redirect()->route('arsip_masuk.index')->with('success', 'Data berhasil ditambahkan!');
-
     }
 
     public function show($id)
@@ -63,23 +62,19 @@ class ArsipSuratMasukController extends Controller
     }
 
     // Controller untuk mengedit arsip surat masuk
-// Controller untuk mengedit arsip surat masuk
-public function edit($id)
-{
-    $arsip_surat_masuk = ArsipSuratMasuk::with(['bidang', 'kategori'])->findOrFail($id);
+    // Controller untuk mengedit arsip surat masuk
+    public function edit($id)
+    {
+        $arsip_surat_masuk = ArsipSuratMasuk::with(['bidang', 'kategori'])->findOrFail($id);
 
-    // Mendapatkan semua bidang
-    $list_bidang = Bidang::all();
+        // Mendapatkan semua bidang
+        $list_bidang = Bidang::all();
 
-    // Memuat kategori berdasarkan bidang yang sedang dipilih
-    $list_kategori = Kategori::where('bidang_id', $arsip_surat_masuk->bidang_id)->get();
+        // Memuat kategori berdasarkan bidang yang sedang dipilih
+        $list_kategori = Kategori::where('bidang_id', $arsip_surat_masuk->bidang_id)->get();
 
-    return view('content.arsip_masuk.edit', compact('arsip_surat_masuk', 'list_bidang', 'list_kategori'));
-}
-
-
-
-
+        return view('content.arsip_masuk.edit', compact('arsip_surat_masuk', 'list_bidang', 'list_kategori'));
+    }
 
     public function update(Request $request, $id)
     {

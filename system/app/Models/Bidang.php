@@ -10,8 +10,10 @@ class Bidang extends Model
     use HasFactory;
 
     protected $table = 'bidang'; // Nama tabel di database
-    protected $primaryKey = 'bidang_id'; // Primary key sesuai dengan kolom 'bidang_id'
-    
+    protected $primaryKey = 'bidang_id'; // Primary key sesuai kolom 'bidang_id'
+    public $incrementing = true; // Jika primary key auto increment
+    protected $keyType = 'int'; // Tipe data primary key
+
     // Menentukan kolom-kolom yang bisa diisi
     protected $fillable = [
         'nama_bidang',
@@ -19,8 +21,6 @@ class Bidang extends Model
 
     /**
      * Relasi Bidang ke Kategori (One to Many).
-     * 
-     * Mengambil semua kategori yang terkait dengan bidang ini
      */
     public function kategori()
     {

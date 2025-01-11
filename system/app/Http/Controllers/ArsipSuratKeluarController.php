@@ -4,61 +4,51 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ArsipSuratKeluar;
+use App\Models\Bidang;
+use App\Models\Kategori;
+use Illuminate\Support\Facades\Log;
 
 class ArsipSuratKeluarController extends Controller
 {
     public function index()
     {
-        // Menampilkan semua arsip surat keluar dengan paginasi
-        $list_arsip_surat_keluar = ArsipSuratKeluar::paginate(10);
+        // Menambahkan eager loading dengan relasi bidang dan kategori
+        $list_arsip_surat_keluar = ArsipSuratKeluar::with(['bidang', 'kategori'])->paginate(10);
         return view('content.arsip_keluar.index', compact('list_arsip_surat_keluar'));
     }
 
     public function create()
     {
-        // Menampilkan form untuk menambah arsip surat keluar
-        return view('content.arsip_keluar.create');
+        // Mendapatkan semua bidang dan kategori untuk form create
+        $list_bidang = Bidang::all();
+        $list_kategori = Kategori::all();
+        return view('content.arsip_keluar.create', compact('list_bidang', 'list_kategori'));
     }
 
     public function store(Request $request)
     {
-        // Validasi data form
-        $request->validate([
+        // Validasi input untuk menyimpan arsip surat keluar
+        $validatedData = $request->validate([
             'no_surat_keluar' => 'required',
             'nama_surat_keluar' => 'required',
             'tanggal_surat_keluar' => 'required|date',
-            'bidang' => 'required',
-            'jenis_arsip' => 'required',
+            'bidang_id' => 'required|exists:bidang,bidang_id',
+            'kategori_id' => 'required|exists:kategori,kategori_id',
             'tujuan_surat_keluar' => 'required',
             'no_berkas_surat_keluar' => 'required',
             'urutan_surat_keluar' => 'required',
             'lokasi_surat_keluar' => 'required',
-            'file_surat_keluar' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240', // Menambahkan validasi file
-            'keterangan' => 'nullable',
+            'file_surat_keluar' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
+            'keterangan_surat_keluar' => 'nullable',
         ]);
 
-        // Mengatur path untuk file
-        $filePath = null;
+        // Menyimpan file jika ada
         if ($request->hasFile('file_surat_keluar')) {
-            // Memproses unggahan file
-            $file = $request->file('file_surat_keluar');
-            $filePath = $file->store('uploads/surat_keluar', 'public'); // Simpan file di folder public/uploads/surat_keluar
+            $validatedData['file_surat_keluar'] = $request->file('file_surat_keluar')->store('uploads/surat_keluar');
         }
 
-        // Menyimpan data ke database
-        ArsipSuratKeluar::create([
-            'no_surat_keluar' => $request->no_surat_keluar,
-            'nama_surat_keluar' => $request->nama_surat_keluar,
-            'tanggal_surat_keluar' => $request->tanggal_surat_keluar,
-            'bidang' => $request->bidang,
-            'jenis_arsip' => $request->jenis_arsip,
-            'tujuan_surat_keluar' => $request->tujuan_surat_keluar,
-            'no_berkas_surat_keluar' => $request->no_berkas_surat_keluar,
-            'urutan_surat_keluar' => $request->urutan_surat_keluar,
-            'lokasi_surat_keluar' => $request->lokasi_surat_keluar,
-            'file_surat_keluar' => $filePath, // Menyimpan path file
-            'keterangan' => $request->keterangan,
-        ]);
+        // Membuat arsip surat keluar baru berdasarkan input yang sudah divalidasi
+        ArsipSuratKeluar::create($validatedData);
 
         // Redirect ke halaman arsip surat keluar dengan pesan sukses
         return redirect()->route('arsip_keluar.index')->with('success', 'Data berhasil ditambahkan!');
@@ -66,66 +56,71 @@ class ArsipSuratKeluarController extends Controller
 
     public function show($id)
     {
-        // Menampilkan detail arsip surat keluar
-        $arsip_surat_keluar = ArsipSuratKeluar::findOrFail($id);
+        // Menampilkan arsip surat keluar berdasarkan ID dan memuat relasi bidang dan kategori
+        $arsip_surat_keluar = ArsipSuratKeluar::with(['bidang', 'kategori'])->findOrFail($id);
         return view('content.arsip_keluar.show', compact('arsip_surat_keluar'));
     }
 
+    // Controller untuk mengedit arsip surat keluar
+    // Controller untuk mengedit arsip surat keluar
     public function edit($id)
     {
-        // Menampilkan form untuk edit arsip surat keluar
-        $arsip_surat_keluar = ArsipSuratKeluar::findOrFail($id);
-        return view('content.arsip_keluar.edit', compact('arsip_surat_keluar'));
+        $arsip_surat_keluar = ArsipSuratKeluar::with(['bidang', 'kategori'])->findOrFail($id);
+
+        // Mendapatkan semua bidang
+        $list_bidang = Bidang::all();
+
+        // Memuat kategori berdasarkan bidang yang sedang dipilih
+        $list_kategori = Kategori::where('bidang_id', $arsip_surat_keluar->bidang_id)->get();
+
+        return view('content.arsip_keluar.edit', compact('arsip_surat_keluar', 'list_bidang', 'list_kategori'));
     }
 
     public function update(Request $request, $id)
     {
-        // Validasi data form
-        $request->validate([
+        // Validasi input untuk memperbarui arsip surat keluar
+        $validatedData = $request->validate([
             'no_surat_keluar' => 'required',
             'nama_surat_keluar' => 'required',
             'tanggal_surat_keluar' => 'required|date',
-            // 'bidang' => 'required',
-            // 'jenis_arsip' => 'required',
+            'bidang_id' => 'required|exists:bidang,bidang_id',
+            'kategori_id' => 'required|exists:kategori,kategori_id',
             'tujuan_surat_keluar' => 'required',
             'no_berkas_surat_keluar' => 'required',
             'urutan_surat_keluar' => 'required',
             'lokasi_surat_keluar' => 'required',
-            'file_surat_keluar' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240', // Validasi file
-            'keterangan' => 'nullable',
+            'file_surat_keluar' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
+            'keterangan_surat_keluar' => 'nullable',
         ]);
-        if ($request->hasFile('file_surat_keluar')) {
-            // Hapus file lama jika ada
-            if ($arsip_surat_keluar->file_surat_keluar) {
-                \Storage::disk('public')->delete($arsip_surat_keluar->file_surat_keluar);
-            }
-        
-            // Simpan file baru
-            $file = $request->file('file_surat_keluar');
-            $filePath = $file->store('uploads/surat_keluar', 'public');
-            $arsip_surat_keluar->file_surat_keluar = $filePath;
-        }
-        
 
-        // Mengambil data arsip surat keluar berdasarkan ID
+        // Menemukan arsip surat keluar yang akan diperbarui dan memperbarui data
         $arsip_surat_keluar = ArsipSuratKeluar::findOrFail($id);
+        $arsip_surat_keluar->update($validatedData);
 
-        // Update data arsip surat keluar
-        $arsip_surat_keluar->update($request->all());
-
-        // Redirect dengan pesan sukses
+        // Redirect ke halaman arsip surat keluar dengan pesan sukses
         return redirect()->route('arsip_keluar.index')->with('success', 'Data berhasil diperbarui!');
     }
 
     public function destroy($id)
     {
-        // Mengambil data arsip surat keluar berdasarkan ID
+        // Menghapus arsip surat keluar berdasarkan ID
         $arsip_surat_keluar = ArsipSuratKeluar::findOrFail($id);
-
-        // Menghapus arsip surat keluar
         $arsip_surat_keluar->delete();
 
-        // Redirect dengan pesan sukses
+        // Redirect ke halaman arsip surat keluar dengan pesan sukses
         return redirect()->route('arsip_keluar.index')->with('success', 'Data berhasil dihapus!');
+    }
+
+    // Fungsi untuk mendapatkan kategori berdasarkan bidang yang dipilih
+    public function getKategoriByBidang($bidang_id)
+    {
+        $list_kategori = Kategori::where('bidang_id', $bidang_id)->get(['kategori_id', 'nama_kategori']);
+
+        if ($list_kategori->isEmpty()) {
+            Log::info("Tidak ada kategori ditemukan untuk bidang_id: " . $bidang_id);
+            return response()->json([], 200);
+        }
+
+        return response()->json($list_kategori, 200);
     }
 }

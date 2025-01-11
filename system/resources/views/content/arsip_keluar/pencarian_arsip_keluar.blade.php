@@ -3,18 +3,18 @@
 @section('content')
     <div class="page-content">
         <div class="container-fluid">
-            <!-- Pencarian Arsip Surat Masuk -->
+            <!-- Pencarian Arsip Surat Keluar -->
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title">Pencarian Arsip Surat Masuk</h4>
+                            <h4 class="card-title">Pencarian Arsip Surat Keluar</h4>
                         </div>
                         <div class="card-body">
                             <!-- Filter Form -->
-                            <form method="GET" action="{{ route('pencarian-arsip-masuk') }}" class="d-flex mb-3">
+                            <form method="GET" action="{{ route('pencarian-arsip-keluar') }}" class="d-flex mb-3">
                                 <input type="text" name="keyword" class="form-control me-2"
-                                    placeholder="Cari berdasarkan No. Surat, Nama Surat, atau Asal Surat"
+                                    placeholder="Cari berdasarkan No. Surat, Nama Surat, atau Tujuan Surat"
                                     value="{{ request('keyword') }}">
 
                                 <!-- Filter Bidang -->
@@ -38,14 +38,15 @@
                                 </select>
 
                                 <!-- Filter Tanggal Surat -->
-                                <input type="date" name="tanggal_surat_masuk" class="form-control me-2"
-                                    value="{{ request('tanggal_surat_masuk') }}">
+                                <input type="date" name="tanggal_surat_keluar" class="form-control me-2"
+                                    value="{{ request('tanggal_surat_keluar') }}">
+
 
                                 <button class="btn btn-primary" type="submit">Cari</button>
                             </form>
 
-                            @if ($arsipSuratMasuk->count() > 0)
-                                <table id="arsip_surat_masuk"
+                            @if ($ArsipSuratKeluar->count() > 0)
+                                <table id="arsip_surat_keluar"
                                     class="table table-hover table-bordered table-striped dt-responsive nowrap"
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
@@ -54,7 +55,7 @@
                                             <th>No. Surat</th>
                                             <th>Nama Surat</th>
                                             <th>Tanggal Surat</th>
-                                            <th>Asal Surat</th>
+                                            <th>Tujuan Surat</th>
                                             <th>Bidang</th>
                                             <th>Kategori</th>
                                             <th>No Berkas</th>
@@ -64,22 +65,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($arsipSuratMasuk as $index => $arsip)
+                                        @foreach ($ArsipSuratKeluar as $index => $arsip)
                                             <tr>
-                                                <td>{{ $arsipSuratMasuk->firstItem() + $index }}</td>
-                                                <td>{{ $arsip->no_surat_masuk }}</td>
-                                                <td>{{ $arsip->nama_surat_masuk }}</td>
-                                                <td>{{ $arsip->tanggal_surat_masuk }}</td>
-                                                <td>{{ $arsip->asal_surat_masuk }}</td>
+                                                <td>{{ $ArsipSuratKeluar->firstItem() + $index }}</td>
+                                                <td>{{ $arsip->no_surat_keluar }}</td>
+                                                <td>{{ $arsip->nama_surat_keluar }}</td>
+                                                <td>{{ $arsip->tanggal_surat_keluar }}</td>
+                                                <td>{{ $arsip->tujuan_surat_keluar }}</td>
                                                 <td>{{ $arsip->bidang ? $arsip->bidang->nama_bidang : 'Tidak ada bidang' }}
                                                 </td>
                                                 <td>{{ $arsip->kategori ? $arsip->kategori->nama_kategori : 'Tidak ada kategori' }}
                                                 </td>
-                                                <td>{{ $arsip->no_berkas_surat_masuk }}</td>
-                                                <td>{{ $arsip->urutan_surat_masuk }}</td>
-                                                <td>{{ $arsip->lokasi_surat_masuk }}</td>
+                                                <td>{{ $arsip->no_berkas_surat_keluar }}</td>
+                                                <td>{{ $arsip->urutan_surat_keluar }}</td>
+                                                <td>{{ $arsip->lokasi_surat_keluar }}</td>
                                                 <td>
-                                                    <a href="{{ route('arsip_masuk.show', $arsip->surat_masuk_id) }}"
+                                                    <a href="{{ route('arsip_keluar.show', $arsip->surat_keluar_id) }}"
                                                         class="btn btn-info btn-sm">Detail</a>
                                                 </td>
                                             </tr>
@@ -92,26 +93,26 @@
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination">
                                             <!-- Previous Page Link -->
-                                            @if ($arsipSuratMasuk->onFirstPage())
+                                            @if ($ArsipSuratKeluar->onFirstPage())
                                                 <li class="page-item disabled"><span class="page-link">Previous</span></li>
                                             @else
                                                 <li class="page-item"><a class="page-link"
-                                                        href="{{ $arsipSuratMasuk->previousPageUrl() }}">Previous</a></li>
+                                                        href="{{ $ArsipSuratKeluar->previousPageUrl() }}">Previous</a></li>
                                             @endif
 
                                             <!-- Page Number Links -->
-                                            @foreach ($arsipSuratMasuk->getUrlRange(1, $arsipSuratMasuk->lastPage()) as $page => $url)
+                                            @foreach ($ArsipSuratKeluar->getUrlRange(1, $ArsipSuratKeluar->lastPage()) as $page => $url)
                                                 <li
-                                                    class="page-item {{ $page == $arsipSuratMasuk->currentPage() ? 'active' : '' }}">
+                                                    class="page-item {{ $page == $ArsipSuratKeluar->currentPage() ? 'active' : '' }}">
                                                     <a class="page-link"
                                                         href="{{ $url }}">{{ $page }}</a>
                                                 </li>
                                             @endforeach
 
                                             <!-- Next Page Link -->
-                                            @if ($arsipSuratMasuk->hasMorePages())
+                                            @if ($ArsipSuratKeluar->hasMorePages())
                                                 <li class="page-item"><a class="page-link"
-                                                        href="{{ $arsipSuratMasuk->nextPageUrl() }}">Next</a></li>
+                                                        href="{{ $ArsipSuratKeluar->nextPageUrl() }}">Next</a></li>
                                             @else
                                                 <li class="page-item disabled"><span class="page-link">Next</span></li>
                                             @endif
