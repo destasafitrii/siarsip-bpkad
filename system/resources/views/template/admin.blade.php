@@ -38,11 +38,11 @@
 
     
     <!-- Start topbar -->
-   @include('section.header')
+   @include('section.backend.header')
     <!-- End topbar -->
 
     <!-- ========== Left Sidebar Start ========== -->
-    @include('section.sidebar')
+    @include('section.backend.sidebar')
     <!-- Left Sidebar End -->
 
 
@@ -56,7 +56,7 @@
 
         <!-- End Page-content -->
 
-        @include('section.footer')
+        @include('section.backend.footer')
 
     </div>
     <!-- end main content-->

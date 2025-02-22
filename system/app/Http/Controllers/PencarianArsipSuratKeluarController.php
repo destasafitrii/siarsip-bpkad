@@ -67,7 +67,7 @@ class PencarianArsipSuratKeluarController extends Controller
         // Ambil data dengan pagination
         $ArsipSuratKeluar = $query->paginate(10);
 
-        return view('content.arsip_keluar.pencarian_arsip_keluar', compact('ArsipSuratKeluar', 'bidangs', 'kategoris'));
+        return view('backend.arsip_keluar.pencarian_arsip_keluar', compact('ArsipSuratKeluar', 'bidangs', 'kategoris'));
     }
 
 

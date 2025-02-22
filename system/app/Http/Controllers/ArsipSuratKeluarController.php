@@ -14,7 +14,7 @@ class ArsipSuratKeluarController extends Controller
     {
         // Menambahkan eager loading dengan relasi bidang dan kategori
         $list_arsip_surat_keluar = ArsipSuratKeluar::with(['bidang', 'kategori'])->paginate(10);
-        return view('content.arsip_keluar.index', compact('list_arsip_surat_keluar'));
+        return view('backend.arsip_keluar.index', compact('list_arsip_surat_keluar'));
     }
 
     public function create()
@@ -22,7 +22,7 @@ class ArsipSuratKeluarController extends Controller
         // Mendapatkan semua bidang dan kategori untuk form create
         $list_bidang = Bidang::all();
         $list_kategori = Kategori::all();
-        return view('content.arsip_keluar.create', compact('list_bidang', 'list_kategori'));
+        return view('backend.arsip_keluar.create', compact('list_bidang', 'list_kategori'));
     }
 
     public function store(Request $request)
@@ -33,7 +33,7 @@ class ArsipSuratKeluarController extends Controller
             'nama_surat_keluar' => 'required',
             'tanggal_surat_keluar' => 'required|date',
             'bidang_id' => 'required|exists:bidang,bidang_id',
-            'kategori_id' => 'required|exists:kategori,kategori_id',
+            'kategori_id' => 'nullable|exists:kategori,kategori_id',
             'tujuan_surat_keluar' => 'required',
             'no_berkas_surat_keluar' => 'required',
             'urutan_surat_keluar' => 'required',
@@ -44,7 +44,7 @@ class ArsipSuratKeluarController extends Controller
 
         // Menyimpan file jika ada
         if ($request->hasFile('file_surat_keluar')) {
-            $validatedData['file_surat_keluar'] = $request->file('file_surat_keluar')->store('uploads/surat_keluar');
+            $validatedData['file_surat_keluar'] = $request->file('file_surat_keluar')->store('uploads/surat_keluar', 'public');
         }
 
         // Membuat arsip surat keluar baru berdasarkan input yang sudah divalidasi
@@ -58,7 +58,7 @@ class ArsipSuratKeluarController extends Controller
     {
         // Menampilkan arsip surat keluar berdasarkan ID dan memuat relasi bidang dan kategori
         $arsip_surat_keluar = ArsipSuratKeluar::with(['bidang', 'kategori'])->findOrFail($id);
-        return view('content.arsip_keluar.show', compact('arsip_surat_keluar'));
+        return view('backend.arsip_keluar.show', compact('arsip_surat_keluar'));
     }
 
     // Controller untuk mengedit arsip surat keluar
@@ -73,7 +73,7 @@ class ArsipSuratKeluarController extends Controller
         // Memuat kategori berdasarkan bidang yang sedang dipilih
         $list_kategori = Kategori::where('bidang_id', $arsip_surat_keluar->bidang_id)->get();
 
-        return view('content.arsip_keluar.edit', compact('arsip_surat_keluar', 'list_bidang', 'list_kategori'));
+        return view('backend.arsip_keluar.edit', compact('arsip_surat_keluar', 'list_bidang', 'list_kategori'));
     }
 
     public function update(Request $request, $id)
@@ -84,7 +84,7 @@ class ArsipSuratKeluarController extends Controller
             'nama_surat_keluar' => 'required',
             'tanggal_surat_keluar' => 'required|date',
             'bidang_id' => 'required|exists:bidang,bidang_id',
-            'kategori_id' => 'required|exists:kategori,kategori_id',
+            'kategori_id' => 'nullable|exists:kategori,kategori_id',
             'tujuan_surat_keluar' => 'required',
             'no_berkas_surat_keluar' => 'required',
             'urutan_surat_keluar' => 'required',

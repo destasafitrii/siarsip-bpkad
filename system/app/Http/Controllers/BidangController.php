@@ -11,7 +11,7 @@ class BidangController extends Controller
     {
         // Mengambil semua data bidang untuk ditampilkan di halaman
         $bidang = Bidang::all();
-        return view('content.bidang.index', compact('bidang'));
+        return view('backend.bidang.index', compact('bidang'));
     }
 
     public function store(Request $request)

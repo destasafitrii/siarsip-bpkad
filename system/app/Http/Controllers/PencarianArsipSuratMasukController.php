@@ -66,7 +66,7 @@ class PencarianArsipSuratMasukController extends Controller
         // Ambil data dengan pagination
         $arsipSuratMasuk = $query->paginate(10);
 
-        return view('content.arsip_masuk.pencarian_arsip_masuk', compact('arsipSuratMasuk', 'bidangs', 'kategoris'));
+        return view('backend.arsip_masuk.pencarian_arsip_masuk', compact('arsipSuratMasuk', 'bidangs', 'kategoris'));
     }
 
     /**

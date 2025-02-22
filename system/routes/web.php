@@ -8,8 +8,10 @@ use App\Http\Controllers\BidangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PencarianArsipSuratMasukController;
 use App\Http\Controllers\PencarianArsipSuratKeluarController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PencarianController;
 Route::get('dashboard', function () {
-    return view('content.index');
+    return view('backend.index');
 });
 
 
@@ -72,5 +74,21 @@ Route::controller(PencarianArsipSuratKeluarController::class)->group(function ()
     Route::get('pencarian-arsip-keluar', 'index')->name('pencarian-arsip-keluar');
     Route::get('/kategoris/bidang/{bidang_id}', 'getKategorisByBidang');
 });
+
+Route::get('/', function () {
+    return view('frontend.pencarian');
+});
+
+Route::get('hasil-pencarian', function () {
+    return view('frontend.hasil-pencarian');
+});
+
+Route::get('detail-pencarian', function () {
+    return view('frontend.detail-pencarian');
+});
+
+Route::get('hasil-pencarian', [PencarianController::class, 'search'])->name('hasil-pencarian');
+
+
 
 

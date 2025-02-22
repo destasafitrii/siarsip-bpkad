@@ -14,7 +14,7 @@ class ArsipSuratMasukController extends Controller
     {
         // Menambahkan eager loading dengan relasi bidang dan kategori
         $list_arsip_surat_masuk = ArsipSuratMasuk::with(['bidang', 'kategori'])->paginate(10);
-        return view('content.arsip_masuk.index', compact('list_arsip_surat_masuk'));
+        return view('backend.arsip_masuk.index', compact('list_arsip_surat_masuk'));
     }
 
     public function create()
@@ -22,7 +22,7 @@ class ArsipSuratMasukController extends Controller
         // Mendapatkan semua bidang dan kategori untuk form create
         $list_bidang = Bidang::all();
         $list_kategori = Kategori::all();
-        return view('content.arsip_masuk.create', compact('list_bidang', 'list_kategori'));
+        return view('backend.arsip_masuk.create', compact('list_bidang', 'list_kategori'));
     }
 
     public function store(Request $request)
@@ -33,7 +33,7 @@ class ArsipSuratMasukController extends Controller
             'nama_surat_masuk' => 'required',
             'tanggal_surat_masuk' => 'required|date',
             'bidang_id' => 'required|exists:bidang,bidang_id',
-            'kategori_id' => 'required|exists:kategori,kategori_id',
+            'kategori_id' => 'nullable|exists:kategori,kategori_id',
             'asal_surat_masuk' => 'required',
             'no_berkas_surat_masuk' => 'required',
             'urutan_surat_masuk' => 'required',
@@ -58,7 +58,7 @@ class ArsipSuratMasukController extends Controller
     {
         // Menampilkan arsip surat masuk berdasarkan ID dan memuat relasi bidang dan kategori
         $arsip_surat_masuk = ArsipSuratMasuk::with(['bidang', 'kategori'])->findOrFail($id);
-        return view('content.arsip_masuk.show', compact('arsip_surat_masuk'));
+        return view('backend.arsip_masuk.show', compact('arsip_surat_masuk'));
     }
 
     // Controller untuk mengedit arsip surat masuk
@@ -73,7 +73,7 @@ class ArsipSuratMasukController extends Controller
         // Memuat kategori berdasarkan bidang yang sedang dipilih
         $list_kategori = Kategori::where('bidang_id', $arsip_surat_masuk->bidang_id)->get();
 
-        return view('content.arsip_masuk.edit', compact('arsip_surat_masuk', 'list_bidang', 'list_kategori'));
+        return view('backend.arsip_masuk.edit', compact('arsip_surat_masuk', 'list_bidang', 'list_kategori'));
     }
 
     public function update(Request $request, $id)
@@ -84,7 +84,7 @@ class ArsipSuratMasukController extends Controller
             'nama_surat_masuk' => 'required',
             'tanggal_surat_masuk' => 'required|date',
             'bidang_id' => 'required|exists:bidang,bidang_id',
-            'kategori_id' => 'required|exists:kategori,kategori_id',
+            'kategori_id' => 'nullable|exists:kategori,kategori_id',
             'asal_surat_masuk' => 'required',
             'no_berkas_surat_masuk' => 'required',
             'urutan_surat_masuk' => 'required',

@@ -68,7 +68,7 @@ class PencarianArsipController extends Controller
     $paginatedResults = new LengthAwarePaginator($currentResults, $arsip_combined->count(), $perPage, $currentPage);
 
     // Kirim data ke view
-    return view('content.pencarian_arsip.index', [
+    return view('backend.pencarian_arsip.index', [
         'list_bidang' => $list_bidang,
         'paginatedResults' => $paginatedResults,
         'arsip_surat_masuk' => $arsip_surat_masuk,  // Pastikan variabel ini ada

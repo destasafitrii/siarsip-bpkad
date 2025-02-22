@@ -12,7 +12,7 @@ class KategoriController extends Controller
     {
         $kategori = Kategori::with('bidang')->get(); // Ambil relasi bidang
         $bidang = Bidang::all(); // Ambil semua bidang
-        return view('content.kategori.index', compact('kategori', 'bidang'));
+        return view('backend.kategori.index', compact('kategori', 'bidang'));
     }
 
 
@@ -32,7 +32,7 @@ class KategoriController extends Controller
         // Mengembalikan view dengan data kategori dan bidang
         $kategori = Kategori::with('bidang')->get(); // Ambil relasi bidang
         $bidang = Bidang::all(); // Ambil semua bidang
-        return view('content.kategori.index', compact('kategori', 'bidang'))->with('success', 'Kategori berhasil ditambahkan.');
+        return view('backend.kategori.index', compact('kategori', 'bidang'))->with('success', 'Kategori berhasil ditambahkan.');
     }
 
     public function update(Request $request, $id)
@@ -63,7 +63,7 @@ class KategoriController extends Controller
         $bidang = Bidang::all(); // Ambil semua bidang
 
         // Kembalikan ke halaman kategori dengan pesan sukses
-        return view('content.kategori.index', compact('kategori', 'bidang'))->with('success', 'Kategori berhasil diperbarui.');
+        return view('backend.kategori.index', compact('kategori', 'bidang'))->with('success', 'Kategori berhasil diperbarui.');
     }
     
     public function destroy(Kategori $kategori)
@@ -73,6 +73,6 @@ class KategoriController extends Controller
         // Mengembalikan view dengan data kategori dan bidang
         $kategori = Kategori::with('bidang')->get(); // Ambil relasi bidang
         $bidang = Bidang::all(); // Ambil semua bidang
-        return view('content.kategori.index', compact('kategori', 'bidang'))->with('success', 'Kategori berhasil dihapus.');
+        return view('backend.kategori.index', compact('kategori', 'bidang'))->with('success', 'Kategori berhasil dihapus.');
     }
 }
