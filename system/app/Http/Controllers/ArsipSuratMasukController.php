@@ -44,7 +44,7 @@ class ArsipSuratMasukController extends Controller
 
         // Menyimpan file jika ada
         if ($request->hasFile('file_surat_masuk')) {
-            $validatedData['file_surat_masuk'] = $request->file('file_surat_masuk')->store('uploads/surat_masuk');
+            $validatedData['file_surat_masuk'] = $request->file('file_surat_masuk')->store('uploads/surat_masuk', 'public');
         }
 
         // Membuat arsip surat masuk baru berdasarkan input yang sudah divalidasi

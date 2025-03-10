@@ -29,7 +29,6 @@
                   <tr>
                     <th>No</th>
                     <th>Nama Bidang</th>
-                    <th>Dibuat Pada</th>
                     <th>Aksi</th>
                   </tr>
                 </thead>
@@ -38,7 +37,6 @@
                   <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $b->nama_bidang }}</td>
-                    <td>{{ $b->created_at }}</td>
                     <td>
                       <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editBidangModal{{ $b->bidang_id }}">Edit</button>
 

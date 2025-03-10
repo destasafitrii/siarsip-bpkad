@@ -24,79 +24,90 @@
                                         </ul>
                                     </div>
                                 @endif
+                                <div class="row">
+                                    <!-- Kolom Kiri -->
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="no_surat_keluar" class="form-label">Nomor Surat</label>
+                                            <input type="text" class="form-control" id="no_surat_keluar"
+                                                name="no_surat_keluar" placeholder="Masukkan nomor surat" required
+                                                value="{{ old('no_surat_keluar') }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="nama_surat_keluar" class="form-label">Nama Surat</label>
+                                            <input type="text" class="form-control" id="nama_surat_keluar"
+                                                name="nama_surat_keluar" placeholder="Masukkan nama surat" required
+                                                value="{{ old('nama_surat_keluar') }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="tanggal_surat_keluar" class="form-label">Tanggal</label>
+                                            <input type="date" class="form-control" id="tanggal_surat_keluar"
+                                                name="tanggal_surat_keluar" required
+                                                value="{{ old('tanggal_surat_keluar') }}">
+                                        </div>
+                                        <!-- Formulir Pilih Bidang -->
+                                        <div class="mb-3">
+                                            <label for="bidang_id" class="form-label">Bidang</label>
+                                            <select name="bidang_id" id="bidang_id" class="form-control" required>
+                                                <option value="">-- Pilih Bidang --</option>
+                                                @foreach ($list_bidang as $bidang)
+                                                    <option value="{{ $bidang->bidang_id }}"
+                                                        {{ old('bidang_id') == $bidang->bidang_id ? 'selected' : '' }}>
+                                                        {{ $bidang->nama_bidang }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
 
-                                <div class="mb-3">
-                                    <label for="no_surat_keluar" class="form-label">Nomor Surat</label>
-                                    <input type="text" class="form-control" id="no_surat_keluar" name="no_surat_keluar"
-                                        placeholder="Masukkan nomor surat" required value="{{ old('no_surat_keluar') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="nama_surat_keluar" class="form-label">Nama Surat</label>
-                                    <input type="text" class="form-control" id="nama_surat_keluar"
-                                        name="nama_surat_keluar" placeholder="Masukkan nama surat" required
-                                        value="{{ old('nama_surat_keluar') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="tanggal_surat_keluar" class="form-label">Tanggal</label>
-                                    <input type="date" class="form-control" id="tanggal_surat_keluar"
-                                        name="tanggal_surat_keluar" required value="{{ old('tanggal_surat_keluar') }}">
-                                </div>
-                                <!-- Formulir Pilih Bidang -->
-                                <div class="mb-3">
-                                    <label for="bidang_id" class="form-label">Bidang</label>
-                                    <select name="bidang_id" id="bidang_id" class="form-control" required>
-                                        <option value="">-- Pilih Bidang --</option>
-                                        @foreach ($list_bidang as $bidang)
-                                            <option value="{{ $bidang->bidang_id }}"
-                                                {{ old('bidang_id') == $bidang->bidang_id ? 'selected' : '' }}>
-                                                {{ $bidang->nama_bidang }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                        <!-- Formulir Pilih Kategori -->
+                                        <div class="mb-3">
+                                            <label for="kategori_id" class="form-label">Kategori</label>
+                                            <select name="kategori_id" id="kategori_id" class="form-control">
+                                                <option value="">-- Pilih Kategori (Opsional) --</option>
+                                            </select>
+                                        </div>
 
-                                <!-- Formulir Pilih Kategori -->
-                                <div class="mb-3">
-                                    <label for="kategori_id" class="form-label">Kategori</label>
-                                    <select name="kategori_id" id="kategori_id" class="form-control">
-                                        <option value="">-- Pilih Kategori (Opsional) --</option>
-                                    </select>
-                                </div>
+                                        <div class="mb-3">
+                                            <label for="tujuan_surat_keluar" class="form-label">Tujuan Surat</label>
+                                            <input type="text" class="form-control" id="tujuan_surat_keluar"
+                                                name="tujuan_surat_keluar" placeholder="Masukkan tujuan surat" required
+                                                value="{{ old('tujuan_surat_keluar') }}">
+                                        </div>
+                                    </div>
 
-                                <div class="mb-3">
-                                    <label for="tujuan_surat_keluar" class="form-label">Tujuan Surat</label>
-                                    <input type="text" class="form-control" id="tujuan_surat_keluar"
-                                        name="tujuan_surat_keluar" placeholder="Masukkan tujuan surat" required
-                                        value="{{ old('tujuan_surat_keluar') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="no_berkas_surat_keluar" class="form-label">No Berkas</label>
-                                    <input type="text" class="form-control" id="no_berkas_surat_keluar"
-                                        name="no_berkas_surat_keluar" placeholder="Masukkan No Berkas" required
-                                        value="{{ old('no_berkas_surat_keluar') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="urutan_surat_keluar" class="form-label">Urutan</label>
-                                    <input type="text" class="form-control" id="urutan_surat_keluar"
-                                        name="urutan_surat_keluar" placeholder="Masukkan lokasi" required
-                                        value="{{ old('urutan_surat_keluar') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="lokasi_surat_keluar" class="form-label">Lokasi</label>
-                                    <input type="text" class="form-control" id="lokasi_surat_keluar"
-                                        name="lokasi_surat_keluar" placeholder="Masukkan lokasi" required
-                                        value="{{ old('lokasi_surat_keluar') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="keterangan_surat_keluar" class="form-label">Keterangan</label>
-                                    <input type="text" class="form-control" id="keterangan_surat_keluar"
-                                        name="keterangan_surat_keluar" placeholder="Masukkan keterangan" required
-                                        value="{{ old('keterangan_surat_keluar') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="file_surat_keluar" class="form-label">Unggah File</label>
-                                    <input type="file" class="form-control" id="file_surat_keluar"
-                                        name="file_surat_keluar">
+                                    <!-- Kolom Kanan -->
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="no_berkas_surat_keluar" class="form-label">No Berkas</label>
+                                            <input type="text" class="form-control" id="no_berkas_surat_keluar"
+                                                name="no_berkas_surat_keluar" placeholder="Masukkan No Berkas" required
+                                                value="{{ old('no_berkas_surat_keluar') }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="urutan_surat_keluar" class="form-label">Urutan</label>
+                                            <input type="text" class="form-control" id="urutan_surat_keluar"
+                                                name="urutan_surat_keluar" placeholder="Masukkan urutan penyimpanan" required
+                                                value="{{ old('urutan_surat_keluar') }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="lokasi_surat_keluar" class="form-label">Lokasi</label>
+                                            <input type="text" class="form-control" id="lokasi_surat_keluar"
+                                                name="lokasi_surat_keluar" placeholder="Masukkan lokasi (rak/lemari)"
+                                                required value="{{ old('lokasi_surat_keluar') }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="keterangan_surat_keluar" class="form-label">Keterangan</label>
+                                            <input type="text" class="form-control" id="keterangan_surat_keluar"
+                                                name="keterangan_surat_keluar" placeholder="Masukkan keterangan"
+                                                required value="{{ old('keterangan_surat_keluar') }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="file_surat_keluar" class="form-label">Unggah File</label>
+                                            <input type="file" class="form-control" id="file_surat_keluar"
+                                                name="file_surat_keluar" accept=".pdf,.">
+                                            <small class="text-muted">Maksimal ukuran file 1MB. Format yang diperbolehkan: PDF.</small>
+                                        </div>
+                                    
                                 </div>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                             </form>
@@ -120,30 +131,25 @@
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
-                            $('#kategori_id').empty(); // Kosongkan jenis arsip sebelumnya
-                            $('#kategori_id').append(
-                                '<option value="">-- Pilih Jenis Arsip --</option>');
+                            $('#kategori_id').empty();
+                            $('#kategori_id').append('<option value="">-- Pilih Kategori --</option>');
 
                             if (data.length > 0) {
                                 $.each(data, function(key, value) {
-                                    $('#kategori_id').append('<option value="' + value
-                                        .kategori_id + '">' + value.nama_kategori +
-                                        '</option>');
+                                    $('#kategori_id').append('<option value="' + value.kategori_id + '">' + value.nama_kategori + '</option>');
                                 });
                             } else {
-                                $('#kategori_id').append(
-                                    '<option value="">Kategori tidak ditemukan</option>');
+                                $('#kategori_id').append('<option value="">Kategori tidak ditemukan</option>');
                             }
                         },
                         error: function(xhr, status, error) {
-                            console.error('Terjadi kesalahan: ' +
-                            error); // Debugging di console
-                            alert('Terjadi kesalahan: ' + error); // Menampilkan error di alert
+                            console.error('Terjadi kesalahan: ' + error);
+                            alert('Terjadi kesalahan: ' + error);
                         }
                     });
                 } else {
                     $('#kategori_id').empty();
-                    $('#kategori_id').append('<option value="">-- Pilih Jenis Arsip --</option>');
+                    $('#kategori_id').append('<option value="">-- Pilih Kategori --</option>');
                 }
             });
         });

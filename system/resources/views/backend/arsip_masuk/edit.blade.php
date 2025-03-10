@@ -37,98 +37,98 @@
                                         </ul>
                                     </div>
                                 @endif
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="no_surat_masuk" class="form-label">Nomor Surat</label>
+                                            <input type="text" class="form-control" id="no_surat_masuk"
+                                                name="no_surat_masuk" placeholder="Masukkan nomor surat" required
+                                                value="{{ old('no_surat_masuk', $arsip_surat_masuk->no_surat_masuk ?? '') }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="nama_surat_masuk" class="form-label">Nama Surat</label>
+                                            <input type="text" class="form-control" id="nama_surat_masuk"
+                                                name="nama_surat_masuk" placeholder="Masukkan nama surat" required
+                                                value="{{ old('nama_surat_masuk', $arsip_surat_masuk->nama_surat_masuk ?? '') }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="tanggal_surat_masuk" class="form-label">Tanggal</label>
+                                            <input type="date" class="form-control" id="tanggal_surat_masuk"
+                                                name="tanggal_surat_masuk" required
+                                                value="{{ old('tanggal_surat_masuk', $arsip_surat_masuk->tanggal_surat_masuk ?? '') }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="bidang_id" class="form-label">Bidang</label>
+                                            <select name="bidang_id" id="bidang_id" class="form-control" required>
+                                                <option value="">-- Pilih Bidang --</option>
+                                                @foreach ($list_bidang as $bidang)
+                                                    <option value="{{ $bidang->bidang_id }}"
+                                                        {{ old('bidang_id', $arsip_surat_masuk->bidang_id) == $bidang->bidang_id ? 'selected' : '' }}>
+                                                        {{ $bidang->nama_bidang }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="kategori_id" class="form-label">Kategori</label>
+                                            <select name="kategori_id" id="kategori_id" class="form-control" required>
+                                                <option value="">-- Pilih Kategori --</option>
+                                                @foreach ($list_kategori as $kategori)
+                                                    <option value="{{ $kategori->kategori_id }}"
+                                                        {{ old('kategori_id', $arsip_surat_masuk->kategori_id) == $kategori->kategori_id ? 'selected' : '' }}>
+                                                        {{ $kategori->nama_kategori }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="asal_surat_masuk" class="form-label">Asal</label>
+                                            <input type="text" class="form-control" id="asal_surat_masuk"
+                                                name="asal_surat_masuk" placeholder="Masukkan asal" required
+                                                value="{{ old('asal_surat_masuk', $arsip_surat_masuk->asal_surat_masuk ?? '') }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="no_berkas_surat_masuk" class="form-label">No Berkas</label>
+                                            <input type="text" class="form-control" id="no_berkas_surat_masuk"
+                                                name="no_berkas_surat_masuk" placeholder="Masukkan No Berkas" required
+                                                value="{{ old('no_berkas_surat_masuk', $arsip_surat_masuk->no_berkas_surat_masuk ?? '') }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="urutan_surat_masuk" class="form-label">Urutan</label>
+                                            <input type="text" class="form-control" id="urutan_surat_masuk"
+                                                name="urutan_surat_masuk" placeholder="Masukkan lokasi" required
+                                                value="{{ old('urutan_surat_masuk', $arsip_surat_masuk->urutan_surat_masuk ?? '') }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="lokasi_surat_masuk" class="form-label">Lokasi</label>
+                                            <input type="text" class="form-control" id="lokasi_surat_masuk"
+                                                name="lokasi_surat_masuk" placeholder="Masukkan lokasi" required
+                                                value="{{ old('lokasi_surat_masuk', $arsip_surat_masuk->lokasi_surat_masuk ?? '') }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="keterangan" class="form-label">Keterangan</label>
+                                            <input type="text" class="form-control" id="keterangan" name="keterangan"
+                                                placeholder="Masukkan keterangan" required
+                                                value="{{ old('keterangan', $arsip_surat_masuk->keterangan ?? '') }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="file_surat_masuk" class="form-label">Unggah File</label>
+                                            <input type="file" class="form-control" id="file_surat_masuk"
+                                                name="file_surat_masuk" accept=".pdf,.">
+                                            <small class="text-muted">Maksimal ukuran file 1MB. Format yang diperbolehkan:
+                                                PDF.</small>
+                                        </div>
 
-                                <div class="mb-3">
-                                    <label for="no_surat_masuk" class="form-label">Nomor Surat</label>
-                                    <input type="text" class="form-control" id="no_surat_masuk" name="no_surat_masuk"
-                                        placeholder="Masukkan nomor surat" required
-                                        value="{{ old('no_surat_masuk', $arsip_surat_masuk->no_surat_masuk ?? '') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="nama_surat_masuk" class="form-label">Nama Surat</label>
-                                    <input type="text" class="form-control" id="nama_surat_masuk" name="nama_surat_masuk"
-                                        placeholder="Masukkan nama surat" required
-                                        value="{{ old('nama_surat_masuk', $arsip_surat_masuk->nama_surat_masuk ?? '') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="tanggal_surat_masuk" class="form-label">Tanggal</label>
-                                    <input type="date" class="form-control" id="tanggal_surat_masuk"
-                                        name="tanggal_surat_masuk" required
-                                        value="{{ old('tanggal_surat_masuk', $arsip_surat_masuk->tanggal_surat_masuk ?? '') }}">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="bidang_id" class="form-label">Bidang</label>
-                                    <select name="bidang_id" id="bidang_id" class="form-control" required>
-                                        <option value="">-- Pilih Bidang --</option>
-                                        @foreach ($list_bidang as $bidang)
-                                            <option value="{{ $bidang->bidang_id }}"
-                                                {{ old('bidang_id', $arsip_surat_masuk->bidang_id) == $bidang->bidang_id ? 'selected' : '' }}>
-                                                {{ $bidang->nama_bidang }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-
-                                <div class="mb-3">
-                                    <label for="kategori_id" class="form-label">Kategori</label>
-                                    <select name="kategori_id" id="kategori_id" class="form-control" required>
-                                        <option value="">-- Pilih Kategori --</option>
-                                        @foreach ($list_kategori as $kategori)
-                                            <option value="{{ $kategori->kategori_id }}"
-                                                {{ old('kategori_id', $arsip_surat_masuk->kategori_id) == $kategori->kategori_id ? 'selected' : '' }}>
-                                                {{ $kategori->nama_kategori }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-
-
-                                <div class="mb-3">
-                                    <label for="asal_surat_masuk" class="form-label">Asal</label>
-                                    <input type="text" class="form-control" id="asal_surat_masuk" name="asal_surat_masuk"
-                                        placeholder="Masukkan asal" required
-                                        value="{{ old('asal_surat_masuk', $arsip_surat_masuk->asal_surat_masuk ?? '') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="no_berkas_surat_masuk" class="form-label">No Berkas</label>
-                                    <input type="text" class="form-control" id="no_berkas_surat_masuk"
-                                        name="no_berkas_surat_masuk" placeholder="Masukkan No Berkas" required
-                                        value="{{ old('no_berkas_surat_masuk', $arsip_surat_masuk->no_berkas_surat_masuk ?? '') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="urutan_surat_masuk" class="form-label">Urutan</label>
-                                    <input type="text" class="form-control" id="urutan_surat_masuk"
-                                        name="urutan_surat_masuk" placeholder="Masukkan lokasi" required
-                                        value="{{ old('urutan_surat_masuk', $arsip_surat_masuk->urutan_surat_masuk ?? '') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="lokasi_surat_masuk" class="form-label">Lokasi</label>
-                                    <input type="text" class="form-control" id="lokasi_surat_masuk"
-                                        name="lokasi_surat_masuk" placeholder="Masukkan lokasi" required
-                                        value="{{ old('lokasi_surat_masuk', $arsip_surat_masuk->lokasi_surat_masuk ?? '') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="keterangan" class="form-label">Keterangan</label>
-                                    <input type="text" class="form-control" id="keterangan"
-                                        name="keterangan" placeholder="Masukkan keterangan" required
-                                        value="{{ old('keterangan', $arsip_surat_masuk->keterangan ?? '') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="file_surat_masuk" class="form-label">Unggah File</label>
-                                    <input type="file" class="form-control" id="file_surat_masuk"
-                                        name="file_surat_masuk">
-                                </div>
-
-                                <button type="submit" class="btn btn-primary">
-                                    @isset($arsip_surat_masuk)
-                                        Simpan Perubahan
-                                    @else
-                                        Simpan
-                                    @endisset
-                                </button>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">
+                                        @isset($arsip_surat_masuk)
+                                            Simpan Perubahan
+                                        @else
+                                            Simpan
+                                        @endisset
+                                    </button>
                             </form>
                         </div>
                     </div>
@@ -162,7 +162,7 @@
                             } else {
                                 $('#kategori_id').append(
                                     '<option value="">Tidak ada kategori untuk bidang ini</option>'
-                                    );
+                                );
                             }
                         },
                         error: function(xhr) {

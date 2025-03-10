@@ -24,7 +24,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav menu ml-auto">
             <li class="nav-item dropdown submenu active">
-              <a href="index.html" class="nav-link dropdown-toggle">Beranda</a>
+              <a href="pencarian" class="nav-link dropdown-toggle">Beranda</a>
               <i class="arrow_carrot-down_alt2 mobile_dropdown_icon" aria-hidden="false" data-toggle="dropdown"></i>
               {{-- <ul class="dropdown-menu">
                 <li class="nav-item"><a href="index.html" class="nav-link">Creative Helpdesk</a></li>

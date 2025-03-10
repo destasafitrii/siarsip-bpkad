@@ -9,7 +9,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PencarianArsipSuratMasukController;
 use App\Http\Controllers\PencarianArsipSuratKeluarController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PencarianController;
+use App\Http\Controllers\frontend\PencarianController;
 Route::get('dashboard', function () {
     return view('backend.index');
 });
@@ -41,7 +41,7 @@ Route::controller(ArsipSuratKeluarController::class)->group(function () {
 });
 
 
-Route::get('/pencarian_arsip', [PencarianArsipController::class, 'index'])->name('pencarian_arsip.index');
+
 
 Route::controller(BidangController::class)->group(function () {
     Route::get('bidang', 'index')->name('bidang.index');
@@ -75,20 +75,11 @@ Route::controller(PencarianArsipSuratKeluarController::class)->group(function ()
     Route::get('/kategoris/bidang/{bidang_id}', 'getKategorisByBidang');
 });
 
-Route::get('/', function () {
-    return view('frontend.pencarian');
-});
-
-Route::get('hasil-pencarian', function () {
-    return view('frontend.hasil-pencarian');
-});
-
-Route::get('detail-pencarian', function () {
-    return view('frontend.detail-pencarian');
-});
-
-Route::get('hasil-pencarian', [PencarianController::class, 'search'])->name('hasil-pencarian');
 
 
+Route::get('/', [PencarianController::class, 'index'])->name('pencarian');
+Route::get('/hasil-pencarian', [PencarianController::class, 'search'])->name('hasil-pencarian');
+Route::get('/arsip-masuk/{id}', [PencarianController::class, 'showMasuk'])->name('arsip.masuk.show');
+Route::get('/arsip-keluar/{id}', [PencarianController::class, 'showKeluar'])->name('arsip.keluar.show');
 
 

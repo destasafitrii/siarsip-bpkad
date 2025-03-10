@@ -26,6 +26,7 @@ class ArsipSuratMasuk extends Model
         'no_berkas_surat_masuk',
         'urutan_surat_masuk',
         'lokasi_surat_masuk',
+        'file_surat_masuk',
         'keterangan',
     ];
 
