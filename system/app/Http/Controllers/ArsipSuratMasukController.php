@@ -7,14 +7,62 @@ use App\Models\ArsipSuratMasuk;
 use App\Models\Bidang;
 use App\Models\Kategori;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\Facades\DataTables;
 
 class ArsipSuratMasukController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Menambahkan eager loading dengan relasi bidang dan kategori
-        $list_arsip_surat_masuk = ArsipSuratMasuk::with(['bidang', 'kategori'])->paginate(10);
-        return view('backend.arsip_masuk.index', compact('list_arsip_surat_masuk'));
+        if ($request->ajax()) {
+            $data = ArsipSuratMasuk::with(['bidang', 'kategori'])
+                ->select('arsip_surat_masuk.*');
+
+            // Filter berdasarkan bidang
+            if ($request->has('bidang_id') && $request->bidang_id != '') {
+                $data->where('bidang_id', $request->bidang_id);
+            }
+
+            // Filter berdasarkan kategori
+            if ($request->has('kategori_id') && $request->kategori_id != '') {
+                $data->where('kategori_id', $request->kategori_id);
+            }
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $btn = '<a href="'.route('arsip_masuk.show', $row->surat_masuk_id).'" class="btn btn-info btn-sm" title="Detail">
+                                <i class="fas fa-eye" style="font-size: 10px"></i>
+                            </a>
+                            <a href="'.route('arsip_masuk.edit', $row->surat_masuk_id).'" class="btn btn-warning btn-sm" title="Edit">
+                                <i class="fas fa-edit" style="font-size: 10px"></i>
+                            </a>
+                            <form action="'.route('arsip_masuk.destroy', $row->surat_masuk_id).'" method="POST" style="display:inline-block;">
+                                '.csrf_field().'
+                                '.method_field('DELETE').'
+                                <button type="submit" class="btn btn-danger btn-sm" title="Hapus" onclick="return confirm(\'Apakah Anda yakin ingin menghapus arsip ini?\')">
+                                    <i class="fas fa-trash-alt" style="font-size: 13px"></i>
+                                </button>
+                            </form>';
+                    return $btn;
+                })
+                ->editColumn('bidang_id', function($row) {
+                    return $row->bidang ? $row->bidang->nama_bidang : 'Tidak ada bidang';
+                })
+                ->editColumn('kategori_id', function($row) {
+                    return $row->kategori ? $row->kategori->nama_kategori : 'Tidak ada kategori';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        $list_bidang = Bidang::all();
+        return view('backend.arsip_masuk.index', compact('list_bidang'));
+    }
+
+    public function getKategoriByBidang($bidang_id)
+    {
+        $list_kategori = Kategori::where('bidang_id', $bidang_id)->get(['kategori_id', 'nama_kategori']);
+        return response()->json($list_kategori);
     }
 
     public function create()
@@ -111,16 +159,4 @@ class ArsipSuratMasukController extends Controller
         return redirect()->route('arsip_masuk.index')->with('success', 'Data berhasil dihapus!');
     }
 
-    // Fungsi untuk mendapatkan kategori berdasarkan bidang yang dipilih
-    public function getKategoriByBidang($bidang_id)
-    {
-        $list_kategori = Kategori::where('bidang_id', $bidang_id)->get(['kategori_id', 'nama_kategori']);
-
-        if ($list_kategori->isEmpty()) {
-            Log::info("Tidak ada kategori ditemukan untuk bidang_id: " . $bidang_id);
-            return response()->json([], 200);
-        }
-
-        return response()->json($list_kategori, 200);
-    }
 }

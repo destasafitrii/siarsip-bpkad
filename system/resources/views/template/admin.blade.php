@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="{{url('public')}}/assets/images/logo-ktg.png" height="50">
 
      <!-- DataTables -->
-     {{-- <link href="{{url('public')}}/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" /> --}}
+     <link href="{{url('public')}}/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
 
      <!-- Responsive datatable examples -->
      <link href="{{url('public')}}/assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet" type="text/css" />
@@ -36,7 +36,7 @@
 
 <div id="layout-wrapper">
 
-    
+
     <!-- Start topbar -->
    @include('section.backend.header')
     <!-- End topbar -->
@@ -92,7 +92,11 @@
 <script src="{{url('public')}}/assets/js/pages/dashboard.init.js"></script>
 
 <!-- Datatable init js -->
-{{-- <script src="{{url('public')}}/assets/js/pages/datatables-base.init.js"></script> --}}
+<script src="{{url('public')}}/assets/js/pages/datatables-base.init.js"></script>
+<script src="{{url('public')}}/assets/js/pages/datatables-advanced.init.js"></script>
+<script src="{{url('public')}}/assets/js/pages/datatables-extension.init.js"></script>
+
+@yield('scripts')
 
 <!-- App js -->
 <script src="{{url('public')}}/assets/js/app.js"></script>

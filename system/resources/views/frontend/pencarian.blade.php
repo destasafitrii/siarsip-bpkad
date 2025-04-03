@@ -39,10 +39,16 @@
                         </div>
 
                         <div class="col-md-3">
-                            <input type="month" name="bulan_tahun" class="form-control" value="{{ request('bulan_tahun') }}">
+                            <select name="tahun" class="form-control">
+                                <option value="">Pilih Tahun</option>
+                                @for ($year = date('Y'); $year >= 2000; $year--)
+                                    <option value="{{ $year }}" {{ request('tahun') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                                @endfor
+                            </select>
                         </div>
+                        
 
-                        <div class="col-md-1 text-center">
+                        <div class="col-md-1 text-center pr-2 d-flex justify-content-center">
                             <button class="btn btn-primary" type="submit">Cari</button>
                         </div>
                     </div>

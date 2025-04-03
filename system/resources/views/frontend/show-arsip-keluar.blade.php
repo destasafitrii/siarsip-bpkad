@@ -16,7 +16,7 @@
                 <h6 class="mb-3"><strong>Nama Surat:</strong> {{ $arsip->nama_surat_keluar }}</h6>
                 <p class="mb-3"><strong>No Surat:</strong> {{ $arsip->no_surat_keluar }}</p>
                 <p class="mb-3"><strong>Bidang:</strong> {{ $arsip->bidang->nama_bidang }}</p>
-                <p class="mb-3"><strong>Kategori:</strong> {{ $arsip_surat_keluar->kategori->nama_kategori ?? 'Tidak Diketahui' }}</p>
+                <p class="mb-3"><strong>Kategori:</strong> {{ $arsip->kategori->nama_kategori ?? 'Tidak Diketahui' }}</p>
             </div>
             <div class="col-md-6">
                 <p class="mb-3"><strong>Lokasi:</strong> {{ $arsip->lokasi_surat_keluar }}</p>

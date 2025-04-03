@@ -15,6 +15,28 @@
                             </a>
                         </div>
                         <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label for="bidang_filter" class="form-label">Filter Bidang</label>
+                                    <select id="bidang_filter" class="form-select">
+                                        <option value="">Semua Bidang</option>
+                                        @foreach($list_bidang as $bidang)
+                                            <option value="{{ $bidang->bidang_id }}">{{ $bidang->nama_bidang }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="kategori_filter" class="form-label">Filter Kategori</label>
+                                    <select id="kategori_filter" class="form-select">
+                                        <option value="">Semua Kategori</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 d-flex align-items-end">
+                                    <button id="filter_button" class="btn btn-primary">Filter</button>
+                                    <button id="reset_filter" class="btn btn-secondary ms-2">Reset</button>
+                                </div>
+                            </div>
+
                             <table id="arsip_surat_keluar"
                                 class="table table-hover table-bordered table-striped dt-responsive nowrap"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -34,86 +56,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($list_arsip_surat_keluar as $arsip_surat_keluar)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $arsip_surat_keluar->no_surat_keluar }}</td>
-                                            <td>{{ $arsip_surat_keluar->nama_surat_keluar }}</td>
-                                            <td>{{ $arsip_surat_keluar->tanggal_surat_keluar }}</td>
-                                            <td>{{ $arsip_surat_keluar->bidang ? $arsip_surat_keluar->bidang->nama_bidang : 'Tidak ada bidang' }}
-                                            </td>
-                                            <td>{{ $arsip_surat_keluar->kategori ? $arsip_surat_keluar->kategori->nama_kategori : 'Tidak ada kategori' }}
-                                            </td>
-                                            <td>{{ $arsip_surat_keluar->tujuan_surat_keluar }}</td>
-                                            <td>{{ $arsip_surat_keluar->no_berkas_surat_keluar }}</td>
-                                            <td>{{ $arsip_surat_keluar->urutan_surat_keluar }}</td>
-                                            <td>{{ $arsip_surat_keluar->lokasi_surat_keluar }}</td>
-                                            <td>
-                                                <a href="{{ route('arsip_keluar.show', $arsip_surat_keluar->surat_keluar_id) }}"
-                                                    class="btn btn-info btn-sm" title="Detail">
-                                                    <i class="fas fa-eye" style="font-size: 10px"></i>
-                                                </a>
-                                                <a href="{{ route('arsip_keluar.edit', $arsip_surat_keluar->surat_keluar_id) }}"
-                                                    class="btn btn-warning btn-sm" title="Edit">
-                                                    <i class="fas fa-edit" style="font-size: 10px"></i>
-                                                </a>
-                                                <form
-                                                    action="{{ route('arsip_keluar.destroy', $arsip_surat_keluar->surat_keluar_id) }}"
-                                                    method="POST" style="display:inline-block;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" title="Hapus"
-                                                        onclick="return confirm('Apakah Anda yakin ingin menghapus arsip_surat_keluar ini?')">
-                                                        <i class="fas fa-trash-alt" style="font-size: 13px"></i>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                    <!-- Data akan diisi oleh DataTables secara otomatis -->
                                 </tbody>
                             </table>
-                            <div class="d-flex justify-content-center my-3">
-                                <ul class="pagination"
-                                    style="font-size: 16px; padding-left: 0; list-style: none; display: flex;">
-                                    @if ($list_arsip_surat_keluar->onFirstPage())
-                                        <li class="page-item disabled" style="margin: 0 5px;">
-                                            <span class="page-link"
-                                                style="padding: 8px 16px; border: 1px solid #dee2e6; color: #6c757d; cursor: not-allowed;">Previous</span>
-                                        </li>
-                                    @else
-                                        <li class="page-item" style="margin: 0 5px;">
-                                            <a href="{{ $list_arsip_surat_keluar->previousPageUrl() }}" class="page-link"
-                                                style="padding: 8px 16px; border: 1px solid #dee2e6; color: #38c66c; text-decoration: none;">Previous</a>
-                                        </li>
-                                    @endif
-
-                                    @foreach ($list_arsip_surat_keluar->links()->elements[0] as $page => $route)
-                                        @if ($page == $list_arsip_surat_keluar->currentPage())
-                                            <li class="page-item active" style="margin: 0 5px;">
-                                                <span class="page-link"
-                                                    style="padding: 8px 16px; border: 1px solid #38c66c; background-color: #38c66c; color: white;">{{ $page }}</span>
-                                            </li>
-                                        @else
-                                            <li class="page-item" style="margin: 0 5px;">
-                                                <a href="{{ $route }}" class="page-link"
-                                                    style="padding: 8px 16px; border: 1px solid #dee2e6; color: #38c66c; text-decoration: none;">{{ $page }}</a>
-                                            </li>
-                                        @endif
-                                    @endforeach
-
-                                    @if ($list_arsip_surat_keluar->hasMorePages())
-                                        <li class="page-item" style="margin: 0 5px;">
-                                            <a href="{{ $list_arsip_surat_keluar->nextPageUrl() }}" class="page-link"
-                                                style="padding: 8px 16px; border: 1px solid #dee2e6; color: #38c66c; text-decoration: none;">Next</a>
-                                        </li>
-                                    @else
-                                        <li class="page-item disabled" style="margin: 0 5px;">
-                                            <span class="page-link"
-                                                style="padding: 8px 16px; border: 1px solid #dee2e6; color: #6c757d; cursor: not-allowed;">Next</span>
-                                        </li>
-                                    @endif
-                                </ul>
-                            </div>
                         </div>
                     </div>
                 </div> <!-- end col -->
@@ -121,4 +66,74 @@
             <!-- end row -->
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            // Inisialisasi DataTable
+            var table = $('#arsip_surat_keluar').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('arsip_keluar.index') }}",
+                    data: function (d) {
+                        d.bidang_id = $('#bidang_filter').val();
+                        d.kategori_id = $('#kategori_filter').val();
+                    }
+                },
+                columns: [
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                    {data: 'no_surat_keluar', name: 'no_surat_keluar'},
+                    {data: 'nama_surat_keluar', name: 'nama_surat_keluar'},
+                    {data: 'tanggal_surat_keluar', name: 'tanggal_surat_keluar'},
+                    {data: 'bidang_id', name: 'bidang.nama_bidang'},
+                    {data: 'kategori_id', name: 'kategori.nama_kategori'},
+                    {data: 'tujuan_surat_keluar', name: 'tujuan_surat_keluar'},
+                    {data: 'no_berkas_surat_keluar', name: 'no_berkas_surat_keluar'},
+                    {data: 'urutan_surat_keluar', name: 'urutan_surat_keluar'},
+                    {data: 'lokasi_surat_keluar', name: 'lokasi_surat_keluar'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false},
+                ],
+                responsive: true,
+                language: {
+                    paginate: {
+                        previous: "<i class='fas fa-chevron-left'></i>",
+                        next: "<i class='fas fa-chevron-right'></i>"
+                    }
+                }
+            });
+
+            // Ketika bidang dipilih, ambil kategori terkait
+            $('#bidang_filter').change(function() {
+                var bidang_id = $(this).val();
+                $('#kategori_filter').html('<option value="">Semua Kategori</option>');
+
+                if (bidang_id) {
+                    $.ajax({
+                        url: "{{ route('getKategoriByBidang', '') }}/" + bidang_id,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#kategori_filter').append('<option value="'+ value.kategori_id +'">'+ value.nama_kategori +'</option>');
+                            });
+                        }
+                    });
+                }
+            });
+
+            // Filter data ketika tombol filter diklik
+            $('#filter_button').click(function() {
+                table.ajax.reload();
+            });
+
+            // Reset filter
+            $('#reset_filter').click(function() {
+                $('#bidang_filter').val('');
+                $('#kategori_filter').val('').html('<option value="">Semua Kategori</option>');
+                table.ajax.reload();
+            });
+        });
+    </script>
 @endsection
