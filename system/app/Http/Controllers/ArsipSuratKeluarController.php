@@ -84,7 +84,7 @@ class ArsipSuratKeluarController extends Controller
             'kategori_id' => 'nullable|exists:kategori,kategori_id',
             'tujuan_surat_keluar' => 'required',
             'no_berkas_surat_keluar' => 'required',
-            'urutan_surat_  keluar' => 'required',
+            'urutan_surat_keluar' => 'required',
             'lokasi_surat_keluar' => 'required',
             'file_surat_keluar' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
             'keterangan_surat_keluar' => 'nullable',

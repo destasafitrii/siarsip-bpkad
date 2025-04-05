@@ -10,9 +10,9 @@ use App\Http\Controllers\PencarianArsipSuratMasukController;
 use App\Http\Controllers\PencarianArsipSuratKeluarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\frontend\PencarianController;
-Route::get('dashboard', function () {
-    return view('backend.index');
-});
+
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
 
 
 Route::get('/notif', function () {
