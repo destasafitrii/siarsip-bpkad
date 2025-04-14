@@ -10,9 +10,8 @@ use App\Http\Controllers\PencarianArsipSuratMasukController;
 use App\Http\Controllers\PencarianArsipSuratKeluarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\frontend\PencarianController;
-
+use App\Http\Controllers\ArsipImportController;
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
 
 
 Route::get('/notif', function () {
@@ -82,4 +81,9 @@ Route::get('/hasil-pencarian', [PencarianController::class, 'search'])->name('ha
 Route::get('/arsip-masuk/{id}', [PencarianController::class, 'showMasuk'])->name('arsip.masuk.show');
 Route::get('/arsip-keluar/{id}', [PencarianController::class, 'showKeluar'])->name('arsip.keluar.show');
 
+Route::prefix('import')->group(function () {
+    Route::get('/', [ArsipImportController::class, 'index'])->name('import.index');
+    Route::get('/form', [ArsipImportController::class, 'showImportForm'])->name('import.form');
+    Route::post('/process', [ArsipImportController::class, 'import'])->name('import.process');
+});
 

@@ -43,12 +43,12 @@
                         <li><a href="{{ url('kategori')}}"><i class="mdi mdi-checkbox-blank-circle align-middle"></i> Kategori</a></li>
                     </ul>
                 </li>
-                {{-- <li>
-                    <a href="{{ url('#') }}" class="">
+                <li>
+                    <a href="{{ url('import') }}" class="">
                         <i class="mdi mdi-email"></i>
-                        <span>Impor/Ekspor Arsip</span>
+                        <span>Import</span>
                     </a>
-                </li> --}}
+                </li>
             </ul>
 
             <!-- Left Menu End -->
