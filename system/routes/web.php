@@ -11,6 +11,8 @@ use App\Http\Controllers\PencarianArsipSuratKeluarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\frontend\PencarianController;
 use App\Http\Controllers\ArsipImportController;
+use App\Http\Controllers\KlasifikasiController;
+
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 
@@ -86,4 +88,3 @@ Route::prefix('import')->group(function () {
     Route::get('/form', [ArsipImportController::class, 'showImportForm'])->name('import.form');
     Route::post('/process', [ArsipImportController::class, 'import'])->name('import.process');
 });
-

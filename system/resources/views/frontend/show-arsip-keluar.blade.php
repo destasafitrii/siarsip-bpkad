@@ -30,7 +30,7 @@
     <!-- Bagian Pratinjau File -->
     <div class="card shadow-lg p-4 d-flex align-items-center justify-content-center" style="background-color: #ffffff; border-radius: 15px; padding: 20px;">
         @if($arsip->file_surat_keluar)
-            <embed src="{{ asset('storage/' . $arsip->file_surat_keluar) }}" type="application/pdf" width="100%" height="400px">
+            <embed src="{{ asset('system/storage/app/public/' . $arsip->file_surat_keluar) }}" type="application/pdf" width="100%" height="400px">
         @else
             <p class="text-danger">Tidak ada file tersedia untuk pratinjau.</p>
         @endif

@@ -49,6 +49,12 @@
                         <span>Import</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ url('klasifikasi') }}" class="">
+                        <i class="mdi mdi-email"></i>
+                        <span>Klasifikasi</span>
+                    </a>
+                </li>
             </ul>
 
             <!-- Left Menu End -->

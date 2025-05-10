@@ -66,17 +66,22 @@
                                         <tr>
                                             <th>Bukti Arsip</th>
                                             <td>
-                                                <a href="{{ asset('storage/' . $arsip_surat_masuk->file_surat_masuk) }}" target="_blank">Lihat File</a>
+                                                <a href="{{ asset('system/storage/app/public/' . $arsip_surat_masuk->file_surat_masuk) }}" target="_blank">Lihat File</a>
                                             </td>
                                         </tr>
                                     </table>
+                                    <div class="mt-4 text-center">
+                                        <h5>QR Code Lokasi Arsip</h5>
+                                        {!! QrCode::size(200)->generate("Lokasi: {$arsip_surat_masuk->lokasi_surat_masuk}") !!}
+                                    </div>
+                                    
                                 </div>
                             </div>
 
                             <!-- Pratinjau Arsip -->
                             <div class="mt-4">
                                 <h5>Pratinjau Arsip</h5>
-                                <iframe src="{{ asset('storage/' . $arsip_surat_masuk->file_surat_masuk) }}" 
+                                <iframe src="{{ asset('system/storage/app/public/' . $arsip_surat_masuk->file_surat_masuk) }}" 
                                     width="100%" height="600px" frameborder="0"></iframe>
                             </div>
                         </div>

@@ -66,7 +66,7 @@
                                         <tr>
                                             <th>Bukti Arsip</th>
                                             <td>
-                                                <a href="{{ asset('storage/' . $arsip_surat_keluar->file_surat_keluar) }}" target="_blank">Lihat File</a>
+                                                <a href="{{ asset('system/storage/app/public/' . $arsip_surat_keluar->file_surat_keluar) }}" target="_blank">Lihat File</a>
                                             </td>
                                         </tr>
                                     </table>
@@ -76,7 +76,7 @@
                             <!-- Pratinjau Arsip -->
                             <div class="mt-4">
                                 <h5>Pratinjau Arsip</h5>
-                                <iframe src="{{ url('storage/' . $arsip_surat_keluar->file_surat_keluar) }}" 
+                                <iframe src="{{ url('system/storage/app/public/' . $arsip_surat_keluar->file_surat_keluar) }}" 
                                     width="100%" height="600px" frameborder="0"></iframe>
                             </div>
 
