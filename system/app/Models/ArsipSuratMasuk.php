@@ -23,9 +23,9 @@ class ArsipSuratMasuk extends Model
         'bidang_id',  // Relasi dengan tabel Bidang
         'kategori_id', // Relasi dengan tabel Kategori
         'asal_surat_masuk',
-        'no_berkas_surat_masuk',
+        'box_id',
         'urutan_surat_masuk',
-        'lokasi_surat_masuk',
+    
         'file_surat_masuk',
         'keterangan',
     ];
@@ -41,4 +41,23 @@ class ArsipSuratMasuk extends Model
     {
         return $this->belongsTo(Kategori::class, 'kategori_id', 'kategori_id');
     }
+
+    // app/Models/ArsipSuratMasuk.php
+
+public function ruangan()
+{
+    return $this->belongsTo(Ruangan::class, 'ruangan_id', 'ruangan_id');
+}
+
+public function lemari()
+{
+    return $this->belongsTo(Lemari::class, 'lemari_id', 'lemari_id');
+}
+
+    public function box()
+{
+    return $this->belongsTo(Box::class, 'box_id', 'box_id');
+}
+
+
 }

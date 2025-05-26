@@ -74,23 +74,49 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
+                                        <!-- Formulir Pilih Ruangan -->
                                         <div class="mb-3">
-                                            <label for="no_berkas_surat_masuk" class="form-label">No Berkas</label>
-                                            <input type="text" class="form-control" id="no_berkas_surat_masuk"
-                                                name="no_berkas_surat_masuk" placeholder="Masukkan No Berkas" required
-                                                value="{{ old('no_berkas_surat_masuk') }}">
+                                            <label for="ruangan_id" class="form-label">Pilih Ruangan</label>
+                                            <select name="ruangan_id" id="ruangan_id" class="form-control" required>
+                                                <option value="">-- Pilih Ruangan --</option>
+                                                @foreach ($list_ruangan as $ruangan)
+                                                    <option value="{{ $ruangan->ruangan_id }}"
+                                                        {{ old('ruangan_id') == $ruangan->ruangan_id ? 'selected' : '' }}>
+                                                        {{ $ruangan->nama_ruangan }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                         </div>
+
+                                        <!-- Formulir Pilih Lemari -->
+                                        <div class="mb-3">
+                                            <label for="lemari_id" class="form-label">Pilih Lemari</label>
+                                            <select name="lemari_id" id="lemari_id" class="form-control"required>
+                                                <option value="">-- Pilih Lemari --</option>
+                                                {{-- Akan diisi secara dinamis berdasarkan ruangan --}}
+                                            </select>
+                                        </div>
+
+                                        <!-- Formulir Pilih Box -->
+                                        <div class="mb-3">
+                                            <label for="box_id" class="form-label">Pilih Box</label>
+                                            <select name="box_id" id="box_id" class="form-control" required>
+                                                <option value="">-- Pilih Box --</option>
+                                                @foreach ($list_box as $box)
+                                                    <option value="{{ $box->box_id }}"
+                                                        {{ old('box_id') == $box->box_id ? 'selected' : '' }}>
+                                                        {{ $box->nama_box }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+
                                         <div class="mb-3">
                                             <label for="urutan_surat_masuk" class="form-label">Urutan</label>
                                             <input type="text" class="form-control" id="urutan_surat_masuk"
                                                 name="urutan_surat_masuk" placeholder="Masukkan urutan penyimpanan" required
                                                 value="{{ old('urutan_surat_masuk') }}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="lokasi_surat_masuk" class="form-label">Lokasi</label>
-                                            <input type="text" class="form-control" id="lokasi_surat_masuk"
-                                                name="lokasi_surat_masuk" placeholder="Masukkan lokasi (rak/lemari)"
-                                                required value="{{ old('lokasi_surat_masuk') }}">
                                         </div>
                                         <div class="mb-3">
                                             <label for="keterangan" class="form-label">Keterangan</label>
@@ -105,9 +131,10 @@
                                             <small class="text-muted">Maksimal ukuran file 1MB. Format yang diperbolehkan:
                                                 PDF.</small>
                                         </div>
-
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Simpan</button>
+
+                                </div>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                             </form>
                         </div>
                     </div>
@@ -153,6 +180,58 @@
                 } else {
                     $('#kategori_id').empty();
                     $('#kategori_id').append('<option value="">-- Pilih Kategori --</option>');
+                }
+            });
+
+            $('#ruangan_id').change(function() {
+                var ruangan_id = $(this).val();
+                console.log("Ruangan yang dipilih:", ruangan_id);
+
+                if (ruangan_id) {
+                    $.ajax({
+                        url: 'getLemariByRuangan/' + ruangan_id,
+                        type: 'GET',
+                        success: function(data) {
+                            console.log("Data lemari yang diterima:", data);
+                            $('#lemari_id').empty().append(
+                                '<option value="">-- Pilih Lemari --</option>');
+                            $.each(data, function(index, lemari) {
+                                $('#lemari_id').append('<option value="' + lemari
+                                    .lemari_id + '">' + lemari.nama_lemari +
+                                    '</option>');
+                            });
+                            $('#box_id').empty().append(
+                                '<option value="">-- Pilih Box --</option>');
+                        },
+                        error: function(xhr) {
+                            alert('Gagal mengambil data lemari');
+                        }
+                    });
+                }
+            });
+
+            // Saat lemari dipilih → ambil data box
+            $('#lemari_id').change(function() {
+                var lemari_id = $(this).val();
+                if (lemari_id) {
+                    $.ajax({
+                        url: 'getBoxByLemari/' + lemari_id,
+                        type: 'GET',
+                        success: function(data) {
+                            $('#box_id').empty().append(
+                                '<option value="">-- Pilih Box --</option>');
+                            $.each(data, function(key, box) {
+                                $('#box_id').append('<option value="' + box.box_id +
+                                    '">' + box
+                                    .nama_box + '</option>');
+                            });
+                        },
+                        error: function(xhr) {
+                            alert('Gagal mengambil data box');
+                        }
+                    });
+                } else {
+                    $('#box_id').empty().append('<option value="">-- Pilih Box --</option>');
                 }
             });
         });

@@ -12,6 +12,10 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\frontend\PencarianController;
 use App\Http\Controllers\ArsipImportController;
 use App\Http\Controllers\KlasifikasiController;
+use App\Http\Controllers\RuanganController;
+use App\Http\Controllers\LemariController;
+use App\Http\Controllers\BoxController;
+use App\Http\Controllers\QrController;  
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -28,6 +32,8 @@ Route::controller(ArsipSuratMasukController::class)->group(function () {
     Route::delete('arsip_masuk/{arsip_masuk}', 'destroy')->name('arsip_masuk.destroy');
     Route::get('arsip_masuk/{arsip_masuk}', 'show')->name('arsip_masuk.show');
     Route::get('/arsip_masuk/getKategoriByBidang/{bidang_id}', 'getKategoriByBidang')->name('getKategoriByBidang');
+    Route::get('/arsip_masuk/getLemariByRuangan/{ruangan_id}', 'getLemariByRuangan')->name('getLemariByRuangan');
+    Route::get('/arsip_masuk/getBoxByLemari/{lemari_id}', 'getBoxByLemari')->name('getBoxByLemari');
 });
 
 Route::controller(ArsipSuratKeluarController::class)->group(function () {
@@ -87,4 +93,44 @@ Route::prefix('import')->group(function () {
     Route::get('/', [ArsipImportController::class, 'index'])->name('import.index');
     Route::get('/form', [ArsipImportController::class, 'showImportForm'])->name('import.form');
     Route::post('/process', [ArsipImportController::class, 'import'])->name('import.process');
+});
+
+Route::get('/box/{noBerkas}', [App\Http\Controllers\QrController::class, 'tampilkanIsiBox'])->name('qr.box');
+
+// use App\Models\ArsipSuratMasuk;
+
+// Route::get('/box/{no_berkas}', function ($no_berkas) {
+//     $arsip = ArsipSuratMasuk::where('no_berkas_surat_masuk', $no_berkas)->get();
+
+//     if ($arsip->isEmpty()) {
+//         abort(404, 'Data tidak ditemukan');
+//     }
+
+//     return view('box.detail', compact('arsip', 'no_berkas'));
+// });
+
+Route::controller(RuanganController::class)->group(function () {
+    Route::get('ruangan', 'index')->name('ruangan');
+    Route::post('ruangan', 'store')->name('ruangan.store');
+    Route::put('ruangan/{ruangan}', 'update')->name('ruangan.update');
+    Route::delete('ruangan/{ruangan}', 'destroy')->name('ruangan.destroy');
+});
+
+Route::controller(LemariController::class)->group(function () {
+    Route::get('lemari', 'index')->name('lemari.index');
+    Route::post('lemari', 'store')->name('lemari.store');
+    Route::put('lemari/{lemari}', 'update')->name('lemari.update');
+    Route::delete('lemari/{lemari}', 'destroy')->name('lemari.destroy');
+});
+
+Route::get('get-lemari-by-ruangan/{id}', [LemariController::class, 'getByRuangan']);
+
+
+Route::get('/get-box-by-lemari/{lemari_id}', [LemariController::class, 'getBoxByLemari']);
+
+Route::controller(BoxController::class)->group(function () {
+    Route::get('box', 'index')->name('box.index');
+    Route::post('box', 'store')->name('box.store');
+    Route::put('box/{box}', 'update')->name('box.update');
+    Route::delete('box/{box}', 'destroy')->name('box.destroy');
 });

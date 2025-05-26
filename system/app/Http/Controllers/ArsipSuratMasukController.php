@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\ArsipSuratMasuk;
 use App\Models\Bidang;
 use App\Models\Kategori;
+use App\Models\Ruangan;
+use App\Models\Lemari;
+use App\Models\Box;
+
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -14,7 +18,7 @@ class ArsipSuratMasukController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = ArsipSuratMasuk::with(['bidang', 'kategori'])
+            $data = ArsipSuratMasuk::with(['bidang', 'kategori', 'box.lemari.ruangan'])
                 ->select('arsip_surat_masuk.*');
 
             // Filter berdasarkan bidang
@@ -29,28 +33,32 @@ class ArsipSuratMasukController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $btn = '<a href="'.route('arsip_masuk.show', $row->surat_masuk_id).'" class="btn btn-info btn-sm" title="Detail">
+                ->addColumn('action', function ($row) {
+                    $btn = '<a href="' . route('arsip_masuk.show', $row->surat_masuk_id) . '" class="btn btn-info btn-sm" title="Detail">
                                 <i class="fas fa-eye" style="font-size: 10px"></i>
                             </a>
-                            <a href="'.route('arsip_masuk.edit', $row->surat_masuk_id).'" class="btn btn-warning btn-sm" title="Edit">
+                            <a href="' . route('arsip_masuk.edit', $row->surat_masuk_id) . '" class="btn btn-warning btn-sm" title="Edit">
                                 <i class="fas fa-edit" style="font-size: 10px"></i>
                             </a>
-                            <form action="'.route('arsip_masuk.destroy', $row->surat_masuk_id).'" method="POST" style="display:inline-block;">
-                                '.csrf_field().'
-                                '.method_field('DELETE').'
+                            <form action="' . route('arsip_masuk.destroy', $row->surat_masuk_id) . '" method="POST" style="display:inline-block;">
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
                                 <button type="submit" class="btn btn-danger btn-sm" title="Hapus" onclick="return confirm(\'Apakah Anda yakin ingin menghapus arsip ini?\')">
                                     <i class="fas fa-trash-alt" style="font-size: 13px"></i>
                                 </button>
                             </form>';
                     return $btn;
                 })
-                ->editColumn('bidang_id', function($row) {
+                ->editColumn('bidang_id', function ($row) {
                     return $row->bidang ? $row->bidang->nama_bidang : 'Tidak ada bidang';
                 })
-                ->editColumn('kategori_id', function($row) {
+                ->editColumn('kategori_id', function ($row) {
                     return $row->kategori ? $row->kategori->nama_kategori : 'Tidak ada kategori';
                 })
+                ->editColumn('box_id', function ($row) {
+                    return $row->box ? $row->box->nama_box : 'Tidak ada box';
+                })
+
                 ->rawColumns(['action'])
                 ->make(true);
         }
@@ -65,12 +73,29 @@ class ArsipSuratMasukController extends Controller
         return response()->json($list_kategori);
     }
 
+    public function getLemariByRuangan($ruangan_id)
+    {
+        $lemari = Lemari::where('ruangan_id', $ruangan_id)->get(['lemari_id', 'nama_lemari']);
+        return response()->json($lemari);
+    }
+
+    public function getBoxByLemari($lemari_id)
+    {
+        $box = Box::where('lemari_id', $lemari_id)->get(['box_id', 'nama_box']);
+        return response()->json($box);
+    }
+
+
     public function create()
     {
         // Mendapatkan semua bidang dan kategori untuk form create
         $list_bidang = Bidang::all();
         $list_kategori = Kategori::all();
-        return view('backend.arsip_masuk.create', compact('list_bidang', 'list_kategori'));
+        $list_ruangan = Ruangan::all();
+        $list_lemari = Lemari::all();
+        $list_box = Box::all();
+
+        return view('backend.arsip_masuk.create', compact('list_bidang', 'list_kategori', 'list_ruangan', 'list_lemari', 'list_box',));
     }
 
     public function store(Request $request)
@@ -79,13 +104,14 @@ class ArsipSuratMasukController extends Controller
         $validatedData = $request->validate([
             'no_surat_masuk' => 'required',
             'nama_surat_masuk' => 'required',
-            'tanggal_surat_masuk' => 'required|date',
             'bidang_id' => 'required|exists:bidang,bidang_id',
             'kategori_id' => 'nullable|exists:kategori,kategori_id',
-            'asal_surat_masuk' => 'required',
-            'no_berkas_surat_masuk' => 'required',
+            'ruangan_id' => 'required|exists:ruangan,ruangan_id',
             'urutan_surat_masuk' => 'required',
-            'lokasi_surat_masuk' => 'required',
+            'lemari_id' => 'required|exists:lemari,lemari_id',
+            'box_id' => 'required|exists:box,box_id',
+            'tanggal_surat_masuk' => 'required|date',
+            'asal_surat_masuk' => 'required',
             'file_surat_masuk' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
             'keterangan' => 'nullable',
         ]);
@@ -105,7 +131,7 @@ class ArsipSuratMasukController extends Controller
     public function show($id)
     {
         // Menampilkan arsip surat masuk berdasarkan ID dan memuat relasi bidang dan kategori
-        $arsip_surat_masuk = ArsipSuratMasuk::with(['bidang', 'kategori'])->findOrFail($id);
+        $arsip_surat_masuk = ArsipSuratMasuk::with(['bidang', 'kategori', 'box.lemari.ruangan', 'ruangan', 'lemari',])->findOrFail($id);
         return view('backend.arsip_masuk.show', compact('arsip_surat_masuk'));
     }
 
@@ -113,15 +139,18 @@ class ArsipSuratMasukController extends Controller
     // Controller untuk mengedit arsip surat masuk
     public function edit($id)
     {
-        $arsip_surat_masuk = ArsipSuratMasuk::with(['bidang', 'kategori'])->findOrFail($id);
+        $arsip_surat_masuk = ArsipSuratMasuk::with(['bidang', 'kategori', 'box.lemari.ruangan'])->findOrFail($id);
 
         // Mendapatkan semua bidang
         $list_bidang = Bidang::all();
 
         // Memuat kategori berdasarkan bidang yang sedang dipilih
         $list_kategori = Kategori::where('bidang_id', $arsip_surat_masuk->bidang_id)->get();
-
-        return view('backend.arsip_masuk.edit', compact('arsip_surat_masuk', 'list_bidang', 'list_kategori'));
+        $list_ruangan = Ruangan::all();
+        $list_lemari = Lemari::where('ruangan_id', $arsip_surat_masuk->box->lemari->ruangan_id)->get();
+        $list_box = Box::where('lemari_id', $arsip_surat_masuk->boxlemari_id)->get();
+        
+        return view('backend.arsip_masuk.edit', compact('arsip_surat_masuk', 'list_bidang', 'list_kategori', 'list_ruangan', 'list_lemari', 'list_box'));
     }
 
     public function update(Request $request, $id)
@@ -130,13 +159,14 @@ class ArsipSuratMasukController extends Controller
         $validatedData = $request->validate([
             'no_surat_masuk' => 'required',
             'nama_surat_masuk' => 'required',
-            'tanggal_surat_masuk' => 'required|date',
             'bidang_id' => 'required|exists:bidang,bidang_id',
             'kategori_id' => 'nullable|exists:kategori,kategori_id',
-            'asal_surat_masuk' => 'required',
-            'no_berkas_surat_masuk' => 'required',
+            'ruangan_id' => 'required|exists:ruangan,ruangan_id',
+            'lemari_id' => 'required|exists:lemari,lemari_id',
+            'box_id' => 'required|exists:box,box_id',
             'urutan_surat_masuk' => 'required',
-            'lokasi_surat_masuk' => 'required',
+            'tanggal_surat_masuk' => 'required|date',
+            'asal_surat_masuk' => 'required',
             'file_surat_masuk' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
             'keterangan' => 'nullable',
         ]);
@@ -158,5 +188,5 @@ class ArsipSuratMasukController extends Controller
         // Redirect ke halaman arsip surat masuk dengan pesan sukses
         return redirect()->route('arsip_masuk.index')->with('success', 'Data berhasil dihapus!');
     }
-
 }
+                

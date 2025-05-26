@@ -12,6 +12,7 @@
                                 <i class="fas fa-arrow-left"></i> Kembali
                             </a>
                         </div>
+
                         <div class="card-body">
                             <div class="row d-flex align-items-stretch">
                                 <!-- Bagian Kiri (Data Arsip 1) -->
@@ -48,17 +49,24 @@
                                             <td>{{ $arsip_surat_masuk->asal_surat_masuk }}</td>
                                         </tr>
                                         <tr>
-                                            <th>Nomor Berkas</th>
-                                            <td>{{ $arsip_surat_masuk->no_berkas_surat_masuk }}</td>
-                                        </tr>
-                                        <tr>
                                             <th>Urutan</th>
                                             <td>{{ $arsip_surat_masuk->urutan_surat_masuk }}</td>
                                         </tr>
                                         <tr>
-                                            <th>Lokasi</th>
-                                            <td>{{ $arsip_surat_masuk->lokasi_surat_masuk }}</td>
+                                            <th>Ruangan</th>
+                                            <td>{{ $arsip_surat_masuk->box->lemari->ruangan->nama_ruangan ?? 'Tidak Diketahui' }}
+                                            </td>
                                         </tr>
+                                        <tr>
+                                            <th>Lemari</th>
+                                            <td>{{ $arsip_surat_masuk->box->lemari->nama_lemari ?? 'Tidak Diketahui' }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Box</th>
+                                            <td>{{ $arsip_surat_masuk->box->nama_box ?? 'Tidak Diketahui' }}</td>
+                                        </tr>
+
                                         <tr>
                                             <th>Keterangan</th>
                                             <td>{{ $arsip_surat_masuk->keterangan }}</td>
@@ -66,29 +74,38 @@
                                         <tr>
                                             <th>Bukti Arsip</th>
                                             <td>
-                                                <a href="{{ asset('system/storage/app/public/' . $arsip_surat_masuk->file_surat_masuk) }}" target="_blank">Lihat File</a>
+                                                <a href="{{ asset('system/storage/app/public/' . $arsip_surat_masuk->file_surat_masuk) }}"
+                                                    target="_blank">Lihat File</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>QR Code Box</th>
+                                            <td>
+                                                @php
+                                                    use SimpleSoftwareIO\QrCode\Facades\QrCode;
+                                                @endphp
+
+                                                {!! QrCode::size(100)->generate(url('/box/' . $arsip_surat_masuk->no_berkas_surat_masuk)) !!}
                                             </td>
                                         </tr>
                                     </table>
-                                    <div class="mt-4 text-center">
-                                        <h5>QR Code Lokasi Arsip</h5>
-                                        {!! QrCode::size(200)->generate("Lokasi: {$arsip_surat_masuk->lokasi_surat_masuk}") !!}
-                                    </div>
-                                    
                                 </div>
-                            </div>
 
-                            <!-- Pratinjau Arsip -->
-                            <div class="mt-4">
-                                <h5>Pratinjau Arsip</h5>
-                                <iframe src="{{ asset('system/storage/app/public/' . $arsip_surat_masuk->file_surat_masuk) }}" 
-                                    width="100%" height="600px" frameborder="0"></iframe>
+
                             </div>
+                        </div>
+
+                        <!-- Pratinjau Arsip -->
+                        <div class="mt-4">
+                            <h5>Pratinjau Arsip</h5>
+                            <iframe src="{{ asset('system/storage/app/public/' . $arsip_surat_masuk->file_surat_masuk) }}"
+                                width="100%" height="600px" frameborder="0"></iframe>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <style>
@@ -110,7 +127,8 @@
         }
 
         /* Menghilangkan scroll */
-        .table th, .table td {
+        .table th,
+        .table td {
             white-space: normal !important;
         }
     </style>

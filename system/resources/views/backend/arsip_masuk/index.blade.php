@@ -20,7 +20,7 @@
                                     <label for="bidang_filter" class="form-label">Filter Bidang</label>
                                     <select id="bidang_filter" class="form-select">
                                         <option value="">Semua Bidang</option>
-                                        @foreach($list_bidang as $bidang)
+                                        @foreach ($list_bidang as $bidang)
                                             <option value="{{ $bidang->bidang_id }}">{{ $bidang->nama_bidang }}</option>
                                         @endforeach
                                     </select>
@@ -36,7 +36,7 @@
                                     <button id="reset_filter" class="btn btn-secondary ms-2">Reset</button>
                                 </div>
                             </div>
-
+                           
                             <table id="arsip_surat_masuk"
                                 class="table table-hover table-bordered table-striped dt-responsive nowrap"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -45,13 +45,14 @@
                                         <th>No</th>
                                         <th>Nomor Surat</th>
                                         <th>Nama Surat</th>
-                                        <th>Tanggal</th>
                                         <th>Bidang</th>
                                         <th>Jenis Arsip</th>
-                                        <th>Asal Surat</th>
-                                        <th>Nomor Berkas</th>
+                                        <th>Ruangan</th>
+                                        <th>Lemari</th>
+                                        <th>Box</th>
                                         <th>Urutan</th>
-                                        <th>Lokasi</th>
+                                        <th>Tanggal Surat</th>
+                                         <th>Asal Surat</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -77,23 +78,72 @@
                 serverSide: true,
                 ajax: {
                     url: "{{ route('arsip_masuk.index') }}",
-                    data: function (d) {
+                    data: function(d) {
                         d.bidang_id = $('#bidang_filter').val();
                         d.kategori_id = $('#kategori_filter').val();
                     }
                 },
-                columns: [
-                    {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-                    {data: 'no_surat_masuk', name: 'no_surat_masuk'},
-                    {data: 'nama_surat_masuk', name: 'nama_surat_masuk'},
-                    {data: 'tanggal_surat_masuk', name: 'tanggal_surat_masuk'},
-                    {data: 'bidang_id', name: 'bidang.nama_bidang'},
-                    {data: 'kategori_id', name: 'kategori.nama_kategori'},
-                    {data: 'asal_surat_masuk', name: 'asal_surat_masuk'},
-                    {data: 'no_berkas_surat_masuk', name: 'no_berkas_surat_masuk'},
-                    {data: 'urutan_surat_masuk', name: 'urutan_surat_masuk'},
-                    {data: 'lokasi_surat_masuk', name: 'lokasi_surat_masuk'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false},
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'no_surat_masuk',
+                        name: 'no_surat_masuk'
+                    },
+                    {
+                        data: 'nama_surat_masuk',
+                        name: 'nama_surat_masuk'
+                    },
+                   
+                    {
+                        data: 'bidang_id',
+                        name: 'bidang.nama_bidang'
+                    },
+                    {
+                        data: 'kategori_id',
+                        name: 'kategori.nama_kategori'
+                    },
+                    
+                    {
+                        data: 'box.lemari.ruangan.nama_ruangan',
+                        name: 'box.lemari.ruangan.nama_ruangan',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'box.lemari.nama_lemari',
+                        name: 'box.lemari.nama_lemari',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'box.nama_box',
+                        name: 'box.nama_box',
+                        defaultContent: '-'
+                    },
+
+                    {
+                        data: 'urutan_surat_masuk',
+                        name: 'urutan_surat_masuk'
+                    },
+
+                     {
+                        data: 'tanggal_surat_masuk',
+                        name: 'tanggal_surat_masuk'
+                    },
+
+                    {
+                        data: 'asal_surat_masuk',
+                        name: 'asal_surat_masuk'
+                    },
+
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
                 ],
                 responsive: true,
                 language: {
@@ -116,7 +166,9 @@
                         dataType: "json",
                         success: function(data) {
                             $.each(data, function(key, value) {
-                                $('#kategori_filter').append('<option value="'+ value.kategori_id +'">'+ value.nama_kategori +'</option>');
+                                $('#kategori_filter').append('<option value="' + value
+                                    .kategori_id + '">' + value.nama_kategori +
+                                    '</option>');
                             });
                         }
                     });
