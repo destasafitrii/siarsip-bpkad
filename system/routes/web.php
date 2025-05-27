@@ -45,6 +45,8 @@ Route::controller(ArsipSuratKeluarController::class)->group(function () {
     Route::delete('arsip_keluar/{arsip_keluar}', 'destroy')->name('arsip_keluar.destroy');
     Route::get('arsip_keluar/{arsip_keluar}', 'show')->name('arsip_keluar.show');
     Route::get('/arsip_keluar/getKategoriByBidang/{bidang_id}', 'getKategoriByBidang')->name('getKategoriByBidang');
+     Route::get('/arsip_keluar/getLemariByRuangan/{ruangan_id}', 'getLemariByRuangan')->name('getLemariByRuangan');
+    Route::get('/arsip_keluar/getBoxByLemari/{lemari_id}', 'getBoxByLemari')->name('getBoxByLemari');
 });
 
 

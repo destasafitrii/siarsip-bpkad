@@ -48,16 +48,22 @@
                                             <td>{{ $arsip_surat_keluar->tujuan_surat_keluar }}</td>
                                         </tr>
                                         <tr>
-                                            <th>Nomor Berkas</th>
-                                            <td>{{ $arsip_surat_keluar->no_berkas_surat_keluar }}</td>
+                                            <th>Ruangan</th>
+                                            <td>{{ $arsip_surat_keluar->box->lemari->ruangan->nama_ruangan ?? 'Tidak Diketahui' }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Lemari</th>
+                                            <td>{{ $arsip_surat_keluar->box->lemari->nama_lemari ?? 'Tidak Diketahui' }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Box</th>
+                                            <td>{{ $arsip_surat_keluar->box->nama_box ?? 'Tidak Diketahui' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Urutan</th>
                                             <td>{{ $arsip_surat_keluar->urutan_surat_keluar }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Lokasi</th>
-                                            <td>{{ $arsip_surat_keluar->lokasi_surat_keluar }}</td>
                                         </tr>
                                         <tr>
                                             <th>Keterangan</th>

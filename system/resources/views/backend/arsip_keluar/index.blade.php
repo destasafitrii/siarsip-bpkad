@@ -3,7 +3,6 @@
 @section('content')
     <div class="page-content">
         <div class="container-fluid">
-            <!-- Data Arsipan Table -->
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -39,101 +38,99 @@
 
                             <table id="arsip_surat_keluar"
                                 class="table table-hover table-bordered table-striped dt-responsive nowrap"
-                                style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>No</th>
                                         <th>Nomor Surat</th>
                                         <th>Nama Surat</th>
-                                        <th>Tanggal</th>
                                         <th>Bidang</th>
                                         <th>Jenis Arsip</th>
-                                        <th>Tujuan Surat</th>
-                                        <th>Nomor Berkas</th>
+                                        <th>Ruangan</th>
+                                        <th>Lemari</th>
+                                        <th>Box</th>
                                         <th>Urutan</th>
-                                        <th>Lokasi</th>
+                                        <th>Tanggal Surat</th>
+                                        <th>Tujuan Surat</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Data akan diisi oleh DataTables secara otomatis -->
+                                    <!-- Data diisi oleh DataTables -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                </div> <!-- end col -->
+                </div>
             </div>
-            <!-- end row -->
         </div>
     </div>
 @endsection
 
 @section('scripts')
-    <script>
-        $(document).ready(function() {
-            // Inisialisasi DataTable
-            var table = $('#arsip_surat_keluar').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: "{{ route('arsip_keluar.index') }}",
-                    data: function (d) {
-                        d.bidang_id = $('#bidang_filter').val();
-                        d.kategori_id = $('#kategori_filter').val();
-                    }
-                },
-                columns: [
-                    {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-                    {data: 'no_surat_keluar', name: 'no_surat_keluar'},
-                    {data: 'nama_surat_keluar', name: 'nama_surat_keluar'},
-                    {data: 'tanggal_surat_keluar', name: 'tanggal_surat_keluar'},
-                    {data: 'bidang_id', name: 'bidang.nama_bidang'},
-                    {data: 'kategori_id', name: 'kategori.nama_kategori'},
-                    {data: 'tujuan_surat_keluar', name: 'tujuan_surat_keluar'},
-                    {data: 'no_berkas_surat_keluar', name: 'no_berkas_surat_keluar'},
-                    {data: 'urutan_surat_keluar', name: 'urutan_surat_keluar'},
-                    {data: 'lokasi_surat_keluar', name: 'lokasi_surat_keluar'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false},
-                ],
-                responsive: true,
-                language: {
-                    paginate: {
-                        previous: "<i class='fas fa-chevron-left'></i>",
-                        next: "<i class='fas fa-chevron-right'></i>"
-                    }
+<script>
+    $(document).ready(function() {
+        var table = $('#arsip_surat_keluar').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('arsip_keluar.index') }}",
+                data: function (d) {
+                    d.bidang_id = $('#bidang_filter').val();
+                    d.kategori_id = $('#kategori_filter').val();
                 }
-            });
-
-            // Ketika bidang dipilih, ambil kategori terkait
-            $('#bidang_filter').change(function() {
-                var bidang_id = $(this).val();
-                $('#kategori_filter').html('<option value="">Semua Kategori</option>');
-
-                if (bidang_id) {
-                    $.ajax({
-                        url: "{{ route('getKategoriByBidang', '') }}/" + bidang_id,
-                        type: "GET",
-                        dataType: "json",
-                        success: function(data) {
-                            $.each(data, function(key, value) {
-                                $('#kategori_filter').append('<option value="'+ value.kategori_id +'">'+ value.nama_kategori +'</option>');
-                            });
-                        }
-                    });
+            },
+            columns: [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                {data: 'no_surat_keluar', name: 'no_surat_keluar'},
+                {data: 'nama_surat_keluar', name: 'nama_surat_keluar'},
+                {data: 'bidang_id', name: 'bidang.nama_bidang'},
+                {data: 'kategori_id', name: 'kategori.nama_kategori'},
+                {data: 'box.lemari.ruangan.nama_ruangan', name: 'box.lemari.ruangan.nama_ruangan', defaultContent: '-'},
+                {data: 'box.lemari.nama_lemari', name: 'box.lemari.nama_lemari', defaultContent: '-'},
+                {data: 'box.nama_box', name: 'box.nama_box', defaultContent: '-'},
+                {data: 'urutan_surat_keluar', name: 'urutan_surat_keluar'},
+                {data: 'tanggal_surat_keluar', name: 'tanggal_surat_keluar'},
+                {data: 'tujuan_surat_keluar', name: 'tujuan_surat_keluar'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+            ],
+            responsive: true,
+            language: {
+                paginate: {
+                    previous: "<i class='fas fa-chevron-left'></i>",
+                    next: "<i class='fas fa-chevron-right'></i>"
                 }
-            });
-
-            // Filter data ketika tombol filter diklik
-            $('#filter_button').click(function() {
-                table.ajax.reload();
-            });
-
-            // Reset filter
-            $('#reset_filter').click(function() {
-                $('#bidang_filter').val('');
-                $('#kategori_filter').val('').html('<option value="">Semua Kategori</option>');
-                table.ajax.reload();
-            });
+            }
         });
-    </script>
+
+        // Filter Bidang => load kategori
+        $('#bidang_filter').change(function() {
+            var bidang_id = $(this).val();
+            $('#kategori_filter').html('<option value="">Semua Kategori</option>');
+
+            if (bidang_id) {
+                $.ajax({
+                    url: "{{ route('getKategoriByBidang', '') }}/" + bidang_id,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $.each(data, function(key, value) {
+                            $('#kategori_filter').append('<option value="'+ value.kategori_id +'">'+ value.nama_kategori +'</option>');
+                        });
+                    }
+                });
+            }
+        });
+
+        $('#filter_button').click(function() {
+            table.ajax.reload();
+        });
+
+        $('#reset_filter').click(function() {
+            $('#bidang_filter').val('');
+            $('#kategori_filter').val('').html('<option value="">Semua Kategori</option>');
+            table.ajax.reload();
+        });
+    });
+</script>
 @endsection

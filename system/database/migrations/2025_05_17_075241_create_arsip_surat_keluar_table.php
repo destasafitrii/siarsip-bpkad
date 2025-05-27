@@ -16,7 +16,6 @@ class CreateArsipSuratKeluarTable extends Migration
             $table->string('tujuan_surat_keluar')->nullable();
             $table->unsignedBigInteger('box_id')->nullable(); // ⬅️ Tambahan kolom relasi ke box
             $table->string('urutan_surat_keluar')->nullable();
-            $table->string('lokasi_surat_keluar')->nullable();
             $table->unsignedBigInteger('bidang_id');
             $table->unsignedBigInteger('kategori_id')->nullable();
             $table->string('file_surat_keluar')->nullable();
@@ -32,10 +31,11 @@ class CreateArsipSuratKeluarTable extends Migration
                 ->references('kategori_id')
                 ->on('kategori')
                 ->onDelete('set null');
-                $table->foreign('box_id')->references('box_id')->on('box')->onDelete('set null'); // ⬅️ Relasi ke box
+            $table->foreign('box_id')->references('box_id')->on('box')->onDelete('set null'); // ⬅️ Relasi ke box
         
         });
     }
+
 
     public function down(): void
     {

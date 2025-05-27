@@ -17,7 +17,7 @@ class ArsipSuratKeluar extends Model
         'bidang_id',
         'kategori_id',
         'tujuan_surat_keluar',
-        'no_berkas_surat_keluar',
+        'box_id',
         'urutan_surat_keluar',
         'lokasi_surat_keluar',
         'file_surat_keluar',
@@ -31,5 +31,20 @@ class ArsipSuratKeluar extends Model
     public function kategori()
     {
         return $this->belongsTo(Kategori::class, 'kategori_id', 'kategori_id');
+    }
+
+    public function ruangan()
+    {
+        return $this->belongsTo(Ruangan::class, 'ruangan_id', 'ruangan_id');
+    }
+
+    public function lemari()
+    {
+        return $this->belongsTo(Lemari::class, 'lemari_id', 'lemari_id');
+    }
+
+    public function box()
+    {
+        return $this->belongsTo(Box::class, 'box_id', 'box_id');
     }
 }

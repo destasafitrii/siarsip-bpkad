@@ -148,7 +148,7 @@ class ArsipSuratMasukController extends Controller
         $list_kategori = Kategori::where('bidang_id', $arsip_surat_masuk->bidang_id)->get();
         $list_ruangan = Ruangan::all();
         $list_lemari = Lemari::where('ruangan_id', $arsip_surat_masuk->box->lemari->ruangan_id)->get();
-        $list_box = Box::where('lemari_id', $arsip_surat_masuk->boxlemari_id)->get();
+        $list_box = Box::where('lemari_id', $arsip_surat_masuk->box->lemari_id)->get();
         
         return view('backend.arsip_masuk.edit', compact('arsip_surat_masuk', 'list_bidang', 'list_kategori', 'list_ruangan', 'list_lemari', 'list_box'));
     }

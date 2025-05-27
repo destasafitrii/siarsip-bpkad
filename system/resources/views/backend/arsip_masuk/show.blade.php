@@ -49,10 +49,6 @@
                                             <td>{{ $arsip_surat_masuk->asal_surat_masuk }}</td>
                                         </tr>
                                         <tr>
-                                            <th>Urutan</th>
-                                            <td>{{ $arsip_surat_masuk->urutan_surat_masuk }}</td>
-                                        </tr>
-                                        <tr>
                                             <th>Ruangan</th>
                                             <td>{{ $arsip_surat_masuk->box->lemari->ruangan->nama_ruangan ?? 'Tidak Diketahui' }}
                                             </td>
@@ -66,7 +62,10 @@
                                             <th>Box</th>
                                             <td>{{ $arsip_surat_masuk->box->nama_box ?? 'Tidak Diketahui' }}</td>
                                         </tr>
-
+                                         <tr>
+                                            <th>Urutan</th>
+                                            <td>{{ $arsip_surat_masuk->urutan_surat_masuk }}</td>
+                                        </tr>
                                         <tr>
                                             <th>Keterangan</th>
                                             <td>{{ $arsip_surat_masuk->keterangan }}</td>
