@@ -16,6 +16,8 @@ use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\LemariController;
 use App\Http\Controllers\BoxController;
 use App\Http\Controllers\QrController;  
+use App\Http\Controllers\ImportSuratMasukController;
+use App\Http\Controllers\ImportSuratKeluarController;
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -91,25 +93,6 @@ Route::get('/hasil-pencarian', [PencarianController::class, 'search'])->name('ha
 Route::get('/arsip-masuk/{id}', [PencarianController::class, 'showMasuk'])->name('arsip.masuk.show');
 Route::get('/arsip-keluar/{id}', [PencarianController::class, 'showKeluar'])->name('arsip.keluar.show');
 
-Route::prefix('import')->group(function () {
-    Route::get('/', [ArsipImportController::class, 'index'])->name('import.index');
-    Route::get('/form', [ArsipImportController::class, 'showImportForm'])->name('import.form');
-    Route::post('/process', [ArsipImportController::class, 'import'])->name('import.process');
-});
-
-Route::get('/box/{noBerkas}', [App\Http\Controllers\QrController::class, 'tampilkanIsiBox'])->name('qr.box');
-
-// use App\Models\ArsipSuratMasuk;
-
-// Route::get('/box/{no_berkas}', function ($no_berkas) {
-//     $arsip = ArsipSuratMasuk::where('no_berkas_surat_masuk', $no_berkas)->get();
-
-//     if ($arsip->isEmpty()) {
-//         abort(404, 'Data tidak ditemukan');
-//     }
-
-//     return view('box.detail', compact('arsip', 'no_berkas'));
-// });
 
 Route::controller(RuanganController::class)->group(function () {
     Route::get('ruangan', 'index')->name('ruangan');
@@ -130,9 +113,28 @@ Route::get('get-lemari-by-ruangan/{id}', [LemariController::class, 'getByRuangan
 
 Route::get('/get-box-by-lemari/{lemari_id}', [LemariController::class, 'getBoxByLemari']);
 
+Route::get('/box/{id}', [QrController::class, 'tampilkanIsiBox'])->name('qr.box');
+
 Route::controller(BoxController::class)->group(function () {
     Route::get('box', 'index')->name('box.index');
     Route::post('box', 'store')->name('box.store');
     Route::put('box/{box}', 'update')->name('box.update');
     Route::delete('box/{box}', 'destroy')->name('box.destroy');
+
+Route::get('/cetak-qr-box/{id}',  'cetakQR')->name('box.cetakqr');
+
+});
+
+Route::prefix('siarsip')->controller(ImportSuratMasukController::class)->group(function () {
+    Route::get('/arsip_masuk/import', 'showForm')->name('arsip_masuk.import.form');
+    Route::post('/arsip_masuk/import/preview', 'preview')->name('arsip_masuk.import.preview');
+    Route::post('/arsip_masuk/import/save', 'save')->name('arsip_masuk.import.save');
+});
+
+
+
+Route::prefix('siarsip')->controller(ImportSuratKeluarController::class)->group(function () {
+    Route::get('/arsip_keluar/import', 'showForm')->name('arsip_keluar.import.form');
+    Route::post('/arsip_keluar/import/preview', 'preview')->name('arsip_keluar.import.preview');
+    Route::post('/arsip_keluar/import/save', 'save')->name('arsip_keluar.import.save');
 });

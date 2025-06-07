@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Box;
 use App\Models\Lemari;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class BoxController extends Controller
 {
@@ -64,5 +65,30 @@ class BoxController extends Controller
     $box = Box::where('lemari_id', $lemari_id)->get();
     return response()->json($box);
 }
+
+
+
+public function showQR($id)
+{
+    $box = Box::with('lemari.ruangan')->findOrFail($id);
+
+    // ✅ Ini URL hasil scan yang akan membuka isi box berdasarkan box_id
+    $url = route('qr.box', $box->id); // contoh: /box/1
+
+    // ✅ Buat QR Code dari URL, bukan teks biasa
+    $qrCode = QrCode::size(200)->generate($url);
+
+    return view('box.qr', compact('qrCode', 'box'));
+}
+
+public function cetakQR($id)
+{
+    $box = Box::with('lemari.ruangan')->findOrFail($id);
+    $qrCode = \QrCode::size(250)->generate(url('/box/' . $box->box_id)); // URL QR
+
+    return view('backend.manajemen_lokasi.cetak_qr_box', compact('box', 'qrCode'));
+}
+
+
 
 }

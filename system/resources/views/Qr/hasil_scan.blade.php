@@ -1,17 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Isi Box {{ $no_berkas }}</title>
+    <meta charset="UTF-8">
+    <title>Isi Box {{ $box_id }}</title>
     <style>
-        body { font-family: sans-serif; margin: 20px; }
-        h2 { margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
-        th { background-color: #f4f4f4; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            color: #333;
+        }
+
+        .header {
+            border-bottom: 2px solid #888;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            margin: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+
+        td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-style: italic;
+            font-size: 13px;
+        }
     </style>
 </head>
 <body>
-    <h2>Isi Box: {{ $no_berkas }}</h2>
+
+    <div class="header">
+        <h2>Daftar Arsip Dalam Box ID: {{ $box_id }}</h2>
+        <p>Dihasilkan pada: {{ now()->format('d M Y, H:i') }}</p>
+    </div>
 
     <table>
         <thead>
@@ -19,19 +61,26 @@
                 <th>No Surat</th>
                 <th>Nama Surat</th>
                 <th>Urutan / Jilid</th>
-                <th>Lokasi</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($arsip as $item)
+            @forelse ($arsip as $item)
                 <tr>
-                    <td>{{ $item->no_surat_masuk }}</td>
-                    <td>{{ $item->nama_surat_masuk }}</td>
-                    <td>{{ $item->urutan_surat_masuk }}</td>
-                    <td>{{ $item->lokasi_surat_masuk }}</td>
+                    <td>{{ $item['no_surat'] }}</td>
+                    <td>{{ $item['nama_surat'] }}</td>
+                    <td style="text-align: center;">{{ $item['urutan'] }}</td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="3" style="text-align: center; font-style: italic;">Tidak ada arsip dalam box ini.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
+
+    <div class="footer">
+        Total arsip dalam box ini: {{ $arsip->count() }}
+    </div>
+
 </body>
 </html>

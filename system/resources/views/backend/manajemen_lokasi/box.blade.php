@@ -31,6 +31,7 @@
                     <th>No</th>
                     <th>Nama Box</th>
                     <th>Lemari</th>
+                    <th>QR Code</th>
                     <th>Aksi</th>
                   </tr>
                 </thead>
@@ -40,6 +41,9 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $b->nama_box }}</td>
                     <td>{{ $b->lemari->nama_lemari ?? '-' }}</td>
+                    <td>{!! QrCode::size(100)->generate(url('/box/' . $b->box_id)) !!}</td>
+
+
                     <td>
                       <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editBoxModal{{ $b->box_id }}">Edit</button>
 
@@ -48,6 +52,7 @@
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus box ini?')">Hapus</button>
                       </form>
+                      <a href="{{ url('/cetak-qr-box/' . $b->box_id) }}" target="_blank" class="btn btn-success btn-sm mt-1">🖨 Cetak QR</a>
                     </td>
                   </tr>
 
