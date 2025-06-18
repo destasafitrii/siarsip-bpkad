@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\{ArsipSuratMasuk, Bidang, Kategori, Box};
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Rap2hpoutre\FastExcel\FastExcel;
 
 class ImportSuratMasukController extends Controller
@@ -69,6 +70,7 @@ class ImportSuratMasukController extends Controller
                 'bidang_id' => $bidang?->bidang_id,
                 'kategori_id' => $kategori?->kategori_id,
                 'box_id' => $box?->box_id,
+                'opd_id' => Auth::user()->opd_id, 
             ]);
         }
 

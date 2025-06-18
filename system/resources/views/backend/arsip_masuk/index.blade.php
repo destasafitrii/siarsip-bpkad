@@ -46,7 +46,7 @@
                                         <th>Nomor Surat</th>
                                         <th>Nama Surat</th>
                                         <th>Bidang</th>
-                                        <th>Jenis Arsip</th>
+                                        <th>Kategori</th>
                                         <th>Ruangan</th>
                                         <th>Lemari</th>
                                         <th>Box</th>

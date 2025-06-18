@@ -28,7 +28,7 @@ class LemariController extends Controller
             'ruangan_id' => $request->ruangan_id,
         ]);
 
-        return redirect('/lemari')->with('success', 'Lemari berhasil ditambahkan.');
+        return redirect('/pengelola/lemari')->with('success', 'Lemari berhasil ditambahkan.');
     }
 
     public function update(Request $request, $id)
@@ -44,7 +44,7 @@ class LemariController extends Controller
             'ruangan_id' => $request->ruangan_id,
         ]);
 
-        return redirect('/lemari')->with('success', 'Lemari berhasil diperbarui.');
+        return redirect('/pengelola/lemari')->with('success', 'Lemari berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -52,7 +52,7 @@ class LemariController extends Controller
         $lemari = Lemari::findOrFail($id);
         $lemari->delete();
 
-        return redirect('/lemari')->with('success', 'Lemari berhasil dihapus.');
+        return redirect('/pengelola/lemari')->with('success', 'Lemari berhasil dihapus.');
     }
 
     public function getByRuangan($id)

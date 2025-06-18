@@ -21,7 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',       // ← Tambahkan ini
+        'opd_id',     // ← Dan ini
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -44,5 +47,9 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function opd()
+    {
+        return $this->belongsTo(Opd::class);
     }
 }

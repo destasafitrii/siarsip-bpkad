@@ -22,6 +22,7 @@ class ArsipSuratKeluar extends Model
         'lokasi_surat_keluar',
         'file_surat_keluar',
         'keterangan_surat_keluar',
+        'opd_id',
     ];
     public function bidang()
     {
@@ -47,4 +48,10 @@ class ArsipSuratKeluar extends Model
     {
         return $this->belongsTo(Box::class, 'box_id', 'box_id');
     }
+
+    public function opd()
+{
+    return $this->belongsTo(Opd::class);
+}
+
 }

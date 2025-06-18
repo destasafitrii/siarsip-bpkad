@@ -32,26 +32,26 @@ class ArsipSuratKeluarController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $btn = '<a href="'.route('arsip_keluar.show', $row->surat_keluar_id).'" class="btn btn-info btn-sm" title="Detail">
+                ->addColumn('action', function ($row) {
+                    $btn = '<a href="' . route('arsip_keluar.show', $row->surat_keluar_id) . '" class="btn btn-info btn-sm" title="Detail">
                                 <i class="fas fa-eye" style="font-size: 10px"></i>
                             </a>
-                            <a href="'.route('arsip_keluar.edit', $row->surat_keluar_id).'" class="btn btn-warning btn-sm" title="Edit">
+                            <a href="' . route('arsip_keluar.edit', $row->surat_keluar_id) . '" class="btn btn-warning btn-sm" title="Edit">
                                 <i class="fas fa-edit" style="font-size: 10px"></i>
                             </a>
-                            <form action="'.route('arsip_keluar.destroy', $row->surat_keluar_id).'" method="POST" style="display:inline-block;">
-                                '.csrf_field().'
-                                '.method_field('DELETE').'
+                            <form action="' . route('arsip_keluar.destroy', $row->surat_keluar_id) . '" method="POST" style="display:inline-block;">
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
                                 <button type="submit" class="btn btn-danger btn-sm" title="Hapus" onclick="return confirm(\'Apakah Anda yakin ingin menghapus arsip ini?\')">
                                     <i class="fas fa-trash-alt" style="font-size: 13px"></i>
                                 </button>
                             </form>';
                     return $btn;
                 })
-                ->editColumn('bidang_id', function($row) {
+                ->editColumn('bidang_id', function ($row) {
                     return $row->bidang ? $row->bidang->nama_bidang : 'Tidak ada bidang';
                 })
-                ->editColumn('kategori_id', function($row) {
+                ->editColumn('kategori_id', function ($row) {
                     return $row->kategori ? $row->kategori->nama_kategori : 'Tidak ada kategori';
                 })
                 ->editColumn('box_id', function ($row) {
@@ -71,7 +71,7 @@ class ArsipSuratKeluarController extends Controller
         return response()->json($list_kategori);
     }
 
-     public function getLemariByRuangan($ruangan_id)
+    public function getLemariByRuangan($ruangan_id)
     {
         $lemari = Lemari::where('ruangan_id', $ruangan_id)->get(['lemari_id', 'nama_lemari']);
         return response()->json($lemari);
@@ -111,7 +111,7 @@ class ArsipSuratKeluarController extends Controller
             'file_surat_keluar' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
             'keterangan_surat_keluar' => 'nullable',
         ]);
-
+        $validatedData['opd_id'] = auth()->user()->opd_id;
         // Menyimpan file jika ada
         if ($request->hasFile('file_surat_keluar')) {
             $validatedData['file_surat_keluar'] = $request->file('file_surat_keluar')->store('uploads/surat_keluar', 'public');
@@ -184,5 +184,4 @@ class ArsipSuratKeluarController extends Controller
         // Redirect ke halaman arsip surat keluar dengan pesan sukses
         return redirect()->route('arsip_keluar.index')->with('success', 'Data berhasil dihapus!');
     }
-
 }

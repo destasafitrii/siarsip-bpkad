@@ -28,6 +28,7 @@ class ArsipSuratMasuk extends Model
     
         'file_surat_masuk',
         'keterangan',
+        'opd_id',
     ];
 
     // Relasi ke Bidang
@@ -57,6 +58,11 @@ public function lemari()
     public function box()
 {
     return $this->belongsTo(Box::class, 'box_id', 'box_id');
+}
+
+public function opd()
+{
+    return $this->belongsTo(Opd::class);
 }
 
 

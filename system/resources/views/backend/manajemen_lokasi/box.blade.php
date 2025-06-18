@@ -52,7 +52,7 @@
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus box ini?')">Hapus</button>
                       </form>
-                      <a href="{{ url('/cetak-qr-box/' . $b->box_id) }}" target="_blank" class="btn btn-success btn-sm mt-1">🖨 Cetak QR</a>
+                      <a href="{{ url('/pengelola/cetak-qr-box/' . $b->box_id) }}" target="_blank" class="btn btn-success btn-sm mt-1">🖨 Cetak QR</a>
                     </td>
                   </tr>
 

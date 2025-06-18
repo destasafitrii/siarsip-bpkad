@@ -115,7 +115,7 @@ class ArsipSuratMasukController extends Controller
             'file_surat_masuk' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
             'keterangan' => 'nullable',
         ]);
-
+  $validatedData['opd_id'] = auth()->user()->opd_id;
         // Menyimpan file jika ada
         if ($request->hasFile('file_surat_masuk')) {
             $validatedData['file_surat_masuk'] = $request->file('file_surat_masuk')->store('uploads/surat_masuk', 'public');

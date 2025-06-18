@@ -24,7 +24,7 @@ class RuanganController extends Controller
             'nama_ruangan' => $request->nama_ruangan,
         ]);
 
-        return redirect('/ruangan')->with('success', 'Ruangan berhasil ditambahkan.');
+        return redirect('/pengelola/ruangan')->with('success', 'Ruangan berhasil ditambahkan.');
     }
 
    public function update(Request $request, $id)
@@ -38,7 +38,7 @@ class RuanganController extends Controller
         'nama_ruangan' => $request->nama_ruangan,
     ]);
 
-    return redirect('/ruangan')->with('success', 'Ruangan berhasil diperbarui.');
+    return redirect('/pengelola/ruangan')->with('success', 'Ruangan berhasil diperbarui.');
 }
 
 public function destroy($id)
@@ -46,7 +46,7 @@ public function destroy($id)
     $ruangan = Ruangan::findOrFail($id);
     $ruangan->delete();
 
-    return redirect('/ruangan')->with('success', 'Ruangan berhasil dihapus.');
+    return redirect('/pengelola/ruangan')->with('success', 'Ruangan berhasil dihapus.');
 }
 
 }
