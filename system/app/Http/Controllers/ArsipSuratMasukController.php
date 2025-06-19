@@ -9,7 +9,6 @@ use App\Models\Kategori;
 use App\Models\Ruangan;
 use App\Models\Lemari;
 use App\Models\Box;
-
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 

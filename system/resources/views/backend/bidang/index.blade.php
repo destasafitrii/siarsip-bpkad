@@ -28,18 +28,21 @@
                 <thead>
                   <tr>
                     <th>No</th>
+                    <th>Kode Bidang</th>
                     <th>Nama Bidang</th>
+                    <th>Penanggung Jawab</th>
                     <th>Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @forelse ($bidang as $key => $b)
+                  @forelse ($bidang as $b)
                   <tr>
                     <td>{{ $loop->iteration }}</td>
+                    <td>{{ $b->kode_bidang }}</td>
                     <td>{{ $b->nama_bidang }}</td>
+                    <td>{{ $b->penanggung_jawab }}</td>
                     <td>
                       <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editBidangModal{{ $b->bidang_id }}">Edit</button>
-
                       <form action="{{ route('bidang.destroy', $b->bidang_id) }}" method="POST" style="display:inline-block;">
                         @csrf
                         @method('DELETE')
@@ -63,8 +66,16 @@
                           @method('PUT')
                           <div class="modal-body">
                             <div class="mb-3">
+                              <label for="edit_kode_bidang_{{ $b->bidang_id }}" class="form-label">Kode Bidang</label>
+                              <input type="text" class="form-control" id="edit_kode_bidang_{{ $b->bidang_id }}" name="kode_bidang" value="{{ $b->kode_bidang }}" required>
+                            </div>
+                            <div class="mb-3">
                               <label for="edit_nama_bidang_{{ $b->bidang_id }}" class="form-label">Nama Bidang</label>
                               <input type="text" class="form-control" id="edit_nama_bidang_{{ $b->bidang_id }}" name="nama_bidang" value="{{ $b->nama_bidang }}" required>
+                            </div>
+                            <div class="mb-3">
+                              <label for="edit_penanggung_jawab_{{ $b->bidang_id }}" class="form-label">Penanggung Jawab</label>
+                              <input type="text" class="form-control" id="edit_penanggung_jawab_{{ $b->bidang_id }}" name="penanggung_jawab" value="{{ $b->penanggung_jawab }}" required>
                             </div>
                           </div>
                           <div class="modal-footer">
@@ -77,12 +88,13 @@
                   </div>
                   @empty
                   <tr>
-                    <td colspan="4" class="text-center">Tidak ada data bidang.</td>
+                    <td colspan="5" class="text-center">Tidak ada data bidang.</td>
                   </tr>
                   @endforelse
                 </tbody>
               </table>
             </div>
+
           </div>
         </div>
       </div>
@@ -102,8 +114,16 @@
         @csrf
         <div class="modal-body">
           <div class="mb-3">
+            <label for="kode_bidang" class="form-label">Kode Bidang</label>
+            <input type="text" class="form-control" id="kode_bidang" name="kode_bidang" placeholder="Misal: BDG01" required>
+          </div>
+          <div class="mb-3">
             <label for="nama_bidang" class="form-label">Nama Bidang</label>
             <input type="text" class="form-control" id="nama_bidang" name="nama_bidang" placeholder="Masukkan nama bidang" required>
+          </div>
+          <div class="mb-3">
+            <label for="penanggung_jawab" class="form-label">Penanggung Jawab</label>
+            <input type="text" class="form-control" id="penanggung_jawab" name="penanggung_jawab" placeholder="Masukkan nama penanggung jawab" required>
           </div>
         </div>
         <div class="modal-footer">

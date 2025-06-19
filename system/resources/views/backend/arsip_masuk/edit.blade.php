@@ -171,7 +171,7 @@
             // Trigger Ajax ketika halaman dimuat (jika ada nilai ruangan dan lemari sebelumnya)
             if (initialRuangan) {
                 $.ajax({
-                    url: '{{ url('arsip_masuk/getLemariByRuangan') }}/' + initialRuangan,
+                    url: '{{ url('pengelola/arsip_masuk/getLemariByRuangan') }}/' + initialRuangan,
                     type: 'GET',
                     success: function(data) {
                         $('#lemari').empty().append('<option value="">-- Pilih Lemari --</option>');
@@ -185,7 +185,7 @@
                         // Setelah lemari diisi, langsung isi box
                         if (initialLemari) {
                             $.ajax({
-                                url: '{{ url('arsip_masuk/getBoxByLemari') }}/' +
+                                url: '{{ url('pengelola/arsip_masuk/getBoxByLemari') }}/' +
                                     initialLemari,
                                 type: 'GET',
                                 success: function(data) {
@@ -212,7 +212,7 @@
 
                 if (bidang_id) {
                     $.ajax({
-                        url: '{{ url('arsip_masuk/getKategoriByBidang') }}/' + bidang_id,
+                        url: '{{ url('pengelola/arsip_masuk/getKategoriByBidang') }}/' + bidang_id,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
@@ -244,7 +244,7 @@
                 var ruanganID = $(this).val();
                 if (ruanganID) {
                     $.ajax({
-                        url: '{{ url('arsip_masuk/getLemariByRuangan') }}/' + ruanganID,
+                        url: '{{ url('pengelola/arsip_masuk/getLemariByRuangan') }}/' + ruanganID,
 
 
                         type: 'GET',
@@ -268,7 +268,7 @@
                 var lemariID = $(this).val();
                 if (lemariID) {
                     $.ajax({
-                        url: '{{ url('arsip_masuk/getBoxByLemari') }}/' + lemariID,
+                        url: '{{ url('pengelola/arsip_masuk/getBoxByLemari') }}/' + lemariID,
 
 
                         type: 'GET',

@@ -55,7 +55,7 @@
                                     <div class="mb-3">
                                         <label for="kategori_id" class="form-label">Kategori</label>
                                         <select name="kategori_id" id="kategori_id" class="form-control">
-                                            <option value="">-- Pilih Kategori (Opsional) --</option>
+                                            <option value="">-- Pilih Kategori --</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">

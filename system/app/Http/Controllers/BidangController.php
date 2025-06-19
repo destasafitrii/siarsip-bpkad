@@ -17,11 +17,15 @@ class BidangController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_bidang' => 'required|string|max:255',
+            'kode_bidang' => 'required|unique:bidang,kode_bidang',
+            'nama_bidang' => 'required',
+            'penanggung_jawab' => 'required',
         ]);
 
         Bidang::create([
+            'kode_bidang' => $request->kode_bidang,
             'nama_bidang' => $request->nama_bidang,
+            'penanggung_jawab' => $request->penanggung_jawab
         ]);
 
         return redirect()->route('bidang.index')->with('success', 'Bidang berhasil ditambahkan.');
@@ -30,12 +34,16 @@ class BidangController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama_bidang' => 'required|string|max:255',
+            'kode_bidang' => 'required|unique:bidang,kode_bidang',
+            'nama_bidang' => 'required',
+            'penanggung_jawab' => 'required',
         ]);
 
         $bidang = Bidang::findOrFail($id);
         $bidang->update([
+            'kode_bidang' => $request->kode_bidang,
             'nama_bidang' => $request->nama_bidang,
+            'penanggung_jawab' => $request->penanggung_jawab
         ]);
 
         return redirect()->route('bidang.index')->with('success', 'Bidang berhasil diperbarui.');

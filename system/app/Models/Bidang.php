@@ -15,9 +15,12 @@ class Bidang extends Model
     protected $keyType = 'int'; // Tipe data primary key
 
     // Menentukan kolom-kolom yang bisa diisi
-    protected $fillable = [
-        'nama_bidang',
-    ];
+   protected $fillable = [
+    'kode_bidang',
+    'nama_bidang',
+    'penanggung_jawab',
+];
+
 
     /**
      * Relasi Bidang ke Kategori (One to Many).

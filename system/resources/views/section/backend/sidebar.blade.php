@@ -4,7 +4,7 @@
             <ul class="left-menu list-unstyled" id="side-menu">
                 @if (auth()->user()->role == 'pengelola')
                     <li>
-                        <a href="{{ url('dashboard') }}">
+                        <a href="{{ url('pengelola/dashboard') }}">
                             <i class="fas fa-desktop"></i>
                             <span>Dashboard</span>
                         </a>
@@ -13,23 +13,23 @@
 
                     <li class="menu-title">Menu Utama</li>
 
-                    <li>
-                        <a href="{{ url('pengelola/arsip_masuk') }}">
+                     <li>
+                        <a href="javascript: void(0);" class="has-arrow">
                             <i class="mdi mdi-email"></i>
-                            <span>Arsip Surat Masuk</span>
+                            <span>Manajemen Arsip Surat</span>
                         </a>
+                        <ul class="sub-menu">
+                            <li> <a href="{{ url('pengelola/arsip_masuk') }}"><i class="mdi mdi-checkbox-blank-circle"></i>
+                                    Arsip Surat Masuk</a>
+                            </li>
+                            <li><a href="{{ url('pengelola/arsip_keluar') }}"><i class="mdi mdi-checkbox-blank-circle"></i>
+                                    Arsip Surat Keluar</a></li>
+                        </ul>
                     </li>
-
                     <li>
-                        <a href="{{ url('pengelola/arsip_keluar') }}">
-                            <i class="mdi mdi-email-open"></i>
-                            <span>Arsip Surat Keluar</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('pengelola/arsip_keluar') }}">
-                            <i class="mdi mdi-email-open"></i>
-                            <span>Manajemen Arsip Dokumen</span>
+                        <a href="{{ url('pengelola/arsip_dokumen') }}">
+                            <i class="mdi mdi-archive"></i>
+                            <span>Arsip Dokumen</span>
                         </a>
                     </li>
                     <li>
