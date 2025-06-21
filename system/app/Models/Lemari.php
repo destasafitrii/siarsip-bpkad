@@ -11,7 +11,9 @@ class Lemari extends Model
     public $timestamps = true;
 
     protected $fillable = [
+        'kode_lemari',
         'nama_lemari',
+        'jumlah_rak',
         'ruangan_id'
     ];
 

@@ -42,9 +42,13 @@ class ArsipSuratKeluarController extends Controller
                             <form action="' . route('arsip_keluar.destroy', $row->surat_keluar_id) . '" method="POST" style="display:inline-block;">
                                 ' . csrf_field() . '
                                 ' . method_field('DELETE') . '
-                                <button type="submit" class="btn btn-danger btn-sm" title="Hapus" onclick="return confirm(\'Apakah Anda yakin ingin menghapus arsip ini?\')">
-                                    <i class="fas fa-trash-alt" style="font-size: 13px"></i>
-                                </button>
+                                <button type="button" class="btn btn-danger btn-sm btn-delete" 
+        data-id="' . $row->surat_keluar_id . '" 
+        data-nama="' . $row->nama_surat_keluar . '" 
+        data-bs-toggle="modal" data-bs-target="#deleteModal">
+        <i class="fas fa-trash-alt" style="font-size: 13px"></i>
+    </button>
+                                
                             </form>';
                     return $btn;
                 })

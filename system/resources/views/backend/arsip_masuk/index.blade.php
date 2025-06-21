@@ -67,6 +67,31 @@
             <!-- end row -->
         </div>
     </div>
+
+<!-- Modal Konfirmasi Hapus -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form method="POST" id="deleteForm">
+        @csrf
+        @method('DELETE')
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Apakah Anda Yakin Ingin Menghapus Data Ini?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-danger">Hapus</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
 @endsection
 
 @section('scripts')
@@ -187,5 +212,14 @@
                 table.ajax.reload();
             });
         });
+        // Modal hapus
+$(document).on('click', '.btn-delete', function() {
+    let id = $(this).data('id');
+    let nama = $(this).data('nama');
+    $('#namaSurat').text(nama);
+    $('#deleteForm').attr('action', '{{ url('pengelola/arsip_masuk') }}/' + id);
+
+});
+
     </script>
 @endsection

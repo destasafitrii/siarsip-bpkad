@@ -35,7 +35,7 @@
                                         <td>{{ $arsip_surat_masuk->bidang->nama_bidang ?? 'Tidak Diketahui' }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Jenis Surat</th>
+                                        <th>Kategori</th>
                                         <td>{{ $arsip_surat_masuk->kategori->nama_kategori ?? 'Tidak Diketahui' }}</td>
                                     </tr>
                                     <tr>

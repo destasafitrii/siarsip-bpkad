@@ -19,7 +19,7 @@
                                     <label for="bidang_filter" class="form-label">Filter Bidang</label>
                                     <select id="bidang_filter" class="form-select">
                                         <option value="">Semua Bidang</option>
-                                        @foreach($list_bidang as $bidang)
+                                        @foreach ($list_bidang as $bidang)
                                             <option value="{{ $bidang->bidang_id }}">{{ $bidang->nama_bidang }}</option>
                                         @endforeach
                                     </select>
@@ -55,7 +55,8 @@
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody><!-- Modal Konfirmasi Hapus -->
+                              
                                     <!-- Data diisi oleh DataTables -->
                                 </tbody>
                             </table>
@@ -65,72 +66,147 @@
             </div>
         </div>
     </div>
+    <!-- Modal Konfirmasi Hapus -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form method="POST" id="deleteForm">
+        @csrf
+        @method('DELETE')
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Apakah Anda Yakin Ingin Menghapus Data Ini?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-danger">Hapus</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @section('scripts')
-<script>
-    $(document).ready(function() {
-        var table = $('#arsip_surat_keluar').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "{{ route('arsip_keluar.index') }}",
-                data: function (d) {
-                    d.bidang_id = $('#bidang_filter').val();
-                    d.kategori_id = $('#kategori_filter').val();
-                }
-            },
-            columns: [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-                {data: 'no_surat_keluar', name: 'no_surat_keluar'},
-                {data: 'nama_surat_keluar', name: 'nama_surat_keluar'},
-                {data: 'bidang_id', name: 'bidang.nama_bidang'},
-                {data: 'kategori_id', name: 'kategori.nama_kategori'},
-                {data: 'box.lemari.ruangan.nama_ruangan', name: 'box.lemari.ruangan.nama_ruangan', defaultContent: '-'},
-                {data: 'box.lemari.nama_lemari', name: 'box.lemari.nama_lemari', defaultContent: '-'},
-                {data: 'box.nama_box', name: 'box.nama_box', defaultContent: '-'},
-                {data: 'urutan_surat_keluar', name: 'urutan_surat_keluar'},
-                {data: 'tanggal_surat_keluar', name: 'tanggal_surat_keluar'},
-                {data: 'tujuan_surat_keluar', name: 'tujuan_surat_keluar'},
-                {data: 'action', name: 'action', orderable: false, searchable: false},
-            ],
-            responsive: true,
-            language: {
-                paginate: {
-                    previous: "<i class='fas fa-chevron-left'></i>",
-                    next: "<i class='fas fa-chevron-right'></i>"
-                }
-            }
-        });
-
-        // Filter Bidang => load kategori
-        $('#bidang_filter').change(function() {
-            var bidang_id = $(this).val();
-            $('#kategori_filter').html('<option value="">Semua Kategori</option>');
-
-            if (bidang_id) {
-                $.ajax({
-                    url: "{{ route('getKategoriByBidang', '') }}/" + bidang_id,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        $.each(data, function(key, value) {
-                            $('#kategori_filter').append('<option value="'+ value.kategori_id +'">'+ value.nama_kategori +'</option>');
-                        });
+    <script>
+        $(document).ready(function() {
+            var table = $('#arsip_surat_keluar').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('arsip_keluar.index') }}",
+                    data: function(d) {
+                        d.bidang_id = $('#bidang_filter').val();
+                        d.kategori_id = $('#kategori_filter').val();
                     }
-                });
-            }
+                },
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'no_surat_keluar',
+                        name: 'no_surat_keluar'
+                    },
+                    {
+                        data: 'nama_surat_keluar',
+                        name: 'nama_surat_keluar'
+                    },
+                    {
+                        data: 'bidang_id',
+                        name: 'bidang.nama_bidang'
+                    },
+                    {
+                        data: 'kategori_id',
+                        name: 'kategori.nama_kategori'
+                    },
+                    {
+                        data: 'box.lemari.ruangan.nama_ruangan',
+                        name: 'box.lemari.ruangan.nama_ruangan',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'box.lemari.nama_lemari',
+                        name: 'box.lemari.nama_lemari',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'box.nama_box',
+                        name: 'box.nama_box',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'urutan_surat_keluar',
+                        name: 'urutan_surat_keluar'
+                    },
+                    {
+                        data: 'tanggal_surat_keluar',
+                        name: 'tanggal_surat_keluar'
+                    },
+                    {
+                        data: 'tujuan_surat_keluar',
+                        name: 'tujuan_surat_keluar'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ],
+                responsive: true,
+                language: {
+                    paginate: {
+                        previous: "<i class='fas fa-chevron-left'></i>",
+                        next: "<i class='fas fa-chevron-right'></i>"
+                    }
+                }
+            });
+
+            // Filter Bidang => load kategori
+            $('#bidang_filter').change(function() {
+                var bidang_id = $(this).val();
+                $('#kategori_filter').html('<option value="">Semua Kategori</option>');
+
+                if (bidang_id) {
+                    $.ajax({
+                        url: "{{ route('getKategoriByBidang', '') }}/" + bidang_id,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                $('#kategori_filter').append('<option value="' + value
+                                    .kategori_id + '">' + value.nama_kategori +
+                                    '</option>');
+                            });
+                        }
+                    });
+                }
+            });
+
+            $('#filter_button').click(function() {
+                table.ajax.reload();
+            });
+
+            $('#reset_filter').click(function() {
+                $('#bidang_filter').val('');
+                $('#kategori_filter').val('').html('<option value="">Semua Kategori</option>');
+                table.ajax.reload();
+            });
         });
 
-        $('#filter_button').click(function() {
-            table.ajax.reload();
-        });
+      $(document).on('click', '.btn-delete', function() {
+    let id = $(this).data('id');
+    let nama = $(this).data('nama');
+    $('#namaSurat').text(nama);
+    $('#deleteForm').attr('action', '{{ url('pengelola/arsip_keluar') }}/' + id);
 
-        $('#reset_filter').click(function() {
-            $('#bidang_filter').val('');
-            $('#kategori_filter').val('').html('<option value="">Semua Kategori</option>');
-            table.ajax.reload();
-        });
-    });
-</script>
+});
+    </script>
 @endsection

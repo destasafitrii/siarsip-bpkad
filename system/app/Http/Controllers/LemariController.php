@@ -19,13 +19,18 @@ class LemariController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_lemari' => 'required|string|max:255',
+            'kode_lemari' => 'required|unique:lemari,kode_lemari',
+            'nama_lemari' => 'required',
+            'jumlah_rak' => 'required|integer|min:1',
             'ruangan_id' => 'required|exists:ruangan,ruangan_id',
         ]);
 
         Lemari::create([
+            'kode_lemari' => $request->kode_lemari,
             'nama_lemari' => $request->nama_lemari,
+            'jumlah_rak' => $request->jumlah_rak,
             'ruangan_id' => $request->ruangan_id,
+
         ]);
 
         return redirect('/pengelola/lemari')->with('success', 'Lemari berhasil ditambahkan.');
@@ -34,13 +39,17 @@ class LemariController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama_lemari' => 'required|string|max:255',
+            'kode_lemari' => 'required|unique:lemari,kode_lemari,' . $id . ',lemari_id',
+            'nama_lemari' => 'required',
+            'jumlah_rak' => 'required|integer|min:1',
             'ruangan_id' => 'required|exists:ruangan,ruangan_id',
         ]);
 
         $lemari = Lemari::findOrFail($id);
         $lemari->update([
+            'kode_lemari' => $request->kode_lemari,
             'nama_lemari' => $request->nama_lemari,
+            'jumlah_rak' => $request->jumlah_rak,
             'ruangan_id' => $request->ruangan_id,
         ]);
 
@@ -56,15 +65,14 @@ class LemariController extends Controller
     }
 
     public function getByRuangan($id)
-{
-    $lemari = Lemari::where('ruangan_id', $id)->get();
-    return response()->json($lemari);
-}
+    {
+        $lemari = Lemari::where('ruangan_id', $id)->get();
+        return response()->json($lemari);
+    }
 
-public function getBoxByLemari($lemari_id)
-{
-    $box = Box::where('lemari_id', $lemari_id)->get();
-    return response()->json($box);
-}
-
+    public function getBoxByLemari($lemari_id)
+    {
+        $box = Box::where('lemari_id', $lemari_id)->get();
+        return response()->json($box);
+    }
 }

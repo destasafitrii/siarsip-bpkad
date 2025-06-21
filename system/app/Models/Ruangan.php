@@ -11,7 +11,10 @@ class Ruangan extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'nama_ruangan'
+        'kode_ruangan',
+        'nama_ruangan',
+        'alamat',
+        'keterangan',
     ];
 
     // Relasi ke lemaris

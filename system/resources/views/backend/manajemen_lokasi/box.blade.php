@@ -36,23 +36,27 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @forelse ($box as $key => $b)
+                  @forelse ($box as $b)
                   <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $b->nama_box }}</td>
                     <td>{{ $b->lemari->nama_lemari ?? '-' }}</td>
                     <td>{!! QrCode::size(100)->generate(url('/box/' . $b->box_id)) !!}</td>
-
-
                     <td>
-                      <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editBoxModal{{ $b->box_id }}">Edit</button>
+                      <!-- Tombol Edit -->
+                      <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editBoxModal{{ $b->box_id }}" title="Edit">
+                        <i class="mdi mdi-pencil"></i>
+                      </button>
 
-                      <form action="{{ route('box.destroy', $b->box_id) }}" method="POST" style="display:inline-block;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus box ini?')">Hapus</button>
-                      </form>
-                      <a href="{{ url('/pengelola/cetak-qr-box/' . $b->box_id) }}" target="_blank" class="btn btn-success btn-sm mt-1">🖨 Cetak QR</a>
+                      <!-- Tombol Hapus (pakai modal) -->
+                      <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#hapusBoxModal{{ $b->box_id }}" title="Hapus">
+                        <i class="mdi mdi-delete"></i>
+                      </button>
+
+                      <!-- Tombol Cetak QR -->
+                      <a href="{{ url('/pengelola/cetak-qr-box/' . $b->box_id) }}" target="_blank" class="btn btn-success btn-sm mt-1" title="Cetak QR">
+                        <i class="mdi mdi-printer"></i> Cetak QR
+                      </a>
                     </td>
                   </tr>
 
@@ -76,7 +80,7 @@
                               <label class="form-label">Lemari</label>
                               <select name="lemari_id" class="form-control" required>
                                 <option value="">-- Pilih Lemari --</option>
-                                @foreach($lemari as $l)
+                                @foreach ($lemari as $l)
                                   <option value="{{ $l->lemari_id }}" {{ $l->lemari_id == $b->lemari_id ? 'selected' : '' }}>
                                     {{ $l->nama_lemari }}
                                   </option>
@@ -92,9 +96,33 @@
                       </div>
                     </div>
                   </div>
+
+                  <!-- Modal Hapus -->
+                  <div class="modal fade" id="hapusBoxModal{{ $b->box_id }}" tabindex="-1" aria-labelledby="hapusBoxModalLabel{{ $b->box_id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="hapusBoxModalLabel{{ $b->box_id }}">Konfirmasi Hapus</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="{{ route('box.destroy', $b->box_id) }}" method="POST">
+                          @csrf
+                          @method('DELETE')
+                          <div class="modal-body">
+                            <p>Apakah Anda yakin ingin menghapus box <strong>{{ $b->nama_box }}</strong>?</p>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
                   @empty
                   <tr>
-                    <td colspan="4" class="text-center">Tidak ada data box.</td>
+                    <td colspan="5" class="text-center">Tidak ada data box.</td>
                   </tr>
                   @endforelse
                 </tbody>
@@ -126,7 +154,7 @@
             <label class="form-label">Lemari</label>
             <select name="lemari_id" class="form-control" required>
               <option value="">-- Pilih Lemari --</option>
-              @foreach($lemari as $l)
+              @foreach ($lemari as $l)
               <option value="{{ $l->lemari_id }}">{{ $l->nama_lemari }}</option>
               @endforeach
             </select>

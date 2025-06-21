@@ -34,7 +34,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @forelse ($kategori as $key => $k)
+                  @forelse ($kategori as $k)
                   <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $k->nama_kategori }}</td>
@@ -42,13 +42,13 @@
                     <td>
                       <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editKategoriModal{{ $k->kategori_id }}">Edit</button>
 
-                      <form action="{{ route('kategori.destroy', $k->kategori_id) }}" method="POST" style="display:inline-block;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" title="Hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
-                          <i class="fas fa-trash-alt" style="font-size: 13px"></i>
-                        </button>
-                      </form>
+                      <button class="btn btn-danger btn-sm btn-delete" 
+                              data-bs-toggle="modal" 
+                              data-bs-target="#deleteConfirmModal"
+                              data-id="{{ $k->kategori_id }}" 
+                              data-nama="{{ $k->nama_kategori }}">
+                        <i class="fas fa-trash-alt" style="font-size: 13px"></i>
+                      </button>
                     </td>
                   </tr>
 
@@ -134,4 +134,52 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Konfirmasi Hapus -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="POST" id="deleteForm">
+      @csrf
+      @method('DELETE')
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteConfirmModalLabel">Konfirmasi Hapus</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Apakah Anda yakin ingin menghapus kategori <strong id="namaKategoriToDelete"></strong>?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-danger">Hapus</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+@endsection
+
+@section('scripts')
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var deleteConfirmModal = document.getElementById('deleteConfirmModal');
+    var deleteForm = document.getElementById('deleteForm');
+    var namaKategoriToDelete = document.getElementById('namaKategoriToDelete');
+
+    // Tangkap semua tombol delete
+    var deleteButtons = document.querySelectorAll('.btn-delete');
+
+    deleteButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        var kategoriId = this.getAttribute('data-id');
+        var namaKategori = this.getAttribute('data-nama');
+
+        // Set action form sesuai id kategori yang akan dihapus
+         deleteForm.action = `{{ url('pengelola/kategori') }}/${kategoriId}`;
+        // Tampilkan nama kategori di modal
+        namaKategoriToDelete.textContent = namaKategori;
+      });
+    });
+  });
+</script>
 @endsection

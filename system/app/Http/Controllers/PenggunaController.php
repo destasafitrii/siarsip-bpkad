@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Opd;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,9 +12,11 @@ class PenggunaController extends Controller
 {
     public function index()
     {
-        $pengguna = User::where('role', 'pengguna')
-                       ->where('opd_id', auth()->user()->opd_id)
-                       ->get();
+        $pengguna = User::with('pegawai')
+            ->where('role', 'pengguna')
+            ->where('opd_id', auth()->user()->opd_id)
+            ->get();
+
 
         return view('backend.pengguna.index', compact('pengguna'));
     }
@@ -26,20 +29,41 @@ class PenggunaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string',
+            'pegawai_id' => 'required|exists:pegawai,id',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|string|min:6|confirmed',
         ]);
 
+        // Cek apakah pegawai sudah memiliki user
+        $existing = User::where('pegawai_id', $request->pegawai_id)->first();
+        if ($existing) {
+            return back()->with('error', 'Pegawai ini sudah memiliki akun.');
+        }
+        $pegawai = Pegawai::find($request->pegawai_id);
+        $pegawai->nip = $request->nip;
+        $pegawai->nik = $request->nik;
+        $pegawai->jabatan = $request->jabatan;
+        $pegawai->golongan = $request->golongan;
+        $pegawai->save();
+
+
+
         User::create([
+            'pegawai_id' => $request->pegawai_id,
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'pengguna',
-            'opd_id' => auth()->user()->opd_id,
+            'opd_id' => auth()->user()->opd_id, // pastikan opd_id terisi
         ]);
 
-        return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil ditambahkan.');
+        return back()->with('success', 'Pengguna berhasil ditambahkan.');
+    }
+
+    public function show(User $pengguna)
+    {
+        return view('backend.pengguna.show', compact('pengguna'));
     }
 
     public function edit(User $pengguna)
@@ -49,34 +73,33 @@ class PenggunaController extends Controller
     }
 
     public function update(Request $request, User $pengguna)
-{
-    $this->authorizePengguna($pengguna);
+    {
+        $this->authorizePengguna($pengguna);
 
-    $request->validate([
-        'name' => 'required|string',
-        'email' => 'required|email|unique:users,email,' . $pengguna->id,
-        'password' => 'nullable|min:6|confirmed', // ← tambahkan validasi password opsional
-    ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $pengguna->id,
+            'password' => 'nullable|string|min:6|confirmed',
+        ]);
 
-    $pengguna->name = $request->name;
-    $pengguna->email = $request->email;
+        $pengguna->name = $request->name;
+        $pengguna->email = $request->email;
 
-    // Update password hanya jika diisi
-    if ($request->filled('password')) {
-        $pengguna->password = Hash::make($request->password);
+        if ($request->filled('password')) {
+            $pengguna->password = Hash::make($request->password);
+        }
+
+        $pengguna->save();
+
+        return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil diperbarui.');
     }
-
-    $pengguna->save();
-
-    return redirect()->route('pengguna.index')->with('success', 'pengguna berhasil diperbarui.');
-}
 
     public function destroy(User $pengguna)
     {
         $this->authorizePengguna($pengguna);
         $pengguna->delete();
 
-        return redirect()->route('pengguna.index')->with('success', 'pengguna berhasil dihapus.');
+        return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil dihapus.');
     }
 
     protected function authorizePengguna(User $pengguna)
@@ -85,5 +108,25 @@ class PenggunaController extends Controller
             abort(403);
         }
     }
-    
+
+    public function getPegawaiByNipNik(Request $request)
+    {
+        $query = $request->nip;
+
+        $pegawai = Pegawai::where('nip', $query)
+            ->orWhere('nik', $query)
+            ->first();
+
+        if ($pegawai) {
+            return response()->json([
+                'nama' => $pegawai->nama,
+                'jabatan' => $pegawai->jabatan,
+                'golongan' => $pegawai->golongan,
+                'pegawai_id' => $pegawai->id,
+                'nik' => $pegawai->nik, // ✅ ditambahkan
+            ]);
+        } else {
+            return response()->json([], 404);
+        }
+    }
 }

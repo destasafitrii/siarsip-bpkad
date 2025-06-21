@@ -97,6 +97,8 @@
 <script src="{{url('public')}}/assets/js/pages/datatables-extension.init.js"></script>
 
 @yield('scripts')
+@stack('scripts')
+
 
 <!-- App js -->
 <script src="{{url('public')}}/assets/js/app.js"></script>

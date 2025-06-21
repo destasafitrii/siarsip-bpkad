@@ -14,6 +14,7 @@ use App\Http\Controllers\ImportSuratKeluarController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ArsipDokumenController;
+use App\Http\Controllers\PegawaiController;
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('pengelola.dashboard');
 
@@ -58,7 +59,7 @@ Route::controller(KategoriController::class)->group(function () {
     Route::post('kategori', 'store')->name('kategori.store');
     Route::get('kategori/{kategori}/edit', 'edit');
     Route::put('kategori/{kategori}', 'update')->name('kategori.update');
-    Route::delete('kategori/{kategori}', 'destroy')->name( 'kategori.destroy');
+    Route::delete('kategori/{kategori}', 'destroy')->name('kategori.destroy');
 
     // Menambahkan route untuk mendapatkan kategori berdasarkan bidang
 
@@ -104,9 +105,9 @@ Route::prefix('siarsip')->controller(ImportSuratKeluarController::class)->group(
 Route::get('pengguna', [App\Http\Controllers\PenggunaController::class, 'index'])->name('pengguna.index');
 Route::get('pengguna/create', [App\Http\Controllers\PenggunaController::class, 'create'])->name('pengguna.create');
 Route::post('pengguna', [App\Http\Controllers\PenggunaController::class, 'store'])->name('pengguna.store');
-Route::get('pengguna/{id}/edit', [App\Http\Controllers\PenggunaController::class, 'edit'])->name('pengguna.edit');
-Route::put('pengguna/{id}', [App\Http\Controllers\PenggunaController::class, 'update'])->name('pengguna.update');
-Route::delete('pengguna/{id}', [App\Http\Controllers\PenggunaController::class, 'destroy'])->name('pengguna.destroy');
+Route::get('pengguna/{pengguna}/edit', [App\Http\Controllers\PenggunaController::class, 'edit'])->name('pengguna.edit');
+Route::put('pengguna/{pengguna}', [App\Http\Controllers\PenggunaController::class, 'update'])->name('pengguna.update');
+Route::delete('pengguna/{pengguna}', [App\Http\Controllers\PenggunaController::class, 'destroy'])->name('pengguna.destroy');
 
 
 
@@ -125,4 +126,23 @@ Route::controller(ArsipDokumenController::class)->group(function () {
     Route::get('arsip_dokumen/getKategoriByBidang/{bidang_id}', [App\Http\Controllers\ArsipDokumenController::class, 'getKategoriByBidang']);
     Route::get('arsip_dokumen/getLemariByRuangan/{ruangan_id}', [App\Http\Controllers\ArsipDokumenController::class, 'getLemariByRuangan']);
     Route::get('arsip_dokumen/getBoxByLemari/{lemari_id}', [App\Http\Controllers\ArsipDokumenController::class, 'getBoxByLemari']);
+});
+
+Route::get('/get-pegawai-by-nip/{nip}', [PegawaiController::class, 'getPegawaiByNip']);
+Route::get('/pengguna/getPegawaiByNipNik', [PenggunaController::class, 'getPegawaiByNipNik'])->name('pengguna.getPegawaiByNipNik');
+Route::get('/pengguna/getPegawaiByNipNik/', [PenggunaController::class, 'getPegawaiByNipNik'])->name('pengguna.getPegawaiByNipNik');
+
+
+Route::get('/pengguna/getPegawaiByNip', [PenggunaController::class, 'getPegawaiByNip'])->name('pengguna.getPegawaiByNip');
+
+Route::controller(PegawaiController::class)->group(function () {
+    Route::get('pegawai', 'index')->name('pegawai.index');
+    Route::get('pegawai/create', 'create')->name('pegawai.create');
+    Route::post('pegawai', 'store')->name('pegawai.store');
+    Route::get('pegawai/{pegawai}/edit', 'edit')->name('pegawai.edit');
+    Route::put('pegawai/{pegawai}', 'update')->name('pegawai.update');
+    Route::delete('pegawai/{pegawai}', 'destroy')->name('pegawai.destroy');
+    Route::get('pegawai/import', [PegawaiController::class, 'importForm'])->name('pegawai.import');
+Route::post('pegawai/import', [PegawaiController::class, 'import'])->name('pegawai.import.submit');
+
 });

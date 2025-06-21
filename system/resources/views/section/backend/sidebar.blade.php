@@ -13,16 +13,18 @@
 
                     <li class="menu-title">Menu Utama</li>
 
-                     <li>
+                    <li>
                         <a href="javascript: void(0);" class="has-arrow">
                             <i class="mdi mdi-email"></i>
                             <span>Manajemen Arsip Surat</span>
                         </a>
                         <ul class="sub-menu">
-                            <li> <a href="{{ url('pengelola/arsip_masuk') }}"><i class="mdi mdi-checkbox-blank-circle"></i>
+                            <li> <a href="{{ url('pengelola/arsip_masuk') }}"><i
+                                        class="mdi mdi-checkbox-blank-circle"></i>
                                     Arsip Surat Masuk</a>
                             </li>
-                            <li><a href="{{ url('pengelola/arsip_keluar') }}"><i class="mdi mdi-checkbox-blank-circle"></i>
+                            <li><a href="{{ url('pengelola/arsip_keluar') }}"><i
+                                        class="mdi mdi-checkbox-blank-circle"></i>
                                     Arsip Surat Keluar</a></li>
                         </ul>
                     </li>
@@ -76,11 +78,31 @@
                     </li>
 
                     <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i class="mdi mdi-account-multiple"></i>
+                            <span>Manajemen Pengguna</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="{{ url('pengelola/pegawai') }}"><i class="mdi mdi-checkbox-blank-circle"></i>
+                                    Data Pegawai</a>
+                            </li>
+                            <li><a href="{{ url('pengelola/pengguna') }}"><i class="mdi mdi-checkbox-blank-circle"></i>
+                                    Pengguna</a></li>
+                        </ul>
+                    </li>
+
+                    {{-- <li>
+                        <a href="{{ route('pengguna.index') }}">
+                            <i class="mdi mdi-account-multiple"></i>
+                            <span>Pegawai</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('pengguna.index') }}">
                             <i class="mdi mdi-account-multiple"></i>
                             <span>Pengguna</span>
                         </a>
-                    </li>
+                    </li> --}}
                 @elseif(auth()->user()->role == 'superadmin')
                     <li>
                         <a href="{{ url('superadmin/dashboard') }}">

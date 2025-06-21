@@ -21,9 +21,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',       // ← Tambahkan ini
-        'opd_id',     // ← Dan ini
+        'nip',
+        'jabatan',
+        'opd_id',
+        'role',
+        'pegawai_id',
     ];
+
+
 
 
     /**
@@ -51,5 +56,11 @@ class User extends Authenticatable
     public function opd()
     {
         return $this->belongsTo(Opd::class);
+    }
+
+    // app/Models/User.php
+    public function pegawai()
+    {
+        return $this->belongsTo(Pegawai::class, 'pegawai_id');
     }
 }
