@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Bidang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class BidangController extends Controller
 {
@@ -14,40 +16,44 @@ class BidangController extends Controller
         return view('backend.bidang.index', compact('bidang'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'kode_bidang' => 'required|unique:bidang,kode_bidang',
-            'nama_bidang' => 'required',
-            'penanggung_jawab' => 'required',
-        ]);
+  public function store(Request $request)
+{
+    $request->validate([
+        'kode_bidang' => 'required|unique:bidang,kode_bidang',
+        'nama_bidang' => 'required',
+        'penanggung_jawab' => 'required',
+    ]);
 
-        Bidang::create([
-            'kode_bidang' => $request->kode_bidang,
-            'nama_bidang' => $request->nama_bidang,
-            'penanggung_jawab' => $request->penanggung_jawab
-        ]);
+    Bidang::create([
+        'kode_bidang' => $request->kode_bidang,
+        'nama_bidang' => $request->nama_bidang,
+        'penanggung_jawab' => $request->penanggung_jawab,
+        'opd_id' => Auth::user()->opd_id, // otomatis dari user login
+    ]);
 
-        return redirect()->route('bidang.index')->with('success', 'Bidang berhasil ditambahkan.');
-    }
+    return redirect()->route('bidang.index')->with('success', 'Bidang berhasil ditambahkan.');
+}
 
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'kode_bidang' => 'required|unique:bidang,kode_bidang',
-            'nama_bidang' => 'required',
-            'penanggung_jawab' => 'required',
-        ]);
 
-        $bidang = Bidang::findOrFail($id);
-        $bidang->update([
-            'kode_bidang' => $request->kode_bidang,
-            'nama_bidang' => $request->nama_bidang,
-            'penanggung_jawab' => $request->penanggung_jawab
-        ]);
+   public function update(Request $request, $id)
+{
+    $request->validate([
+        'kode_bidang' => 'required|unique:bidang,kode_bidang,' . $id,
+        'nama_bidang' => 'required',
+        'penanggung_jawab' => 'required',
+    ]);
 
-        return redirect()->route('bidang.index')->with('success', 'Bidang berhasil diperbarui.');
-    }
+    $bidang = Bidang::findOrFail($id);
+    $bidang->update([
+        'kode_bidang' => $request->kode_bidang,
+        'nama_bidang' => $request->nama_bidang,
+        'penanggung_jawab' => $request->penanggung_jawab,
+        'opd_id' => Auth::user()->opd_id, // juga dari user login
+    ]);
+
+    return redirect()->route('bidang.index')->with('success', 'Bidang berhasil diperbarui.');
+}
+
 
     public function destroy($id)
     {

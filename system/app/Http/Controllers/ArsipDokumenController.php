@@ -94,6 +94,14 @@ class ArsipDokumenController extends Controller
         return view('backend.arsip_dokumen.create', compact('list_bidang', 'list_kategori', 'list_ruangan', 'list_lemari', 'list_box',));
     }
 
+    /*************  ✨ Windsurf Command ⭐  *************/
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    /*******  9f7f5ad6-d864-4da1-a467-a9c6cdda50cb  *******/
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -108,6 +116,8 @@ class ArsipDokumenController extends Controller
             'file_dokumen' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
             'keterangan' => 'nullable',
         ]);
+        
+        $validatedData['opd_id'] = auth()->user()->opd_id;
 
         if ($request->hasFile('file_dokumen')) {
             $validatedData['file_dokumen'] = $request->file('file_dokumen')->store('uploads/dokumen', 'public');

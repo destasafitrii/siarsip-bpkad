@@ -23,6 +23,7 @@ class ArsipDokumen extends Model
         'box_id',
         'file_dokumen',
         'keterangan',
+        'opd_id',
     ];
 
     // Relasi ke Bidang
@@ -54,4 +55,10 @@ class ArsipDokumen extends Model
     {
         return $this->belongsTo(Box::class, 'box_id');
     }
+public function opd()
+{
+    return $this->belongsTo(Opd::class, 'opd_id', 'opd_id');
+}
+
+
 }

@@ -146,3 +146,6 @@ Route::controller(PegawaiController::class)->group(function () {
 Route::post('pegawai/import', [PegawaiController::class, 'import'])->name('pegawai.import.submit');
 
 });
+
+Route::get('/get-bidang-by-opd/{opd_id}', [BidangController::class, 'getByOpd']);
+Route::get('/get-kategori-by-opd/{opd_id}', [KategoriController::class, 'getByOpd']);

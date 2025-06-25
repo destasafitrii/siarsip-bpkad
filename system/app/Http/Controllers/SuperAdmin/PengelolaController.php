@@ -26,10 +26,13 @@ class PengelolaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|confirmed',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6|confirmed',
             'opd_id' => 'required|exists:opds,id',
+            'nip' => 'nullable|string|unique:users,nip',
+            'jabatan' => 'nullable|string|max:255',
+            'golongan' => 'nullable|string|max:50',
         ]);
 
         User::create([
@@ -38,44 +41,56 @@ class PengelolaController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'pengelola',
             'opd_id' => $request->opd_id,
+            'nip' => $request->nip,
+            'jabatan' => $request->jabatan,
+            'golongan' => $request->golongan,
         ]);
 
-        return redirect()->route('pengelola.index')->with('success', 'Data Pengelola Berhasil Ditambahkan.');
+        return redirect()->route('pengelola.index')->with('success', 'Data Pengelola berhasil ditambahkan.');
     }
 
-   public function update(Request $request, $id)
-{
-    $admin = User::findOrFail($id);
-
-    $request->validate([
-        'name' => 'required|string',
-        'email' => [
-            'required',
-            'email',
-            Rule::unique('users')->ignore($admin->id),
-        ],
-        'opd_id' => 'required|exists:opds,id',
-        'password' => 'nullable|string|confirmed',
-    ]);
-
-    $admin->name = $request->name;
-    $admin->email = $request->email;
-    $admin->opd_id = $request->opd_id;
-
-    if ($request->filled('password')) {
-        $admin->password = Hash::make($request->password);
+    public function edit($id)
+    {
+        $admin = User::findOrFail($id);
+        $opds = Opd::all();
+        return view('superadmin.pengelola.edit', compact('admin', 'opds'));
     }
 
-    $admin->save();
+    public function update(Request $request, $id)
+    {
+        $admin = User::findOrFail($id);
 
-    return redirect()->route('pengelola.index')->with('success', 'Data Pengelola Berhasil Diperbarui.');
-}
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => ['required', 'email', Rule::unique('users')->ignore($admin->id)],
+            'opd_id' => 'required|exists:opds,id',
+            'password' => 'nullable|string|min:6|confirmed',
+            'nip' => ['nullable', 'string', Rule::unique('users')->ignore($admin->id)],
+            'jabatan' => 'nullable|string|max:255',
+            'golongan' => 'nullable|string|max:50',
+        ]);
 
-public function destroy($id)
-{
-    $admin = User::findOrFail($id);
-    $admin->delete();
+        $admin->name = $request->name;
+        $admin->email = $request->email;
+        $admin->opd_id = $request->opd_id;
+        $admin->nip = $request->nip;
+        $admin->jabatan = $request->jabatan;
+        $admin->golongan = $request->golongan;
 
-    return redirect()->route('pengelola.index')->with('success', 'Data Pengelola Berhasil Dihapus.');
-}
+        if ($request->filled('password')) {
+            $admin->password = Hash::make($request->password);
+        }
+
+        $admin->save();
+
+        return redirect()->route('pengelola.index')->with('success', 'Data Pengelola berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
+        $admin = User::findOrFail($id);
+        $admin->delete();
+
+        return redirect()->route('pengelola.index')->with('success', 'Data Pengelola berhasil dihapus.');
+    }
 }

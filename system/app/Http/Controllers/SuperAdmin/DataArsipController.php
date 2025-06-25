@@ -3,88 +3,94 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\ArsipSuratMasuk;
 use App\Models\ArsipSuratKeluar;
-use App\Models\Opd;
-use App\Models\Bidang;
-use App\Models\Kategori;
-use Illuminate\Http\Request;
+use App\Models\ArsipDokumen;
 use Yajra\DataTables\Facades\DataTables;
 
 class DataArsipController extends Controller
 {
     public function index()
     {
-        $opds = Opd::all();
-        $bidangs = Bidang::all();
-        $kategoris = Kategori::all();
-
-        return view('superadmin.data_arsip.index', compact('opds', 'bidangs', 'kategoris'));
+        return view('superadmin.data_arsip.index');
     }
 
     public function getData(Request $request)
     {
-        $filteredJenis = $request->jenis_arsip;
+        $dataGabungan = collect();
 
-        $dataMasuk = collect();
-        $dataKeluar = collect();
+        // Arsip Surat Masuk
+        $suratMasuk = ArsipSuratMasuk::with(['opd', 'bidang', 'kategori', 'ruangan', 'lemari', 'box'])->get();
+        foreach ($suratMasuk as $item) {
+            $dataGabungan->push([
+                'jenis' => 'Surat Masuk',
+                'no_surat' => $item->no_surat_masuk,
+                'nama_surat' => $item->nama_surat_masuk,
+                'opd' => $item->opd->nama_opd ?? '-',
+                'bidang' => $item->bidang->nama_bidang ?? '-',
+                'kategori' => $item->kategori->nama_kategori ?? '-',
+                'ruangan' => $item->box->lemari->ruangan->nama_ruangan ?? '-',
+                'lemari' => $item->box->lemari->nama_lemari ?? '-',
 
-        if (!$filteredJenis || $filteredJenis === 'masuk') {
-            $dataMasuk = ArsipSuratMasuk::with(['bidang', 'kategori', 'box.lemari.ruangan'])
-                ->when($request->opd_id, fn($q) => $q->where('opd_id', $request->opd_id))
-                ->when($request->bidang_id, fn($q) => $q->where('bidang_id', $request->bidang_id))
-                ->when($request->kategori_id, fn($q) => $q->where('kategori_id', $request->kategori_id))
-                ->get()
-                ->map(function ($item) {
-                    return [
-                        'id' => $item->id,
-                        'no_surat' => $item->no_surat_masuk,
-                        'nama_surat' => $item->nama_surat_masuk,
-                        'bidang' => optional($item->bidang)->nama_bidang ?? '-',
-                        'kategori' => optional($item->kategori)->nama_kategori ?? '-',
-                        'ruangan' => optional(optional(optional($item->box)->lemari)->ruangan)->nama_ruangan ?? '-',
-                        'lemari' => optional(optional($item->box)->lemari)->nama_lemari ?? '-',
-                        'box' => optional($item->box)->nama_box ?? '-',
-                        'urutan' => $item->urutan_surat_masuk,
-                        'tanggal' => $item->tanggal_surat_masuk,
-                        'asal' => $item->asal_surat_masuk,
-                        'jenis_arsip' => 'masuk',
-                    ];
-                });
+                'box' => $item->box->nama_box ?? '-',
+                'tanggal' => $item->tanggal_surat_masuk,
+                'aksi' => '<a href="' . route('data_arsip.show', ['Surat Masuk', $item->surat_masuk_id]) . '" class="btn btn-sm btn-info">Detail</a>',
+            ]);
         }
 
-        if (!$filteredJenis || $filteredJenis === 'keluar') {
-            $dataKeluar = ArsipSuratKeluar::with(['bidang', 'kategori', 'box.lemari.ruangan'])
-                ->when($request->opd_id, fn($q) => $q->where('opd_id', $request->opd_id))
-                ->when($request->bidang_id, fn($q) => $q->where('bidang_id', $request->bidang_id))
-                ->when($request->kategori_id, fn($q) => $q->where('kategori_id', $request->kategori_id))
-                ->get()
-                ->map(function ($item) {
-                    return [
-                        'id' => $item->id,
-                        'no_surat' => $item->no_surat_keluar,
-                        'nama_surat' => $item->nama_surat_keluar,
-                        'bidang' => optional($item->bidang)->nama_bidang ?? '-',
-                        'kategori' => optional($item->kategori)->nama_kategori ?? '-',
-                        'ruangan' => optional(optional(optional($item->box)->lemari)->ruangan)->nama_ruangan ?? '-',
-                        'lemari' => optional(optional($item->box)->lemari)->nama_lemari ?? '-',
-                        'box' => optional($item->box)->nama_box ?? '-',
-                        'urutan' => $item->urutan_surat_keluar,
-                        'tanggal' => $item->tanggal_surat_keluar,
-                        'asal' => $item->asal_surat_keluar,
-                        'jenis_arsip' => 'keluar',
-                    ];
-                });
+        // Arsip Surat Keluar
+        $suratKeluar = ArsipSuratKeluar::with(['opd', 'bidang', 'kategori', 'ruangan', 'lemari', 'box'])->get();
+        foreach ($suratKeluar as $item) {
+            $dataGabungan->push([
+                'jenis' => 'Surat Keluar',
+                'no_surat' => $item->no_surat_keluar,
+                'nama_surat' => $item->nama_surat_keluar,
+                'opd' => $item->opd->nama_opd ?? '-',
+                'bidang' => $item->bidang->nama_bidang ?? '-',
+                'kategori' => $item->kategori->nama_kategori ?? '-',
+                'ruangan' => $item->box->lemari->ruangan->nama_ruangan ?? '-',
+                'lemari' => $item->box->lemari->nama_lemari ?? '-',
+
+                'box' => $item->box->nama_box ?? '-',
+                'tanggal' => $item->tanggal_surat_keluar,
+                'aksi' => '<a href="' . route('data_arsip.show', ['Surat Keluar', $item->surat_keluar_id]) . '" class="btn btn-sm btn-info">Detail</a>',
+            ]);
         }
 
-        $merged = $dataMasuk->concat($dataKeluar);
+        // Arsip Dokumen
+        $dokumen = ArsipDokumen::with(['opd', 'bidang', 'kategori', 'ruangan', 'lemari', 'box'])->get();
+        foreach ($dokumen as $item) {
+            $dataGabungan->push([
+                'jenis' => 'Dokumen',
+                'no_surat' => $item->no_dokumen ?? '-',
+                'nama_surat' => $item->nama_dokumen,
+                'opd' => $item->opd->nama_opd ?? '-',
+                'bidang' => $item->bidang->nama_bidang ?? '-',
+                'kategori' => $item->kategori->nama_kategori ?? '-',
+                'ruangan' => $item->ruangan->nama_ruangan ?? '-',
+                'lemari' => $item->lemari->nama_lemari ?? '-',
+                'box' => $item->box->nama_box ?? '-',
+                'tanggal' => $item->tanggal_dokumen,
+                'aksi' => '<a href="' . route('data_arsip.show', ['Dokumen', $item->dokumen_id]) . '" class="btn btn-sm btn-info">Detail</a>',
+            ]);
+        }
 
-        return DataTables::of($merged)
-            ->addIndexColumn()
-            ->addColumn('action', function ($row) {
-                return '<a href="#" class="btn btn-info btn-sm">Detail</a>';
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+        return DataTables::of($dataGabungan)->rawColumns(['aksi'])->make(true);
+    }
+
+    public function show($jenis, $id)
+    {
+        if ($jenis == 'Surat Masuk') {
+            $arsip = ArsipSuratMasuk::with(['opd', 'bidang', 'kategori', 'ruangan', 'lemari', 'box'])->findOrFail($id);
+        } elseif ($jenis == 'Surat Keluar') {
+            $arsip = ArsipSuratKeluar::with(['opd', 'bidang', 'kategori', 'ruangan', 'lemari', 'box'])->findOrFail($id);
+        } elseif ($jenis == 'Dokumen') {
+            $arsip = ArsipDokumen::with(['opd', 'bidang', 'kategori', 'ruangan', 'lemari', 'box'])->findOrFail($id);
+        } else {
+            abort(404);
+        }
+
+        return view('superadmin.data_arsip.show', compact('arsip', 'jenis'));
     }
 }

@@ -127,15 +127,58 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ url('superadmin/data_arsip') }}">
-                            <i class="mdi mdi-account-key"></i>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <i class="mdi mdi-bookshelf"></i>
                             <span>Data Arsip</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="{{ url('superadmin/arsip-masuk') }}"><i class="mdi mdi-checkbox-blank-circle"></i>
+                                    Arsip Surat Masuk</a>
+                            </li>
+                            <li><a href="{{ url('superadmin/arsip-keluar') }}"><i class="mdi mdi-checkbox-blank-circle"></i>
+                                    Arsip Surat Keluar</a></li>
+                            <li><a href="{{ url('superadmin/arsip-dokumen') }}"><i class="mdi mdi-checkbox-blank-circle"></i>
+                                    Arsip Dokumen</a></li>
+                        </ul>
+                    </li>
+                    {{-- <li>
+                        <a href="{{ url('superadmin/data_arsip') }}">
+                            <i class="mdi mdi-bookshelf"></i>
+                            <span>Data Arsip</span>
+                        </a>
+                    </li> --}}
+
+                    <!-- Tambahkan menu lain untuk superadmin di sini -->
+
+                    {{-- Pengguna (Pegawai Biasa) --}}
+                @elseif(auth()->user()->role == 'pengguna')
+                    <li>
+                        <a href="{{ url('pengguna/dashboard') }}">
+                            <i class="fas fa-desktop"></i>
+                            <span>Dashboard</span>
                         </a>
                     </li>
 
-                    <!-- Tambahkan menu lain untuk superadmin di sini -->
-                @endif
 
+                    <li class="menu-title">Menu Utama</li>
+
+                    <li>
+                        <a href="{{ url('pengguna/cari_arsip') }}">
+                            <i class="mdi mdi-file-find"></i>
+                            <span>Cari Arsip</span>
+                        </a>
+                    </li>
+                    @if (auth()->user()->role == 'pengguna')
+                        <li><a href="{{ route('pengguna.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+                        <li><a href="{{ route('pengguna.cariArsipMasuk') }}"><i class="mdi mdi-magnify"></i> Arsip
+                                Surat Masuk</a></li>
+                        <li><a href="{{ route('pengguna.cariArsipKeluar') }}"><i class="mdi mdi-magnify"></i> Arsip
+                                Surat Keluar</a></li>
+                        <li><a href="{{ route('pengguna.cariArsipDokumen') }}"><i class="mdi mdi-magnify"></i> Arsip
+                                Dokumen</a></li>
+                    @endif
+
+                @endif
             </ul>
         </div>
     </div>

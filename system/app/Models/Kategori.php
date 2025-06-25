@@ -29,5 +29,11 @@ class Kategori extends Model
         // Menghubungkan dengan model Bidang melalui bidang_id
         return $this->belongsTo(Bidang::class, 'bidang_id', 'bidang_id');
     }
+
+    public function getByOpd($opd_id)
+{
+    return response()->json(Kategori::where('opd_id', $opd_id)->get());
+}
+
     
 }

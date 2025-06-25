@@ -19,7 +19,9 @@ class Bidang extends Model
     'kode_bidang',
     'nama_bidang',
     'penanggung_jawab',
+    'opd_id', // ini penting!
 ];
+
 
 
     /**
@@ -30,4 +32,16 @@ class Bidang extends Model
         // Menggunakan 'bidang_id' sebagai foreign key di tabel kategori
         return $this->hasMany(Kategori::class, 'bidang_id', 'bidang_id');
     }
+    
+    public function getByOpd($opd_id)
+{
+    return response()->json(Bidang::where('opd_id', $opd_id)->get());
+}
+
+public function opd()
+{
+    return $this->belongsTo(Opd::class, 'opd_id', 'id');
+}
+
+
 }
