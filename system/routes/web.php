@@ -8,6 +8,10 @@ use App\Http\Controllers\PencarianArsipSuratKeluarController;
 use App\Http\Controllers\frontend\PencarianController;
 use App\Http\Controllers\SuperAdmin\OpdController;
 
+Route::get('/', function () {
+    return view('frontend.landing');
+});
+
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

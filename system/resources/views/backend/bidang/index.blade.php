@@ -148,7 +148,7 @@
 
 <!-- Modal Konfirmasi Hapus -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered"> {{-- Tambahkan modal-dialog-centered di sini --}}
         <form method="POST" id="deleteForm" class="modal-content">
             @csrf
             @method('DELETE')
@@ -166,6 +166,7 @@
         </form>
     </div>
 </div>
+
 @endsection
 
 @section('scripts')

@@ -60,7 +60,7 @@
                                 </div>
                                 <hr class="my-4">
 
-<h5 class="mb-3">Statistik Surat Masuk</h5>
+{{-- <h5 class="mb-3">Statistik Surat Masuk</h5>
 <div class="row">
     <div class="col-sm-4">
         <div class="d-flex justify-content-between align-items-center shadow-lg p-3">
@@ -132,7 +132,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
                                 
 

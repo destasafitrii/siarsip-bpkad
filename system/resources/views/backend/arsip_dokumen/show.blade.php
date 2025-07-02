@@ -59,6 +59,10 @@
                                             <td>{{ $arsip_dokumen->box->nama_box ?? '-' }}</td>
                                         </tr>
                                         <tr>
+                                            <th>Urutan</th>
+                                            <td>{{ $arsip_dokumen->urutan ?? '-' }}</td>
+                                        </tr>
+                                        <tr>
                                             <th>Keterangan</th>
                                             <td>{{ $arsip_dokumen->keterangan ?? '-' }}</td>
                                         </tr>

@@ -94,10 +94,10 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="urutan_dokumen" class="form-label">Urutan</label>
-                                            <input type="text" class="form-control" id="urutan_dokumen"
-                                                name="urutan_dokumen" placeholder="Masukkan urutan penyimpanan" required
-                                                value="{{ old('urutan_dokumen') }}">
+                                            <label for="urutan" class="form-label">Urutan</label>
+                                            <input type="text" class="form-control" id="urutan"
+                                                name="urutan" placeholder="Masukkan urutan penyimpanan" required
+                                                value="{{ old('urutan') }}">
                                         </div>
 
                                         <div class="mb-3">

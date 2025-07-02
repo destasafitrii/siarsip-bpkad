@@ -115,9 +115,9 @@
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="urutan_dokumen" class="form-label">Urutan</label>
-                                        <input type="text" class="form-control" id="urutan_dokumen" name="urutan_dokumen"
-                                            value="{{ old('urutan_dokumen', $arsip_dokumen->urutan_dokumen) }}" required>
+                                        <label for="urutan" class="form-label">Urutan</label>
+                                        <input type="text" class="form-control" id="urutan" name="urutan"
+                                            value="{{ old('urutan', $arsip_dokumen->urutan) }}" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="file_dokumen" class="form-label">Unggah File Baru (Opsional)</label>

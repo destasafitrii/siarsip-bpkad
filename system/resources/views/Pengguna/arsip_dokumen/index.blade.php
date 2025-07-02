@@ -3,43 +3,45 @@
 @section('content')
     <div class="page-content">
         <div class="container-fluid">
-            <!-- Data Arsipan Table -->
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="card-title">Data Arsip Dokumen</h4>
-                            <a href="{{ route('arsip_dokumen.create') }}"
-                                class="btn btn-primary btn-sm d-flex align-items-center" title="Tambah Data">
-                                <i class="fas fa-plus me-1"></i> <span>Tambah Data</span>
-                            </a>
                         </div>
                         <div class="card-body">
+                            <!-- Filter Section -->
                             <div class="row mb-3">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label for="bidang_filter" class="form-label">Filter Bidang</label>
                                     <select id="bidang_filter" class="form-select">
                                         <option value="">Semua Bidang</option>
-                                        @foreach ($list_bidang as $bidang)
+                                        @foreach ($bidangs as $bidang)
                                             <option value="{{ $bidang->bidang_id }}">{{ $bidang->nama_bidang }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-3">
+
+                                <div class="col-md-4">
                                     <label for="kategori_filter" class="form-label">Filter Kategori</label>
                                     <select id="kategori_filter" class="form-select">
                                         <option value="">Semua Kategori</option>
+                                        @foreach ($kategoris as $kategori)
+                                            <option value="{{ $kategori->kategori_id }}">{{ $kategori->nama_kategori }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-3 d-flex align-items-end">
+
+                                <div class="col-md-4 d-flex align-items-end">
                                     <button id="filter_button" class="btn btn-primary">Filter</button>
                                     <button id="reset_filter" class="btn btn-secondary ms-2">Reset</button>
                                 </div>
                             </div>
-                           
-                            <table id="tabel_arsip_dokumen"
-                                class="table table-hover table-bordered table-striped dt-responsive nowrap"
-                                style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+
+                            <!-- DataTable -->
+                            <table id="arsip_dokumen"
+                                   class="table table-hover table-bordered table-striped dt-responsive nowrap"
+                                   style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -47,12 +49,6 @@
                                         <th>Nama Dokumen</th>
                                         <th>Bidang</th>
                                         <th>Kategori</th>
-                                        <th>Ruangan</th>
-                                        <th>Lemari</th>
-                                        <th>Box</th>
-                                        <th>Urutan</th>
-                                        <th>Tanggal Dokumen</th>
-                                        <th>Keterangan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -62,43 +58,20 @@
                             </table>
                         </div>
                     </div>
-                </div> <!-- end col -->
+                </div>
             </div>
         </div>
     </div>
-    <!-- Modal Konfirmasi Hapus -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <form method="POST" id="deleteForm">
-        @csrf
-        @method('DELETE')
-        <div class="modal-header">
-          <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>Apakah Anda Yakin Ingin Menghapus Data Ini?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-danger">Hapus</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
 @endsection
 
 @section('scripts')
     <script>
         $(document).ready(function() {
-            var table = $('#tabel_arsip_dokumen').DataTable({
+            const table = $('#arsip_dokumen').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('arsip_dokumen.index') }}",
+                    url: "{{ route('pengguna.arsip_dokumen.index') }}",
                     data: function(d) {
                         d.bidang_id = $('#bidang_filter').val();
                         d.kategori_id = $('#kategori_filter').val();
@@ -108,15 +81,9 @@
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                     { data: 'no_dokumen', name: 'no_dokumen' },
                     { data: 'nama_dokumen', name: 'nama_dokumen' },
-                    { data: 'bidang.nama_bidang', name: 'bidang.nama_bidang' },
-                    { data: 'kategori.nama_kategori', name: 'kategori.nama_kategori' },
-                    { data: 'box.lemari.ruangan.nama_ruangan', name: 'box.lemari.ruangan.nama_ruangan', defaultContent: '-' },
-                    { data: 'box.lemari.nama_lemari', name: 'box.lemari.nama_lemari', defaultContent: '-' },
-                    { data: 'box.nama_box', name: 'box.nama_box', defaultContent: '-' },
-                    { data: 'urutan', name: 'urutan' },
-                    { data: 'tanggal_dokumen', name: 'tanggal_dokumen' },
-                    { data: 'keterangan', name: 'keterangan' },
-                    { data: 'action', name: 'action', orderable: false, searchable: false },
+                    { data: 'bidang_id', name: 'bidang.nama_bidang' },
+                    { data: 'kategori_id', name: 'kategori.nama_kategori' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false }
                 ],
                 responsive: true,
                 language: {
@@ -127,19 +94,24 @@
                 }
             });
 
-            $('#bidang_filter').change(function() {
-                var bidang_id = $(this).val();
+            $('#bidang_filter').on('change', function() {
+                const bidang_id = $(this).val();
                 $('#kategori_filter').html('<option value="">Semua Kategori</option>');
 
                 if (bidang_id) {
+                    const url = "{{ url('pengguna/arsip-dokumen/get-kategori-by-bidang') }}/" + bidang_id;
+
                     $.ajax({
-                        url: "{{ url('/arsip-dokumen/kategori/by-bidang') }}/" + bidang_id,
-                        type: "GET",
-                        dataType: "json",
+                        url: url,
+                        type: 'GET',
+                        dataType: 'json',
                         success: function(data) {
-                            $.each(data, function(key, value) {
-                                $('#kategori_filter').append('<option value="' + value.kategori_id + '">' + value.nama_kategori + '</option>');
+                            $.each(data, function(i, kategori) {
+                                $('#kategori_filter').append('<option value="' + kategori.kategori_id + '">' + kategori.nama_kategori + '</option>');
                             });
+                        },
+                        error: function() {
+                            alert('Gagal memuat kategori.');
                         }
                     });
                 }
@@ -151,18 +123,9 @@
 
             $('#reset_filter').click(function() {
                 $('#bidang_filter').val('');
-                $('#kategori_filter').val('').html('<option value="">Semua Kategori</option>');
+                $('#kategori_filter').val('');
                 table.ajax.reload();
             });
         });
-             // Modal hapus
-$(document).on('click', '.btn-delete', function() {
-    let id = $(this).data('id');
-    let nama = $(this).data('nama');
-    $('#namaSurat').text(nama);
-    $('#deleteForm').attr('action', '{{ url('pengelola/arsip_dokumen') }}/' + id);
-
-});
-
     </script>
 @endsection

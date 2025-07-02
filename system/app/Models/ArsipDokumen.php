@@ -21,6 +21,7 @@ class ArsipDokumen extends Model
         'ruangan_id',
         'lemari_id',
         'box_id',
+        'urutan',
         'file_dokumen',
         'keterangan',
         'opd_id',
@@ -57,7 +58,7 @@ class ArsipDokumen extends Model
     }
 public function opd()
 {
-    return $this->belongsTo(Opd::class, 'opd_id', 'opd_id');
+    return $this->belongsTo(Opd::class, 'opd_id', 'id');
 }
 
 
