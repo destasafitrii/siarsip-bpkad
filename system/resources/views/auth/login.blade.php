@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="text-center mt-3">
-                <small>© {{ date('Y') }} Sistem Arsip | Ketapang</small>
+                <small>© {{ date('Y') }} Sistem Pengelolaan Arsip Perangkat Daerah | Ketapang</small>
             </div>
         </div>
     </div>

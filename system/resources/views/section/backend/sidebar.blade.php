@@ -74,6 +74,8 @@
                                         class="mdi mdi-checkbox-blank-circle"></i> Arsip Surat Masuk</a></li>
                             <li><a href="{{ route('arsip_keluar.import.form') }}"><i
                                         class="mdi mdi-checkbox-blank-circle"></i> Arsip Surat Keluar</a></li>
+                             <li><a href="{{ route('arsip_dokumen.import.form') }}"><i
+                                        class="mdi mdi-checkbox-blank-circle"></i> Arsip Dokumen</a></li>
                         </ul>
                     </li>
 

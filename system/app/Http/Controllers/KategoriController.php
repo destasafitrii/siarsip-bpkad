@@ -5,74 +5,135 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Kategori;
 use App\Models\Bidang;
+use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class KategoriController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kategori = Kategori::with('bidang')->get(); // Ambil relasi bidang
-        $bidang = Bidang::all(); // Ambil semua bidang
-        return view('backend.kategori.index', compact('kategori', 'bidang'));
-    }
+        if ($request->ajax()) {
+            $bidang_opd = Bidang::where('opd_id', Auth::user()->opd_id)->pluck('bidang_id');
 
+            $data = Kategori::with('bidang')
+                        ->whereIn('bidang_id', $bidang_opd)
+                        ->select('kategori.*');
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('bidang', function ($row) {
+                    return $row->bidang->nama_bidang ?? '-';
+                })
+                ->addColumn('action', function ($row) {
+                    return '
+                        <button class="btn btn-warning btn-sm btn-edit" data-id="' . $row->kategori_id . '">
+                            <i class="mdi mdi-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm btn-delete" data-id="' . $row->kategori_id . '" data-nama="' . $row->nama_kategori . '">
+                            <i class="mdi mdi-trash-can-outline"></i>
+                        </button>
+                    ';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        $bidang = Bidang::where('opd_id', Auth::user()->opd_id)->get();
+        return view('backend.kategori.index', compact('bidang'));
+    }
 
     public function store(Request $request)
     {
         $request->validate([
             'nama_kategori' => 'required|string|max:255',
-         'bidang_id' => 'required|exists:bidang,bidang_id',
-
+            'bidang_id' => 'required|exists:bidang,bidang_id',
         ]);
+
+        $bidang = Bidang::where('bidang_id', $request->bidang_id)
+                        ->where('opd_id', Auth::user()->opd_id)
+                        ->first();
+
+        if (!$bidang) {
+            return redirect()->route('kategori.index')->with('error', 'Anda tidak berhak menambahkan kategori ke bidang ini.');
+        }
 
         Kategori::create([
             'nama_kategori' => $request->nama_kategori,
             'bidang_id' => $request->bidang_id,
         ]);
 
-        // Mengembalikan view dengan data kategori dan bidang
-        $kategori = Kategori::with('bidang')->get(); // Ambil relasi bidang
-        $bidang = Bidang::all(); // Ambil semua bidang
-        return view('backend.kategori.index', compact('kategori', 'bidang'))->with('success', 'Kategori berhasil ditambahkan.');
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
     }
 
     public function update(Request $request, $id)
     {
-        // Validasi data yang diterima
         $request->validate([
             'nama_kategori' => 'required|string|max:255',
-        'bidang_id' => 'required|exists:bidang,bidang_id',
-
+            'bidang_id' => 'required|exists:bidang,bidang_id',
         ]);
 
-        // Ambil data kategori berdasarkan ID
-        $kategori = Kategori::find($id); // Menggunakan find() untuk mendapatkan kategori berdasarkan ID
+        $kategori = Kategori::findOrFail($id);
 
-        // Pastikan kategori ditemukan
-        if (!$kategori) {
-            return redirect()->route('kategori.index')->with('error', 'Kategori tidak ditemukan.');
+        $bidang = Bidang::where('bidang_id', $request->bidang_id)
+                        ->where('opd_id', Auth::user()->opd_id)
+                        ->first();
+
+        if (!$bidang) {
+            return redirect()->route('kategori.index')->with('error', 'Anda tidak berhak mengubah kategori ini.');
         }
 
-        // Lakukan update data kategori
         $kategori->update([
             'nama_kategori' => $request->nama_kategori,
             'bidang_id' => $request->bidang_id,
         ]);
 
-        // Ambil data kategori dan bidang setelah update
-        $kategori = Kategori::with('bidang')->get(); // Ambil relasi bidang
-        $bidang = Bidang::all(); // Ambil semua bidang
-
-        // Kembalikan ke halaman kategori dengan pesan sukses
-        return view('backend.kategori.index', compact('kategori', 'bidang'))->with('success', 'Kategori berhasil diperbarui.');
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui.');
     }
-    
+
     public function destroy(Kategori $kategori)
     {
+        if ($kategori->bidang->opd_id !== Auth::user()->opd_id) {
+            return redirect()->route('kategori.index')->with('error', 'Anda tidak berhak menghapus kategori ini.');
+        }
+
         $kategori->delete();
 
-        // Mengembalikan view dengan data kategori dan bidang
-        $kategori = Kategori::with('bidang')->get(); // Ambil relasi bidang
-        $bidang = Bidang::all(); // Ambil semua bidang
-        return view('backend.kategori.index', compact('kategori', 'bidang'))->with('success', 'Kategori berhasil dihapus.');
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus.');
     }
+
+    public function edit(Kategori $kategori)
+    {
+        if ($kategori->bidang->opd_id !== Auth::user()->opd_id) {
+            return response()->json(['error' => 'Tidak berhak mengakses data ini'], 403);
+        }
+
+        return response()->json($kategori);
+    }
+    public function data()
+{
+    $bidang_opd = Bidang::where('opd_id', Auth::user()->opd_id)->pluck('bidang_id');
+
+    $data = Kategori::with('bidang')
+                ->whereIn('bidang_id', $bidang_opd)
+                ->select('kategori.*');
+
+    return DataTables::of($data)
+        ->addIndexColumn()
+        ->addColumn('bidang', function ($row) {
+            return $row->bidang->nama_bidang ?? '-';
+        })
+        ->addColumn('action', function ($row) {
+            return '
+                <button class="btn btn-warning btn-sm btn-edit" data-id="' . $row->kategori_id . '">
+                    <i class="mdi mdi-pencil"></i>
+                </button>
+                <button class="btn btn-danger btn-sm btn-delete" data-id="' . $row->kategori_id . '" data-nama="' . $row->nama_kategori . '">
+                    <i class="mdi mdi-trash-can-outline"></i>
+                </button>
+            ';
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+}
+
 }

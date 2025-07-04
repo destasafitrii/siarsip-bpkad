@@ -38,48 +38,53 @@
             <!-- Akhir Notifikasi --> --}}
 
             <!-- Profil -->
-            <div class="dropdown d-inline-block ms-3">
-                <button type="button" class="btn btn-sm top-icon p-0" id="page-header-user-dropdown"
-                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class ="fa fa-user-alt"></i>
-                    {{-- <img class="rounded avatar-2xs p-0" src="{{url('public')}}/assets/images/users/avatar-1.png" alt="Header Avatar"> --}}
-                </button>
-                <div class="dropdown-menu dropdown-menu-wide dropdown-menu-end dropdown-menu-animated overflow-hidden py-0"
-                    style="z-index: 1050;">
-                    <div class="card border-0">
-                        <div class="card-header bg-primary rounded-0">
-                            <div class="rich-list-item w-100 p-0">
-                                <div class="rich-list-prepend">
-                                    <div class="avatar avatar-label-light avatar-circle">
-                                        <div class="avatar-display"><i class="fa fa-user-alt"></i></div>
-                                    </div>
-                                </div>
-                                <h3 class="rich-list-title text-white">{{ Auth::user()->name }}</h3>
-                                <span class="rich-list-subtitle text-white">{{ Auth::user()->email }}</span>
+           <div class="dropdown d-inline-block ms-3">
+    <button type="button" class="btn btn-sm d-flex align-items-center flex-row gap-2 p-0"
+        id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                            </div>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="grid-nav grid-nav-flush grid-nav-action grid-nav-no-rounded">
-                                <div class="grid-nav-row">
-                                    <a href="apps-contact.html" class="grid-nav-item">
-                                        <div class="grid-nav-icon"><i class="far fa-address-card"></i></div>
-                                        <span class="grid-nav-content">Profile</span>
-                                    </a>
-                                    <form action="{{ route('logout') }}" method="POST"
-                                        onsubmit="return confirm('Yakin ingin logout?')">
-                                        @csrf
-                                        <button type="submit" class="grid-nav-item">
-                                           <div class="grid-nav-icon"><i class="fas fa-sign-out-alt"></i></div>
-                                        <span class="grid-nav-content">Logout</span>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+        <div class="text-end">
+            <div class="fw-semibold" style="font-size: 14px;">{{ Auth::user()->name }}</div>
+            <div class="text-muted" style="font-size: 12px;">{{ Auth::user()->opd->nama_opd ?? '-' }}</div>
+        </div>
+
+        <div class="bg-light rounded-circle p-2">
+            <i class="fa fa-user-alt"></i>
+        </div>
+    </button>
+
+
+    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated shadow border-0 overflow-hidden"
+        style="min-width: 250px; z-index: 1050;">
+        <div class="card border-0 mb-0">
+            <!-- Header Profile -->
+            <div class="card-header text-white bg-gradient bg-success rounded-0 d-flex flex-column align-items-start">
+                <div class="d-flex align-items-center mb-2">
+                    <div class="me-2 bg-white rounded-circle p-1">
+                        <i class="fa fa-user-alt text-success"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold">{{ Auth::user()->name }}</div>
+                        <div style="font-size: 0.875rem;">{{ Auth::user()->email }}</div>
+                        <div style="font-size: 0.75rem;">{{ Auth::user()->opd->nama_opd ?? '-' }}</div>
                     </div>
                 </div>
-                <!-- Akhir Profil -->
             </div>
+
+            <!-- Body Menu -->
+            <div class="card-body px-0 py-2">
+              <!-- Tombol logout pakai SweetAlert -->
+<button type="button" class="dropdown-item d-flex align-items-center px-3 py-2" id="btnLogout">
+    <i class="fas fa-sign-out-alt me-2 text-danger"></i> Logout
+</button>
+
+<!-- Form logout tersembunyi -->
+<form id="formLogout" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
+
+            </div>
+        </div>
+    </div>
+</div>
         </div>
 </header>

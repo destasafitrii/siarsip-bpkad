@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Opd;
 use App\Models\ArsipSuratMasuk;
 use App\Models\ArsipSuratKeluar;
+use App\Models\ArsipDokumen;
 
 class DashboardController extends Controller
 {
@@ -17,15 +18,17 @@ class DashboardController extends Controller
 
     $totalArsipMasuk = ArsipSuratMasuk::count();
     $totalArsipKeluar = ArsipSuratKeluar::count();
+       $totalArsipDokumen = ArsipDokumen::count(); 
 
     // Jumlah arsip per OPD
-    $aktivitasPerOpd = Opd::withCount(['arsipSuratMasuk', 'arsipSuratKeluar'])
+    $aktivitasPerOpd = Opd::withCount(['arsipSuratMasuk', 'arsipSuratKeluar', 'arsipDokumen'])
         ->get()
         ->map(function ($opd) {
             return (object)[
                 'nama_opd' => $opd->nama_opd,
                 'jumlah_masuk' => $opd->arsip_surat_masuk_count,
                 'jumlah_keluar' => $opd->arsip_surat_keluar_count,
+                 'jumlah_dokumen' => $opd->arsip_dokumen_count
             ];
         });
 
@@ -49,6 +52,7 @@ class DashboardController extends Controller
         'jumlahPengelola',
         'totalArsipMasuk',
         'totalArsipKeluar',
+         'totalArsipDokumen',
         'aktivitasPerOpd',
         'arsipTerbaru'
     ));

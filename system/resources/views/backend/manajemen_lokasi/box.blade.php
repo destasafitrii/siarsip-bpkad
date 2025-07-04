@@ -25,7 +25,8 @@
             </div>
 
             <div class="table-responsive">
-              <table class="table table-bordered table-striped">
+              <table class="table table-bordered table-striped" id="boxTables">
+
                 <thead>
                   <tr>
                     <th>No</th>
@@ -45,17 +46,17 @@
                     <td>
                       <!-- Tombol Edit -->
                       <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editBoxModal{{ $b->box_id }}" title="Edit">
-                        <i class="mdi mdi-pencil"></i>
+                        <i class="mdi mdi-pencil" ></i>
                       </button>
 
                       <!-- Tombol Hapus (pakai modal) -->
                       <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#hapusBoxModal{{ $b->box_id }}" title="Hapus">
-                        <i class="mdi mdi-delete"></i>
+                        <i class="mdi mdi-trash-can-outline" ></i>
                       </button>
 
                       <!-- Tombol Cetak QR -->
-                      <a href="{{ url('/pengelola/cetak-qr-box/' . $b->box_id) }}" target="_blank" class="btn btn-success btn-sm mt-1" title="Cetak QR">
-                        <i class="mdi mdi-printer"></i> Cetak QR
+                      <a href="{{ url('/pengelola/cetak-qr-box/' . $b->box_id) }}" target="_blank" class="btn btn-success btn-sm" title="Cetak QR">
+                        <i class="mdi mdi-printer" ></i> Cetak QR
                       </a>
                     </td>
                   </tr>
@@ -169,3 +170,27 @@
   </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+  $(document).ready(function () {
+    $('#boxTables').DataTable({
+      "language": {
+        "lengthMenu": "Show _MENU_ entries",
+        "zeroRecords": "Data tidak ditemukan",
+        "info": "Showing _START_ to _END_ of _TOTAL_ data",
+        "infoEmpty": "Tidak ada data tersedia",
+        "infoFiltered": "(difilter dari _MAX_ total data)",
+        "search": "Cari:",
+        "paginate": {
+          "first": "Pertama",
+          "last": "Terakhir",
+          "next": "<i class='fas fa-chevron-right'></i>",
+          "previous": "<i class='fas fa-chevron-left'></i>"
+        },
+      }
+    });
+  });
+</script>
+@endpush
+

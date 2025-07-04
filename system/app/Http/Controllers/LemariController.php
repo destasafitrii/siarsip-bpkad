@@ -6,15 +6,60 @@ use App\Models\Lemari;
 use App\Models\Ruangan;
 use App\Models\Box;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\DataTables;
+use Illuminate\Support\Str;
+
 
 class LemariController extends Controller
 {
     public function index()
-    {
-        $lemari = Lemari::with('ruangan')->get();
-        $ruangan = Ruangan::all(); // untuk dropdown tambah/ubah
-        return view('backend.manajemen_lokasi.lemari', compact('lemari', 'ruangan'));
-    }
+{
+    $opdId = Auth::user()->opd_id;
+
+    // Ambil ruangan milik OPD
+    $ruangan = Ruangan::where('opd_id', $opdId)->get();
+
+    // Ambil lemari yang ruangan-nya milik OPD user yang login
+    $lemari = Lemari::with('ruangan')
+        ->whereHas('ruangan', function ($query) use ($opdId) {
+            $query->where('opd_id', $opdId);
+        })
+        ->get();
+
+    return view('backend.manajemen_lokasi.lemari', compact('lemari', 'ruangan'));
+}
+
+public function data()
+{
+    $opdId = Auth::user()->opd_id;
+
+    $data = Lemari::with('ruangan')
+        ->whereHas('ruangan', function ($query) use ($opdId) {
+            $query->where('opd_id', $opdId);
+        })
+        ->latest()
+        ->get();
+
+    return DataTables::of($data)
+        ->addIndexColumn()
+        ->addColumn('ruangan', function ($row) {
+            return $row->ruangan ? $row->ruangan->nama_ruangan : '-';
+        })
+        ->addColumn('aksi', function ($row) {
+            return '
+                <button class="btn btn-warning btn-sm btn-edit" data-id="' . $row->lemari_id . '">
+                    <i class="mdi mdi-pencil"></i>
+                </button>
+                <button class="btn btn-danger btn-sm btn-hapus" data-id="' . $row->lemari_id . '" data-namalemari="' . $row->nama_lemari . '">
+                    <i class="mdi mdi-trash-can-outline"></i>
+                </button>
+            ';
+        })
+        ->rawColumns(['aksi'])
+        ->make(true);
+}
+
 
     public function store(Request $request)
     {
@@ -63,6 +108,12 @@ class LemariController extends Controller
 
         return redirect('/pengelola/lemari')->with('success', 'Lemari berhasil dihapus.');
     }
+    public function edit($id)
+{
+    $lemari = Lemari::findOrFail($id);
+    return response()->json($lemari);
+}
+
 
     public function getByRuangan($id)
     {

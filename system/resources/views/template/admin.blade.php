@@ -9,7 +9,7 @@
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Codebucks" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{url('public')}}/assets/images/logo-ktg.png" height="50">
+    <link rel="shortcut icon" href="{{ asset('public/frontend/img/logo-ktp.png') }}" height="50">
 
      <!-- DataTables -->
      <link href="{{url('public')}}/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
@@ -105,3 +105,24 @@
 </body>
 
 </html>
+<!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.getElementById('btnLogout').addEventListener('click', function () {
+        Swal.fire({
+            title: 'Keluar dari sistem?',
+            text: "Anda yakin ingin logout sekarang?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Logout',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('formLogout').submit();
+            }
+        });
+    });
+</script>

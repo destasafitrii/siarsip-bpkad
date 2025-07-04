@@ -15,6 +15,7 @@ use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ArsipDokumenController;
 use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\ImportDokumenController;
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('pengelola.dashboard');
 
@@ -46,6 +47,7 @@ Route::controller(ArsipSuratKeluarController::class)->group(function () {
 
 Route::controller(BidangController::class)->group(function () {
     Route::get('bidang', 'index')->name('bidang.index');
+     Route::get('bidang/data', 'data')->name('bidang.data'); 
     Route::get('bidang/create', 'create')->name('bidang.create');
     Route::post('bidang', 'store')->name('bidang.store');
     Route::get('bidang/{bidang}/edit', 'edit')->name('bidang.edit');
@@ -55,7 +57,8 @@ Route::controller(BidangController::class)->group(function () {
 
 // In your routes/web.php
 Route::controller(KategoriController::class)->group(function () {
-    Route::get('kategori', 'index');
+    Route::get('kategori', 'index')->name('kategori.index');
+    Route::get('kategori/data', 'data')->name('kategori.data');
     Route::post('kategori', 'store')->name('kategori.store');
     Route::get('kategori/{kategori}/edit', 'edit');
     Route::put('kategori/{kategori}', 'update')->name('kategori.update');
@@ -66,14 +69,18 @@ Route::controller(KategoriController::class)->group(function () {
 });
 Route::controller(RuanganController::class)->group(function () {
     Route::get('ruangan', 'index')->name('ruangan');
+    Route::get('ruangan/data', 'data')->name('ruangan.data');
     Route::post('ruangan', 'store')->name('ruangan.store');
+    Route::get('ruangan/{ruangan}/edit', 'edit');
     Route::put('ruangan/{ruangan}', 'update')->name('ruangan.update');
     Route::delete('ruangan/{ruangan}', 'destroy')->name('ruangan.destroy');
 });
 
 Route::controller(LemariController::class)->group(function () {
     Route::get('lemari', 'index')->name('lemari.index');
+    Route::get('lemari/data', 'data')->name('lemari.data');
     Route::post('lemari', 'store')->name('lemari.store');
+    Route::get('lemari/{lemari}/edit', 'edit');
     Route::put('lemari/{lemari}', 'update')->name('lemari.update');
     Route::delete('lemari/{lemari}', 'destroy')->name('lemari.destroy');
 });
@@ -149,3 +156,9 @@ Route::post('pegawai/import', [PegawaiController::class, 'import'])->name('pegaw
 
 Route::get('/get-bidang-by-opd/{opd_id}', [BidangController::class, 'getByOpd']);
 Route::get('/get-kategori-by-opd/{opd_id}', [KategoriController::class, 'getByOpd']);
+
+Route::prefix('siarsip')->controller(ImportDokumenController::class)->group(function () {
+    Route::get('/arsip_dokumen/import', 'showForm')->name('arsip_dokumen.import.form');
+    Route::post('/arsip_dokumen/import/preview', 'preview')->name('arsip_dokumen.import.preview');
+    Route::post('/arsip_dokumen/import/save', 'save')->name('arsip_dokumen.import.save');
+});

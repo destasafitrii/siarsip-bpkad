@@ -11,7 +11,7 @@
                             <h4 class="card-title">Data Arsip Surat Masuk</h4>
                             <a href="{{ route('arsip_masuk.create') }}"
                                 class="btn btn-primary btn-sm d-flex align-items-center" title="Tambah Data">
-                                <i class="fas fa-plus me-1"></i> <span>Tambah Data</span>
+                                <i class=""></i> <span>Tambah Data</span>
                             </a>
                         </div>
                         <div class="card-body">

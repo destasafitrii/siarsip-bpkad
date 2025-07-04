@@ -49,7 +49,7 @@ class DataArsipDokumenController extends Controller
                 ->addColumn('action', function ($row) {
                     $url = route('superadmin.arsip_dokumen.show', $row->dokumen_id);
                     return '<a href="' . $url . '" class="btn btn-info btn-sm" title="Detail">
-                                <i class="fas fa-eye" style="font-size: 10px"></i>
+                                <i class="mdi mdi-eye-outline" style="font-size: 10px"></i>
                             </a>';
                 })
                 ->rawColumns(['action'])

@@ -17,7 +17,10 @@ class ArsipDokumenController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = ArsipDokumen::with(['bidang', 'kategori', 'box.lemari.ruangan'])->select('arsip_dokumen.*');
+            $data = ArsipDokumen::with(['bidang', 'kategori', 'box.lemari.ruangan'])
+    ->where('opd_id', auth()->user()->opd_id)
+    ->select('arsip_dokumen.*');
+
 
             if ($request->has('bidang_id') && $request->bidang_id != '') {
                 $data->where('bidang_id', $request->bidang_id);
@@ -31,10 +34,10 @@ class ArsipDokumenController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $btn = '<a href="' . route('arsip_dokumen.show', $row->dokumen_id) . '" class="btn btn-info btn-sm" title="Detail">
-                                <i class="fas fa-eye" style="font-size: 10px"></i>
+                                <i class="mdi mdi-eye-outline" ></i>
                             </a>
                             <a href="' . route('arsip_dokumen.edit', $row->dokumen_id) . '" class="btn btn-warning btn-sm" title="Edit">
-                                <i class="fas fa-edit" style="font-size: 10px"></i>
+                                <i class="mdi mdi-pencil" ></i>
                             </a>
                             <form action="' . route('arsip_dokumen.destroy', $row->dokumen_id) . '" method="POST" style="display:inline-block;">
                                 ' . csrf_field() . method_field('DELETE') . '
@@ -42,7 +45,7 @@ class ArsipDokumenController extends Controller
         data-id="' . $row->dokumen_id . '" 
         data-nama="' . $row->nama_dokumen . '" 
         data-bs-toggle="modal" data-bs-target="#deleteModal">
-        <i class="fas fa-trash-alt" style="font-size: 13px"></i>
+        <i class="mdi mdi-trash-can-outline" ></i>
     </button>
                             </form>';
                     return $btn;

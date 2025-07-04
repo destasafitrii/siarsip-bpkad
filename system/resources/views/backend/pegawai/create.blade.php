@@ -22,34 +22,36 @@
                         <div class="mb-3">
                             <label for="nama" class="form-label">Nama Pegawai</label>
                             <input type="text" name="nama" class="form-control" required
-                            placeholder="Masukkan Nama Pegawai">
+                                placeholder="Masukkan Nama Pegawai">
                         </div>
 
 
 
                         <div class="mb-3" id="form-nip">
                             <label for="nip" class="form-label">NIP</label>
-                           <input type="text" class="form-control" name="nip" id="nip" placeholder="Masukkan NIP">
+                            <input type="text" class="form-control" name="nip" id="nip"
+                                placeholder="Masukkan NIP">
                         </div>
 
                         <div class="mb-3" id="form-nik" style="display: none;">
                             <label for="nik" class="form-label">NIK</label>
-                           <input type="text" class="form-control" name="nik" id="nik" placeholder="Masukkan NIK">
+                            <input type="text" class="form-control" name="nik" id="nik"
+                                placeholder="Masukkan NIK">
                         </div>
                         <div class="mb-3" id="form_golongan">
                             <label for="golongan" class="form-label">Golongan</label>
                             <input type="text" name="golongan" id="golongan" class="form-control"
-                            placeholder="Masukkan Golongan">
+                                placeholder="Masukkan Golongan">
                         </div>
 
                         <div class="mb-3" id="form_jabatan">
                             <label for="jabatan" class="form-label">Jabatan</label>
                             <input type="text" name="jabatan" id="jabatan" class="form-control"
-                            placeholder="Masukkan Jabatan">
+                                placeholder="Masukkan Jabatan">
                         </div>
-
-                        <button type="submit" class="btn btn-primary">Simpan</button>
                         <a href="{{ route('pegawai.index') }}" class="btn btn-secondary">Batal</a>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+
                     </form>
                 </div>
             </div>

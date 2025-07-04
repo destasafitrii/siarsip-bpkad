@@ -33,10 +33,11 @@ class ArsipMasukController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    return '<a href="' . route('pengguna.arsip_masuk.show', $row->surat_masuk_id) . '" class="btn btn-info btn-sm" title="Detail">
-                                <i class="fas fa-eye" style="font-size: 10px"></i>
-                            </a>';
-                })
+    return '<a href="' . route('pengguna.arsip_masuk.show', $row->surat_masuk_id) . '" class="btn btn-info btn-sm" title="Detail">
+                <i class="mdi mdi-eye-outline" style="font-size: 14px;"></i>
+            </a>';
+})
+
                 ->editColumn('bidang_id', fn($row) => $row->bidang->nama_bidang ?? 'Tidak ada bidang')
                 ->editColumn('kategori_id', fn($row) => $row->kategori->nama_kategori ?? 'Tidak ada kategori')
                 ->editColumn('box_id', fn($row) => $row->box->nama_box ?? 'Tidak ada box')

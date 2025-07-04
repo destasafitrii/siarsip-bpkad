@@ -16,7 +16,7 @@
                             </a>
                             <a href="{{ route('pegawai.create') }}"
                                 class="btn btn-primary btn-sm d-flex align-items-center" title="Tambah Data">
-                                <i class="fas fa-plus me-1"></i> <span>Tambah Data</span>
+                                </i> <span>Tambah Data</span>
                             </a>
                         </div>
                     </div>
@@ -48,21 +48,21 @@
 
 <!-- Modal Hapus Pegawai -->
 <div class="modal fade" id="modalHapusPegawai" tabindex="-1" aria-labelledby="modalHapusPegawaiLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form id="formHapusPegawai" method="POST">
+   <div class="modal-dialog modal-dialog-centered">
+
+        <form id="formHapusPegawai" method="POST" class="modal-content">
             @csrf
             @method('DELETE')
-            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalHapusPegawaiLabel">Konfirmasi Hapus</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Apakah Anda yakin ingin menghapus pegawai <strong id="namaPegawaiHapus"></strong>?</p>
+                    <p>Apakah Anda yakin ingin menghapus data <strong id="namaPegawaiHapus"></strong>?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-danger">Hapus/button>
+                    <button type="submit" class="btn btn-danger">Hapus</button>
                 </div>
             </div>
         </form>

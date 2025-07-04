@@ -57,19 +57,40 @@
                                                         <i class="mdi mdi-pencil" style="font-size: 14px;"></i>
                                                     </button>
 
-                                                    <form action="{{ route('pengelola.destroy', $admin->id) }}"
-                                                        method="POST" style="display:inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Yakin ingin menghapus data ini?')">
-                                                            <i class="mdi mdi-trash-can-outline"
-                                                                style="font-size: 14px;"></i>
-                                                        </button>
-                                                    </form>
+                                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#hapusPengelolaModal{{ $admin->id }}" title="Hapus">
+                                                    <i class="mdi mdi-trash-can-outline" style="font-size: 14px;"></i>
+                                                </button>
                                                 </td>
 
                                             </tr>
+
+                              <!-- Modal Konfirmasi Hapus -->
+<div class="modal fade" id="hapusPengelolaModal{{ $admin->id }}" tabindex="-1"
+    aria-labelledby="hapusPengelolaModalLabel{{ $admin->id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header">
+                <h5 class="modal-title" id="hapusPengelolaModalLabel{{ $admin->id }}">
+                    Konfirmasi Hapus</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin menghapus data ini
+                <strong>{{ $admin->nama }}</strong>?
+            </div>
+            <div class="modal-footer">
+                <form action="{{ route('pengelola.destroy', $admin->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger">Hapus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
                                             <!-- Modal Edit -->
                                             <div class="modal fade" id="editModal{{ $admin->id }}" tabindex="-1"
@@ -227,34 +248,34 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Nama</label>
-                                    <input type="text" name="name" class="form-control" required>
+                                    <input type="text" name="name" class="form-control" placeholder="Masukkan Nama" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Email</label>
-                                    <input type="email" name="email" class="form-control" required>
+                                    <input type="email" name="email" class="form-control" placeholder="Masukkan Email" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Password</label>
-                                    <input type="password" name="password" class="form-control" required>
+                                    <input type="password" name="password" class="form-control" placeholder="8 Karakter" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Konfirmasi Password</label>
-                                    <input type="password" name="password_confirmation" class="form-control" required>
+                                    <input type="password" name="password_confirmation" class="form-control" placeholder="Konfirmasi Password"required>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">NIP</label>
-                                    <input type="text" name="nip" class="form-control">
+                                    <input type="text" name="nip" class="form-control" placeholder="Masukkan NIP">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Jabatan</label>
-                                    <input type="text" name="jabatan" class="form-control">
+                                    <input type="text" name="jabatan" class="form-control" placeholder="Masukkan Jabatan">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Golongan</label>
-                                    <input type="text" name="golongan" class="form-control">
+                                    <input type="text" name="golongan" class="form-control" placeholder="Masukkan Golongan">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">OPD</label>

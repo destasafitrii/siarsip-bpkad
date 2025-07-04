@@ -40,7 +40,7 @@ class DataArsipKeluarController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '<a href="' . route('superadmin.arsip_keluar.show', $row->surat_keluar_id) . '" class="btn btn-info btn-sm" title="Detail">
-                                <i class="fas fa-eye" style="font-size: 10px"></i>
+                                <i class="mdi mdi-eye-outline" style="font-size: 10px"></i>
                             </a>';
                     return $btn;
                 })

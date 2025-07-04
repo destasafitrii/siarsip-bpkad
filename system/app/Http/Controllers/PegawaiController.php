@@ -31,11 +31,11 @@ class PegawaiController extends Controller
                 })
                 ->addColumn('aksi', function ($row) {
                     return '
-            <a href="' . route('pegawai.edit', $row->id) . '" class="btn btn-sm btn-warning">Edit</a>
+            <a href="' . route('pegawai.edit', $row->id) . '" class="btn btn-sm btn-warning"> <i class="mdi mdi-pencil"></i></a>
             <button class="btn btn-sm btn-danger btn-hapus-pegawai"
         data-url="' . route('pegawai.destroy', $row->id) . '"
         data-nama="' . e($row->nama) . '">
-        <i class="fas fa-trash-alt"></i> Hapus
+        <i class="mdi mdi-trash-can-outline"></i>
     </button>
         ';
                 })

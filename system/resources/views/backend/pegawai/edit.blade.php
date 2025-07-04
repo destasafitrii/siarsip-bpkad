@@ -50,7 +50,7 @@
                                 value="{{ $pegawai->jabatan }}">
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
                         <a href="{{ route('pegawai.index') }}" class="btn btn-secondary">Batal</a>
                     </form>
                 </div>

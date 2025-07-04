@@ -17,8 +17,9 @@ class ArsipSuratKeluarController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = ArsipSuratKeluar::with(['bidang', 'kategori', 'box.lemari.ruangan'])
-                ->select('arsip_surat_keluar.*');
+             $data = ArsipSuratKeluar::with(['bidang', 'kategori', 'box.lemari.ruangan'])
+    ->where('opd_id', auth()->user()->opd_id)
+    ->select('arsip_surat_keluar.*');
 
             // Filter berdasarkan bidang
             if ($request->has('bidang_id') && $request->bidang_id != '') {
@@ -34,10 +35,10 @@ class ArsipSuratKeluarController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $btn = '<a href="' . route('arsip_keluar.show', $row->surat_keluar_id) . '" class="btn btn-info btn-sm" title="Detail">
-                                <i class="fas fa-eye" style="font-size: 10px"></i>
+                                <i class="mdi mdi-eye-outline" ></i>
                             </a>
                             <a href="' . route('arsip_keluar.edit', $row->surat_keluar_id) . '" class="btn btn-warning btn-sm" title="Edit">
-                                <i class="fas fa-edit" style="font-size: 10px"></i>
+                                <i class="mdi mdi-pencil" ></i>
                             </a>
                             <form action="' . route('arsip_keluar.destroy', $row->surat_keluar_id) . '" method="POST" style="display:inline-block;">
                                 ' . csrf_field() . '
@@ -46,7 +47,7 @@ class ArsipSuratKeluarController extends Controller
         data-id="' . $row->surat_keluar_id . '" 
         data-nama="' . $row->nama_surat_keluar . '" 
         data-bs-toggle="modal" data-bs-target="#deleteModal">
-        <i class="fas fa-trash-alt" style="font-size: 13px"></i>
+        <i class="mdi mdi-trash-can-outline" ></i>
     </button>
                                 
                             </form>';

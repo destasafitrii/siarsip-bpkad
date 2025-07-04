@@ -15,6 +15,7 @@ class Ruangan extends Model
         'nama_ruangan',
         'alamat',
         'keterangan',
+        'opd_id',
     ];
 
     // Relasi ke lemaris
@@ -22,4 +23,5 @@ class Ruangan extends Model
     {
         return $this->hasMany(Lemari::class, 'ruangan_id', 'ruangan_id');
     }
+    
 }

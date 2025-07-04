@@ -18,7 +18,8 @@ class ArsipSuratMasukController extends Controller
     {
         if ($request->ajax()) {
             $data = ArsipSuratMasuk::with(['bidang', 'kategori', 'box.lemari.ruangan'])
-                ->select('arsip_surat_masuk.*');
+    ->where('opd_id', auth()->user()->opd_id)
+    ->select('arsip_surat_masuk.*');
 
             // Filter berdasarkan bidang
             if ($request->has('bidang_id') && $request->bidang_id != '') {
@@ -34,10 +35,10 @@ class ArsipSuratMasukController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $btn = '<a href="' . route('arsip_masuk.show', $row->surat_masuk_id) . '" class="btn btn-info btn-sm" title="Detail">
-                                <i class="fas fa-eye" style="font-size: 10px"></i>
+                                <i class="mdi mdi-eye-outline" ></i>
                             </a>
                             <a href="' . route('arsip_masuk.edit', $row->surat_masuk_id) . '" class="btn btn-warning btn-sm" title="Edit">
-                                <i class="fas fa-edit" style="font-size: 10px"></i>
+                                <i class="mdi mdi-pencil" ></i>
                             </a>
                             <form action="' . route('arsip_masuk.destroy', $row->surat_masuk_id) . '" method="POST" style="display:inline-block;">
                                 ' . csrf_field() . '
@@ -46,7 +47,7 @@ class ArsipSuratMasukController extends Controller
         data-id="' . $row->surat_masuk_id . '" 
         data-nama="' . $row->nama_surat_masuk . '" 
         data-bs-toggle="modal" data-bs-target="#deleteModal">
-        <i class="fas fa-trash-alt" style="font-size: 13px"></i>
+        <i class="mdi mdi-trash-can-outline" ></i>
     </button>
                             </form>';
                     return $btn;

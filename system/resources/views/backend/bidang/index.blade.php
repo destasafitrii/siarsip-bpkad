@@ -2,189 +2,193 @@
 
 @section('content')
 <div class="page-content">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="page-title-box">
-                    <h4 class="page-title">Manajemen Bidang</h4>
-                </div>
-            </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="page-title-box">
+          <h4 class="page-title">Manajemen Bidang</h4>
         </div>
-
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-body">
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <h4 class="card-title">Daftar Bidang</h4>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBidangModal">
-                                    Tambah Bidang
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Kode Bidang</th>
-                                        <th>Nama Bidang</th>
-                                        <th>Penanggung Jawab</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($bidang as $b)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $b->kode_bidang }}</td>
-                                        <td>{{ $b->nama_bidang }}</td>
-                                        <td>{{ $b->penanggung_jawab }}</td>
-                                        <td>
-                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#editBidangModal{{ $b->bidang_id }}">Edit</button>
-
-                                            <button type="button" class="btn btn-danger btn-sm btn-delete"
-                                                data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"
-                                                data-id="{{ $b->bidang_id }}" data-nama="{{ $b->nama_bidang }}"
-                                                title="Hapus">
-                                                <i class="fas fa-trash-alt" style="font-size: 13px"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-
-                                    <!-- Modal Edit -->
-                                    <div class="modal fade" id="editBidangModal{{ $b->bidang_id }}" tabindex="-1"
-                                        aria-labelledby="editBidangModalLabel{{ $b->bidang_id }}" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title"
-                                                        id="editBidangModalLabel{{ $b->bidang_id }}">Edit Bidang</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <form action="{{ route('bidang.update', $b->bidang_id) }}" method="POST">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <div class="modal-body">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Kode Bidang</label>
-                                                            <input type="text" class="form-control" name="kode_bidang"
-                                                                value="{{ $b->kode_bidang }}" required>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Nama Bidang</label>
-                                                            <input type="text" class="form-control" name="nama_bidang"
-                                                                value="{{ $b->nama_bidang }}" required>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Penanggung Jawab</label>
-                                                            <input type="text" class="form-control"
-                                                                name="penanggung_jawab"
-                                                                value="{{ $b->penanggung_jawab }}" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Batal</button>
-                                                        <button type="submit" class="btn btn-primary">Simpan</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center">Tidak ada data bidang.</td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <h4 class="card-title">Daftar Bidang</h4>
+              </div>
+              <div class="col-md-6 text-end">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBidangModal">Tambah Bidang</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table id="bidangTable" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Kode Bidang</th>
+                    <th>Nama Bidang</th>
+                    <th>Penanggung Jawab</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Modal Tambah -->
 <div class="modal fade" id="addBidangModal" tabindex="-1" aria-labelledby="addBidangModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form action="{{ route('bidang.store') }}" method="POST" class="modal-content">
-            @csrf
-            <div class="modal-header">
-                <h5 class="modal-title">Tambah Bidang</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label">Kode Bidang</label>
-                    <input type="text" class="form-control" name="kode_bidang" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Nama Bidang</label>
-                    <input type="text" class="form-control" name="nama_bidang" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Penanggung Jawab</label>
-                    <input type="text" class="form-control" name="penanggung_jawab" required>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
-            </div>
-        </form>
-    </div>
+  <div class="modal-dialog">
+    <form action="{{ route('bidang.store') }}" method="POST" class="modal-content">
+      @csrf
+      <div class="modal-header">
+        <h5 class="modal-title">Tambah Bidang</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Kode Bidang</label>
+          <input type="text" class="form-control" name="kode_bidang" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Nama Bidang</label>
+          <input type="text" class="form-control" name="nama_bidang" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Penanggung Jawab</label>
+          <input type="text" class="form-control" name="penanggung_jawab" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="submit" class="btn btn-primary">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Edit -->
+<div class="modal fade" id="editBidangModal" tabindex="-1" aria-labelledby="editBidangModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="POST" id="editBidangForm" class="modal-content">
+      @csrf
+      @method('PUT')
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Bidang</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" name="bidang_id" id="edit_bidang_id">
+        <div class="mb-3">
+          <label class="form-label">Kode Bidang</label>
+          <input type="text" class="form-control" name="kode_bidang" id="edit_kode_bidang" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Nama Bidang</label>
+          <input type="text" class="form-control" name="nama_bidang" id="edit_nama_bidang" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Penanggung Jawab</label>
+          <input type="text" class="form-control" name="penanggung_jawab" id="edit_penanggung_jawab" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <!-- Modal Konfirmasi Hapus -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered"> {{-- Tambahkan modal-dialog-centered di sini --}}
-        <form method="POST" id="deleteForm" class="modal-content">
-            @csrf
-            @method('DELETE')
-            <div class="modal-header">
-                <h5 class="modal-title">Konfirmasi Hapus</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-            </div>
-            <div class="modal-body">
-                Apakah Anda yakin ingin menghapus bidang <strong id="namaBidangToDelete"></strong>?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-danger">Hapus</button>
-            </div>
-        </form>
-    </div>
+  <div class="modal-dialog">
+    <form method="POST" id="deleteForm" class="modal-content">
+      @csrf
+      @method('DELETE')
+      <div class="modal-header">
+        <h5 class="modal-title">Konfirmasi Hapus</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Apakah Anda yakin ingin menghapus bidang <strong id="namaBidangToDelete"></strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="submit" class="btn btn-danger">Hapus</button>
+      </div>
+    </form>
+  </div>
 </div>
-
 @endsection
 
 @section('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var deleteForm = document.getElementById('deleteForm');
-        var namaBidangToDelete = document.getElementById('namaBidangToDelete');
-
-        document.querySelectorAll('.btn-delete').forEach(function (button) {
-            button.addEventListener('click', function () {
-                var bidangId = this.getAttribute('data-id');
-                var namaBidang = this.getAttribute('data-nama');
-
-                // SET URL YANG BENAR SESUAI BASE URL
-                deleteForm.action = `{{ url('pengelola/bidang') }}/${bidangId}`;
-                namaBidangToDelete.textContent = namaBidang;
-            });
-        });
+  $(document).ready(function () {
+    const table = $('#bidangTable').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: '{{ route('bidang.data') }}',
+      columns: [
+        { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+        { data: 'kode_bidang', name: 'kode_bidang' },
+        { data: 'nama_bidang', name: 'nama_bidang' },
+        { data: 'penanggung_jawab', name: 'penanggung_jawab' },
+        { data: 'action', name: 'action', orderable: false, searchable: false }
+      ],
+      language: {
+        search: "Cari:",
+        lengthMenu: "Tampilkan _MENU_ entri",
+        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+        paginate: {
+          first: "Awal",
+          last: "Akhir",
+          next: "<i class='fas fa-chevron-right'></i>",
+          previous: "<i class='fas fa-chevron-left'></i>"
+        },
+        zeroRecords: "Data tidak ditemukan",
+        infoEmpty: "Tidak ada data ditampilkan",
+        infoFiltered: "(difilter dari _MAX_ total entri)"
+      }
     });
+
+    // Tombol hapus
+    $(document).on('click', '.btn-delete', function () {
+      const id = $(this).data('id');
+      const nama = $(this).data('nama');
+      $('#deleteForm').attr('action', `{{ url('pengelola/bidang') }}/${id}`);
+      $('#namaBidangToDelete').text(nama);
+      $('#deleteConfirmModal').modal('show');
+    });
+
+    // Tombol edit
+    $(document).on('click', '.btn-edit', function () {
+      const id = $(this).data('id');
+      $.ajax({
+        url: `{{ url('pengelola/bidang') }}/${id}/edit`,
+        method: 'GET',
+        success: function (data) {
+          $('#editBidangForm').attr('action', '{{ url('pengelola/bidang') }}/' + id);
+          $('#edit_bidang_id').val(data.bidang_id);
+          $('#edit_kode_bidang').val(data.kode_bidang);
+          $('#edit_nama_bidang').val(data.nama_bidang);
+          $('#edit_penanggung_jawab').val(data.penanggung_jawab);
+          $('#editBidangModal').modal('show');
+        },
+        error: function () {
+          alert('Gagal mengambil data bidang.');
+        }
+      });
+    });
+  });
 </script>
 @endsection
