@@ -6,17 +6,30 @@ use Illuminate\Http\Request;
 use App\Models\Box;
 use App\Models\Lemari;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Auth;
+
 
 class BoxController extends Controller
 {
     // Menampilkan daftar box
-    public function index()
-    {
-        $box = Box::with('lemari')->get();
-        $lemari = Lemari::all();
+ public function index()
+{
+    $user = Auth::user();
 
-        return view('backend.manajemen_lokasi.box', compact('box', 'lemari'));
-    }
+    // Ambil hanya lemari yang punya ruangan milik OPD user login
+    $lemari = Lemari::whereHas('ruangan', function ($query) use ($user) {
+        $query->where('opd_id', $user->opd_id);
+    })->get();
+
+    // Ambil box yang hanya dari lemari milik ruangan OPD tersebut
+    $box = Box::with('lemari')
+        ->whereHas('lemari.ruangan', function ($query) use ($user) {
+            $query->where('opd_id', $user->opd_id);
+        })->get();
+
+    return view('backend.manajemen_lokasi.box', compact('box', 'lemari'));
+}
+
 
     // Menyimpan box baru
     public function store(Request $request)

@@ -26,7 +26,6 @@
 
             <div class="table-responsive">
               <table class="table table-bordered table-striped" id="boxTables">
-
                 <thead>
                   <tr>
                     <th>No</th>
@@ -42,93 +41,88 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $b->nama_box }}</td>
                     <td>{{ $b->lemari->nama_lemari ?? '-' }}</td>
-                    <td>{!! QrCode::size(100)->generate(url('/box/' . $b->box_id)) !!}</td>
                     <td>
-                      <!-- Tombol Edit -->
-                      <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editBoxModal{{ $b->box_id }}" title="Edit">
-                        <i class="mdi mdi-pencil" ></i>
-                      </button>
-
-                      <!-- Tombol Hapus (pakai modal) -->
-                      <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#hapusBoxModal{{ $b->box_id }}" title="Hapus">
-                        <i class="mdi mdi-trash-can-outline" ></i>
-                      </button>
-
-                      <!-- Tombol Cetak QR -->
-                      <a href="{{ url('/pengelola/cetak-qr-box/' . $b->box_id) }}" target="_blank" class="btn btn-success btn-sm" title="Cetak QR">
-                        <i class="mdi mdi-printer" ></i> Cetak QR
-                      </a>
+                      @php
+                        $url = $b->box_id ? url('/box/' . $b->box_id) : '#';
+                      @endphp
+                      {!! QrCode::size(100)->generate($url) !!}
+                    </td>
+                    <td>
+                      <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editBoxModal{{ $b->box_id }}"><i class="mdi mdi-pencil"></i></button>
+                      <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#hapusBoxModal{{ $b->box_id }}"><i class="mdi mdi-trash-can-outline"></i></button>
+                      <a href="{{ url('/pengelola/cetak-qr-box/' . $b->box_id) }}" target="_blank" class="btn btn-success btn-sm"><i class="mdi mdi-printer"></i> Cetak QR</a>
                     </td>
                   </tr>
-
-                  <!-- Modal Edit -->
-                  <div class="modal fade" id="editBoxModal{{ $b->box_id }}" tabindex="-1" aria-labelledby="editBoxModalLabel{{ $b->box_id }}" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="editBoxModalLabel{{ $b->box_id }}">Edit Box</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form action="{{ route('box.update', $b->box_id) }}" method="POST">
-                          @csrf
-                          @method('PUT')
-                          <div class="modal-body">
-                            <div class="mb-3">
-                              <label class="form-label">Nama Box</label>
-                              <input type="text" class="form-control" name="nama_box" value="{{ $b->nama_box }}" required>
-                            </div>
-                            <div class="mb-3">
-                              <label class="form-label">Lemari</label>
-                              <select name="lemari_id" class="form-control" required>
-                                <option value="">-- Pilih Lemari --</option>
-                                @foreach ($lemari as $l)
-                                  <option value="{{ $l->lemari_id }}" {{ $l->lemari_id == $b->lemari_id ? 'selected' : '' }}>
-                                    {{ $l->nama_lemari }}
-                                  </option>
-                                @endforeach
-                              </select>
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Modal Hapus -->
-                  <div class="modal fade" id="hapusBoxModal{{ $b->box_id }}" tabindex="-1" aria-labelledby="hapusBoxModalLabel{{ $b->box_id }}" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="hapusBoxModalLabel{{ $b->box_id }}">Konfirmasi Hapus</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form action="{{ route('box.destroy', $b->box_id) }}" method="POST">
-                          @csrf
-                          @method('DELETE')
-                          <div class="modal-body">
-                            <p>Apakah Anda yakin ingin menghapus box <strong>{{ $b->nama_box }}</strong>?</p>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-
                   @empty
                   <tr>
-                    <td colspan="5" class="text-center">Tidak ada data box.</td>
+                    <td class="text-center" colspan="5">Tidak ada data box.</td>
                   </tr>
                   @endforelse
                 </tbody>
               </table>
             </div>
+
+            <!-- Modal Edit & Hapus Diletakkan di luar tabel -->
+            @foreach ($box as $b)
+            <!-- Modal Edit -->
+            <div class="modal fade" id="editBoxModal{{ $b->box_id }}" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Edit Box</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <form action="{{ route('box.update', $b->box_id) }}" method="POST">
+                    @csrf @method('PUT')
+                    <div class="modal-body">
+                      <div class="mb-3">
+                        <label class="form-label">Nama Box</label>
+                        <input type="text" name="nama_box" class="form-control" value="{{ $b->nama_box }}" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Lemari</label>
+                        <select name="lemari_id" class="form-control" required>
+                          <option value="">-- Pilih Lemari --</option>
+                          @foreach ($lemari as $l)
+                          <option value="{{ $l->lemari_id }}" {{ $l->lemari_id == $b->lemari_id ? 'selected' : '' }}>
+                            {{ $l->nama_lemari }}
+                          </option>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                      <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal Hapus -->
+            <div class="modal fade" id="hapusBoxModal{{ $b->box_id }}" tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <form action="{{ route('box.destroy', $b->box_id) }}" method="POST">
+                    @csrf @method('DELETE')
+                    <div class="modal-body">
+                      <p>Yakin ingin menghapus box <strong>{{ $b->nama_box }}</strong>?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                      <button type="submit" class="btn btn-danger">Hapus</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            @endforeach
+
           </div>
         </div>
       </div>
@@ -137,19 +131,19 @@
 </div>
 
 <!-- Modal Tambah -->
-<div class="modal fade" id="addBoxModal" tabindex="-1" aria-labelledby="addBoxModalLabel" aria-hidden="true">
+<div class="modal fade" id="addBoxModal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addBoxModalLabel">Tambah Box</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title">Tambah Box</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <form action="{{ route('box.store') }}" method="POST">
         @csrf
         <div class="modal-body">
           <div class="mb-3">
             <label class="form-label">Nama Box</label>
-            <input type="text" class="form-control" name="nama_box" placeholder="Masukkan nama box" required>
+            <input type="text" class="form-control" name="nama_box" required>
           </div>
           <div class="mb-3">
             <label class="form-label">Lemari</label>
@@ -174,23 +168,40 @@
 @push('scripts')
 <script>
   $(document).ready(function () {
+    // Cek apakah ada data di tabel
+    @if($box->count() > 0)
+    // Hanya inisialisasi DataTables jika ada data
     $('#boxTables').DataTable({
       "language": {
-        "lengthMenu": "Show _MENU_ entries",
+        "lengthMenu": "Show_MENU_ entries",
         "zeroRecords": "Data tidak ditemukan",
-        "info": "Showing _START_ to _END_ of _TOTAL_ data",
+        "info": "Showing _START_ to _END_ of _TOTAL_ entries",
         "infoEmpty": "Tidak ada data tersedia",
         "infoFiltered": "(difilter dari _MAX_ total data)",
         "search": "Cari:",
         "paginate": {
           "first": "Pertama",
           "last": "Terakhir",
-          "next": "<i class='fas fa-chevron-right'></i>",
+           "next": "<i class='fas fa-chevron-right'></i>",
           "previous": "<i class='fas fa-chevron-left'></i>"
+        }
+      },
+      "columnDefs": [
+        {
+          "targets": [3], // Kolom QR Code
+          "orderable": false
         },
-      }
+        {
+          "targets": [4], // Kolom Aksi
+          "orderable": false
+        }
+      ],
+      "pageLength": 10
     });
+    @else
+    // Jika tidak ada data, tampilkan pesan tanpa DataTables
+    console.log('Tidak ada data, DataTables tidak diinisialisasi');
+    @endif
   });
 </script>
 @endpush
-

@@ -90,13 +90,16 @@ Route::get('/get-box-by-lemari/{lemari_id}', [LemariController::class, 'getBoxBy
 Route::get('/box/{id}', [QrController::class, 'tampilkanIsiBox'])->name('qr.box');
 
 Route::controller(BoxController::class)->group(function () {
-    Route::get('box', 'index')->name('box.index');
+    Route::get('box', 'index')->name('box');
+
     Route::post('box', 'store')->name('box.store');
     Route::put('box/{box}', 'update')->name('box.update');
     Route::delete('box/{box}', 'destroy')->name('box.destroy');
-
-    Route::get('/cetak-qr-box/{id}',  'cetakQR')->name('box.cetakqr');
+    Route::get('cetak-qr-box/{id}', 'cetakQR')->name('box.cetakqr');
+    Route::get('/box/qr/{id}', [BoxController::class, 'generateQr'])->name('generate.qr');
 });
+
+
 
 Route::prefix('siarsip')->controller(ImportSuratMasukController::class)->group(function () {
     Route::get('/arsip_masuk/import', 'showForm')->name('arsip_masuk.import.form');

@@ -166,7 +166,21 @@
         { data: 'jumlah_rak', name: 'jumlah_rak' },
         { data: 'ruangan', name: 'ruangan.nama_ruangan' },
         { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
-      ]
+      ],
+    language: {
+        search: "Cari:",
+        lengthMenu: "Show _MENU_ entries",
+        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+        paginate: {
+          first: "Awal",
+          last: "Akhir",
+          next: "<i class='fas fa-chevron-right'></i>",
+          previous: "<i class='fas fa-chevron-left'></i>"
+        },
+        zeroRecords: "Data tidak ditemukan",
+        infoEmpty: "Tidak ada data ditampilkan",
+        infoFiltered: "(difilter dari _MAX_ total entri)"
+      }
     });
 
     // Tombol hapus
