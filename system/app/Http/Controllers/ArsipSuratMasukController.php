@@ -66,7 +66,7 @@ class ArsipSuratMasukController extends Controller
                 ->make(true);
         }
 
-        $list_bidang = Bidang::all();
+      $list_bidang = Bidang::where('opd_id', auth()->user()->opd_id)->get();
         return view('backend.arsip_masuk.index', compact('list_bidang'));
     }
 
@@ -92,9 +92,10 @@ class ArsipSuratMasukController extends Controller
     public function create()
     {
         // Mendapatkan semua bidang dan kategori untuk form create
-        $list_bidang = Bidang::all();
+         $list_bidang = Bidang::where('opd_id', auth()->user()->opd_id)->get();
         $list_kategori = Kategori::all();
-        $list_ruangan = Ruangan::all();
+       $list_ruangan = Ruangan::where('opd_id', auth()->user()->opd_id)->get();
+
         $list_lemari = Lemari::all();
         $list_box = Box::all();
 
@@ -145,11 +146,12 @@ class ArsipSuratMasukController extends Controller
         $arsip_surat_masuk = ArsipSuratMasuk::with(['bidang', 'kategori', 'box.lemari.ruangan'])->findOrFail($id);
 
         // Mendapatkan semua bidang
-        $list_bidang = Bidang::all();
+        $list_bidang = Bidang::where('opd_id', auth()->user()->opd_id)->get();
 
         // Memuat kategori berdasarkan bidang yang sedang dipilih
         $list_kategori = Kategori::where('bidang_id', $arsip_surat_masuk->bidang_id)->get();
-        $list_ruangan = Ruangan::all();
+       $list_ruangan = Ruangan::where('opd_id', auth()->user()->opd_id)->get();
+
         $list_lemari = Lemari::where('ruangan_id', $arsip_surat_masuk->box->lemari->ruangan_id)->get();
         $list_box = Box::where('lemari_id', $arsip_surat_masuk->box->lemari_id)->get();
         

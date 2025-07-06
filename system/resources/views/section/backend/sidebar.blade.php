@@ -1,4 +1,4 @@
-<div class="sidebar-left">
+<div class="sidebar-left" style="width: 245px">
     <div data-simplebar class="h-100">
         <div id="sidebar-menu">
             <ul class="left-menu list-unstyled" id="side-menu">

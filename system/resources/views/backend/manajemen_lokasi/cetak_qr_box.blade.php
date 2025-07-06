@@ -11,21 +11,32 @@
             margin: 0;
             padding: 40px;
             background: #fff;
+            position: relative;
         }
-        .logo {
+
+        /* Logo di pojok kiri atas */
+        .logo-container {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+        }
+
+        .logo-container img {
             width: 90px;
-            margin-bottom: 10px;
         }
+
         h1 {
             font-size: 26px;
             margin-bottom: 5px;
         }
+
         h3 {
             font-weight: normal;
             font-size: 15px;
             color: #444;
             margin-top: 0;
         }
+
         .qr-container {
             display: inline-block;
             padding: 20px;
@@ -33,15 +44,18 @@
             border: 2px dashed #ccc;
             margin-top: 30px;
         }
+
         .qr svg {
             width: 280px !important;
             height: 280px !important;
         }
+
         .footer-note {
             margin-top: 25px;
             font-size: 13px;
             color: #555;
         }
+
         .small-info {
             font-size: 12px;
             margin-top: 5px;
@@ -51,8 +65,10 @@
 </head>
 <body>
 
-    <!-- Logo Instansi -->
-    <img src="{{ asset('public/frontend/img/logo-ktp.png') }}" class="logo" alt="Logo Ketapang">
+    <!-- Logo SIPAD di kiri atas -->
+    <div class="logo-container">
+        <img src="{{ url('public') }}/assets/images/logo-sipad.svg" alt="Logo SIPAD">
+    </div>
 
     <!-- Judul Box -->
     <h1>{{ strtoupper($box->nama_box) }}</h1>

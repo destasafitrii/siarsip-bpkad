@@ -147,8 +147,8 @@
       ],
       language: {
         search: "Cari:",
-        lengthMenu: "Tampilkan _MENU_ entri",
-        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+        lengthMenu: "Show _MENU_ entries",
+        info: "Showing _START_ to _END_ of _TOTAL_ entries",
         paginate: {
           first: "Awal",
           last: "Akhir",

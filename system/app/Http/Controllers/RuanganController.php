@@ -6,6 +6,8 @@ use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
+use Illuminate\Validation\Rule;
+
 
 class RuanganController extends Controller
 {
@@ -40,40 +42,67 @@ class RuanganController extends Controller
 }
 
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'kode_ruangan' => 'required|unique:ruangan,kode_ruangan',
-            'nama_ruangan' => 'required|string|max:255',
-            'alamat' => 'nullable|string|max:255',
-            'keterangan' => 'nullable|string|max:255',
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'kode_ruangan' => 'required|string|max:255',
+        'nama_ruangan' => 'required|string|max:255',
+        'alamat' => 'nullable|string|max:255',
+        'keterangan' => 'nullable|string|max:255',
+    ]);
 
-        Ruangan::create([
-            'kode_ruangan' => $request->kode_ruangan,
-            'nama_ruangan' => $request->nama_ruangan,
-            'alamat' => $request->alamat,
-            'keterangan' => $request->keterangan,
-            'opd_id' => Auth::user()->opd_id,
-        ]);
+    // Cek apakah sudah ada ruangan dengan kode yang sama di OPD ini
+    $exists = Ruangan::where('kode_ruangan', $request->kode_ruangan)
+        ->where('opd_id', Auth::user()->opd_id)
+        ->exists();
 
-        return back()->with('success', 'Ruangan berhasil ditambahkan.');
+    if ($exists) {
+        return back()->with('error', 'Kode ruangan sudah digunakan dalam OPD Anda.');
     }
 
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'kode_ruangan' => 'required|unique:ruangan,kode_ruangan,' . $id . ',ruangan_id',
-            'nama_ruangan' => 'required|string|max:255',
-            'alamat' => 'nullable|string|max:255',
-            'keterangan' => 'nullable|string|max:255',
-        ]);
+    // Simpan jika belum ada
+    Ruangan::create([
+        'kode_ruangan' => $request->kode_ruangan,
+        'nama_ruangan' => $request->nama_ruangan,
+        'alamat' => $request->alamat,
+        'keterangan' => $request->keterangan,
+        'opd_id' => Auth::user()->opd_id,
+    ]);
 
-        $ruangan = Ruangan::findOrFail($id);
-        $ruangan->update($request->only('kode_ruangan', 'nama_ruangan', 'alamat', 'keterangan'));
+    return back()->with('success', 'Ruangan berhasil ditambahkan.');
+}
 
-        return back()->with('success', 'Ruangan berhasil diperbarui.');
+
+   public function update(Request $request, $id)
+{
+    $request->validate([
+        'kode_ruangan' => 'required|string|max:255',
+        'nama_ruangan' => 'required|string|max:255',
+        'alamat' => 'nullable|string|max:255',
+        'keterangan' => 'nullable|string|max:255',
+    ]);
+
+    // Cek jika kode ruangan bentrok dengan ruangan lain di OPD yang sama
+    $exists = Ruangan::where('kode_ruangan', $request->kode_ruangan)
+        ->where('opd_id', Auth::user()->opd_id)
+        ->where('ruangan_id', '!=', $id)
+        ->exists();
+
+    if ($exists) {
+        return back()->with('error', 'Kode ruangan sudah digunakan di OPD Anda.');
     }
+
+    $ruangan = Ruangan::findOrFail($id);
+    $ruangan->update([
+        'kode_ruangan' => $request->kode_ruangan,
+        'nama_ruangan' => $request->nama_ruangan,
+        'alamat' => $request->alamat,
+        'keterangan' => $request->keterangan,
+    ]);
+
+    return back()->with('success', 'Ruangan berhasil diperbarui.');
+}
+
 
     public function destroy($id)
     {

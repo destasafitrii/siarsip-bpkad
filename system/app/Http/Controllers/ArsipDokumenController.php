@@ -14,6 +14,22 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ArsipDokumenController extends Controller
 {
+/*************  ✨ Windsurf Command ⭐  *************/
+/**
+ * Display a listing of the archived documents.
+ *
+ * If the request is an AJAX call, retrieve and filter archived documents
+ * based on the user's current OPD and optional bidang and kategori filters.
+ * Return the filtered data in a DataTable format with options to view, edit, 
+ * or delete each document.
+ *
+ * If not an AJAX call, load the index view with a list of all available bidangs.
+ *
+ * @param \Illuminate\Http\Request $request The request object containing any filters or parameters.
+ * @return \Illuminate\Http\JsonResponse|\Illuminate\View\View The DataTable JSON response for AJAX requests, or the view for non-AJAX requests.
+ */
+
+/*******  b620b81c-81ef-49a4-81e2-91de6b5bc7fe  *******/
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -63,7 +79,7 @@ class ArsipDokumenController extends Controller
                 ->make(true);
         }
 
-        $list_bidang = Bidang::all();
+       $list_bidang = Bidang::where('opd_id', auth()->user()->opd_id)->get();
         return view('backend.arsip_dokumen.index', compact('list_bidang'));
     }
 
@@ -88,9 +104,10 @@ class ArsipDokumenController extends Controller
 
     public function create()
     {
-        $list_bidang = Bidang::all();
+         $list_bidang = Bidang::where('opd_id', auth()->user()->opd_id)->get();
         $list_kategori = Kategori::all();
-        $list_ruangan = Ruangan::all();
+       $list_ruangan = Ruangan::where('opd_id', auth()->user()->opd_id)->get();
+
         $list_lemari = Lemari::all();
         $list_box = Box::all();
 
@@ -141,11 +158,11 @@ class ArsipDokumenController extends Controller
     {
         $arsip_dokumen = ArsipDokumen::with(['bidang', 'kategori', 'box.lemari.ruangan'])->findOrFail($id);
 
-        $list_bidang = Bidang::all();
+         $list_bidang = Bidang::where('opd_id', auth()->user()->opd_id)->get();
 
         // Memuat kategori berdasarkan bidang yang sedang dipilih
         $list_kategori = Kategori::where('bidang_id', $arsip_dokumen->bidang_id)->get();
-        $list_ruangan = Ruangan::all();
+     $list_ruangan = Ruangan::where('opd_id', auth()->user()->opd_id)->get();
         $list_lemari = Lemari::where('ruangan_id', $arsip_dokumen->box->lemari->ruangan_id)->get();
         $list_box = Box::where('lemari_id', $arsip_dokumen->box->lemari_id)->get();
 

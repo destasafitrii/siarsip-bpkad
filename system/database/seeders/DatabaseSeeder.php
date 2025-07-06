@@ -17,6 +17,9 @@ class DatabaseSeeder extends Seeder
         OpdSeeder::class,
         UserSeeder::class,
         SuperadminSeeder::class,
+         ArsipSuratMasukSeeder::class,
+         ArsipSuratKeluarSeeder::class,
+         ArsipDokumenSeeder::class
     ]);
 }
 

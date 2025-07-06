@@ -60,15 +60,15 @@
       <div class="modal-body">
         <div class="mb-3">
           <label class="form-label">Kode Lemari</label>
-          <input type="text" class="form-control" name="kode_lemari" required>
+          <input type="text" class="form-control" name="kode_lemari" placeholder="Masukkan Kode Lemari" required>
         </div>
         <div class="mb-3">
           <label class="form-label">Nama Lemari</label>
-          <input type="text" class="form-control" name="nama_lemari" required>
+          <input type="text" class="form-control" name="nama_lemari" placeholder="Masukkan Nama Lemari" required>
         </div>
         <div class="mb-3">
           <label class="form-label">Jumlah Rak</label>
-          <input type="number" class="form-control" name="jumlah_rak" required>
+          <input type="number" class="form-control" name="jumlah_rak" placeholder="Masukkan Jumlah Rak" required>
         </div>
         <div class="mb-3">
           <label class="form-label">Ruangan</label>

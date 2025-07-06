@@ -116,5 +116,21 @@
         $(document).ready(function() {
             $('#opdTable').DataTable();
         });
+        $('#opdTable').DataTable({
+      "language": {
+        "lengthMenu": "Show_MENU_ entries",
+        "zeroRecords": "Data tidak ditemukan",
+        "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+        "infoEmpty": "Tidak ada data tersedia",
+        "infoFiltered": "(difilter dari _MAX_ total data)",
+        "search": "Cari:",
+        "paginate": {
+          "first": "Pertama",
+          "last": "Terakhir",
+           "next": "<i class='fas fa-chevron-right'></i>",
+          "previous": "<i class='fas fa-chevron-left'></i>"
+        }
+      },
+        });
     </script>
 @endsection

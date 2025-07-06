@@ -173,7 +173,7 @@
                                                                 <button type="button" class="btn btn-secondary"
                                                                     data-bs-dismiss="modal">Batal</button>
                                                                 <button type="submit"
-                                                                    class="btn btn-primary">Simpan</button>
+                                                                    class="btn btn-primary">Simpan Perubahan</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -303,20 +303,20 @@
     <script>
         $(document).ready(function() {
             $('#pengelolaTable').DataTable({
-                // responsive: true,
-                // language: {
-                //   search: "Cari:",
-                //   lengthMenu: "Tampilkan _MENU_ data",
-                //   zeroRecords: "Data tidak ditemukan",
-                //   info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                //   infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
-                //   paginate: {
-                //     first: "Pertama",
-                //     last: "Terakhir",
-                //     next: "Berikutnya",
-                //     previous: "Sebelumnya"
-                //   },
-                // }
+                responsive: true,
+                language: {
+                  search: "Cari:",
+                  lengthMenu: "Show _MENU_ entries",
+                  zeroRecords: "Data tidak ditemukan",
+                  info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                  infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+                  paginate: {
+                    first: "Pertama",
+                    last: "Terakhir",
+                    next: "<i class='fas fa-chevron-right'></i>",
+                    previous: "<i class='fas fa-chevron-left'></i>"
+                  },
+                }
             });
         });
     </script>

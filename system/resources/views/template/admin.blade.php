@@ -48,7 +48,8 @@
 
     <!-- Start right Content here -->
 
-    <div class="main-content">
+    <div class="main-content" style="margin-left: 245px;">
+
         @include('utils.notif')
 
         <!-- Page-content -->
