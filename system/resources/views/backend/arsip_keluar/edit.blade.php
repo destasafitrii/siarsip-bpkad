@@ -125,16 +125,16 @@
                                                    required value="{{ old('keterangan_surat_keluar', $arsip_surat_keluar->keterangan_surat_keluar) }}">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="file_surat_masuk" class="form-label">Unggah File</label>
-                                            <input type="file" class="form-control" id="file_surat_masuk"
-                                                name="file_surat_masuk">
-                                            <small class="text-muted">Maksimal ukuran file 1MB. Format PDF.</small>
-                                            @if ($arsip_surat_keluar->file_surat_masuk)
+                                            <label for="file_surat_keluar" class="form-label">Unggah File</label>
+                                            <input type="file" class="form-control" id="file_surat_keluar"
+                                                name="file_surat_keluar">
+                                            <small class="text-muted">Maksimal ukuran file 1MB. Format PDF, JPEG, PNG, JPG.</small>
+                                            @if ($arsip_surat_keluar->file_surat_keluar)
                                                 <div class="mt-2">
                                                     <small>File saat ini:
-                                                        <a href="{{ asset('storage/' . $arsip_surat_keluar->file_surat_masuk) }}"
+                                                        <a href="{{ asset('storage/' . $arsip_surat_keluar->file_surat_keluar) }}"
                                                             target="_blank">
-                                                            {{ basename($arsip_surat_keluar->file_surat_masuk) }}
+                                                            {{ basename($arsip_surat_keluar->file_surat_keluar) }}
                                                         </a>
                                                     </small>
                                                 </div>

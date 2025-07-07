@@ -20,7 +20,8 @@ class ArsipMasukController extends Controller
 
             $data = ArsipSuratMasuk::with(['bidang', 'kategori', 'box.lemari.ruangan', 'opd'])
                 ->where('opd_id', $user->opd_id) // Filter sesuai OPD pengguna
-                ->select('arsip_surat_masuk.*');
+               ->select(['arsip_surat_masuk.*', 'arsip_surat_masuk.surat_masuk_id']);
+        
 
             if ($request->filled('bidang_id')) {
                 $data->where('bidang_id', $request->bidang_id);
@@ -34,7 +35,7 @@ class ArsipMasukController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
     return '<a href="' . route('pengguna.arsip_masuk.show', $row->surat_masuk_id) . '" class="btn btn-info btn-sm" title="Detail">
-                <i class="mdi mdi-eye-outline" style="font-size: 14px;"></i>
+                <i class="mdi mdi-eye-outline"></i>
             </a>';
 })
 

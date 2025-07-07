@@ -152,31 +152,39 @@ class ArsipSuratKeluarController extends Controller
         return view('backend.arsip_keluar.edit', compact('arsip_surat_keluar', 'list_bidang', 'list_kategori', 'list_ruangan', 'list_lemari', 'list_box'));
     }
 
-    public function update(Request $request, $id)
-    {
-        // Validasi input untuk memperbarui arsip surat keluar
-        $validatedData = $request->validate([
-            'no_surat_keluar' => 'required',
-            'nama_surat_keluar' => 'required',
-            'tanggal_surat_keluar' => 'required|date',
-            'bidang_id' => 'required|exists:bidang,bidang_id',
-            'kategori_id' => 'nullable|exists:kategori,kategori_id',
-            'tujuan_surat_keluar' => 'required',
-            'ruangan_id' => 'required|exists:ruangan,ruangan_id',
-            'lemari_id' => 'required|exists:lemari,lemari_id',
-            'box_id' => 'required|exists:box,box_id',
-            'urutan_surat_keluar' => 'required',
-            'file_surat_keluar' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
-            'keterangan_surat_keluar' => 'nullable',
-        ]);
+public function update(Request $request, $id)
+{
+    $validatedData = $request->validate([
+        'no_surat_keluar' => 'required',
+        'nama_surat_keluar' => 'required',
+        'tanggal_surat_keluar' => 'required|date',
+        'bidang_id' => 'required|exists:bidang,bidang_id',
+        'kategori_id' => 'nullable|exists:kategori,kategori_id',
+        'tujuan_surat_keluar' => 'required',
+        'ruangan_id' => 'required|exists:ruangan,ruangan_id',
+        'lemari_id' => 'required|exists:lemari,lemari_id',
+        'box_id' => 'required|exists:box,box_id',
+        'urutan_surat_keluar' => 'required',
+        'file_surat_keluar' => 'nullable|file|mimes:pdf,jpeg,png,jpg|max:10240',
+        'keterangan_surat_keluar' => 'nullable',
+    ]);
 
-        // Menemukan arsip surat keluar yang akan diperbarui dan memperbarui data
-        $arsip_surat_keluar = ArsipSuratKeluar::findOrFail($id);
-        $arsip_surat_keluar->update($validatedData);
+    $arsip_surat_keluar = ArsipSuratKeluar::findOrFail($id);
 
-        // Redirect ke halaman arsip surat keluar dengan pesan sukses
-        return redirect()->route('arsip_keluar.index')->with('success', 'Data berhasil diperbarui!');
+    // Jika ada file baru diupload
+    if ($request->hasFile('file_surat_keluar')) {
+        // Simpan file baru
+        $validatedData['file_surat_keluar'] = $request->file('file_surat_keluar')->store('uploads/surat_keluar', 'public');
+
+        // (Opsional) Hapus file lama jika diperlukan
+        // Storage::disk('public')->delete($arsip_surat_keluar->file_surat_keluar);
     }
+
+    $arsip_surat_keluar->update($validatedData);
+
+    return redirect()->route('arsip_keluar.index')->with('success', 'Data berhasil diperbarui!');
+}
+
 
     public function destroy($id)
     {

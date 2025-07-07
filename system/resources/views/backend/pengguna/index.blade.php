@@ -70,9 +70,12 @@
                                                         <input type="text" name="name" value="{{ $p->name }}"
                                                             class="form-control" required>
                                                     </div>
+                                                    <div class="mb-3">
+                                                        <label>NIP / NIK</label>
                                                     <input type="text"
                                                         value="{{ $p->pegawai?->nip ?? ($p->pegawai?->nik ?? '-') }}"
                                                         class="form-control" disabled>
+                                                    </div>
                                                     <div class="mb-3">
                                                         <label>Jabatan</label>
                                                         <input type="text" name="jabatan"
@@ -95,9 +98,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-primary">Simpan</button>
                                                     <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Tutup</button>
+                                                        data-bs-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                                    
                                                 </div>
                                             </form>
                                         </div>
@@ -227,7 +231,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>

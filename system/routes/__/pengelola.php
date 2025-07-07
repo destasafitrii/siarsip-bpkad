@@ -87,7 +87,7 @@ Route::controller(LemariController::class)->group(function () {
 
 Route::get('get-lemari-by-ruangan/{id}', [LemariController::class, 'getByRuangan']);
 Route::get('/get-box-by-lemari/{lemari_id}', [LemariController::class, 'getBoxByLemari']);
-Route::get('/box/{id}', [QrController::class, 'tampilkanIsiBox'])->name('qr.box');
+
 
 Route::controller(BoxController::class)->group(function () {
     Route::get('box', 'index')->name('box');
@@ -152,8 +152,10 @@ Route::controller(PegawaiController::class)->group(function () {
     Route::get('pegawai/{pegawai}/edit', 'edit')->name('pegawai.edit');
     Route::put('pegawai/{pegawai}', 'update')->name('pegawai.update');
     Route::delete('pegawai/{pegawai}', 'destroy')->name('pegawai.destroy');
-    Route::get('pegawai/import', [PegawaiController::class, 'importForm'])->name('pegawai.import');
-Route::post('pegawai/import', [PegawaiController::class, 'import'])->name('pegawai.import.submit');
+    Route::get('pegawai/import', 'importForm')->name('pegawai.import.form');
+Route::post('pegawai/import',  'import')->name('pegawai.import.submit');
+Route::post('/pegawai/import-preview',  'importPreview')->name('pegawai.import.preview');
+Route::post('/pegawai/import-save',  'importSave')->name('pegawai.import.save');
 
 });
 

@@ -7,9 +7,9 @@ use App\Http\Controllers\Pengguna\ArsipKeluarController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('pengguna.dashboard');
-Route::get('cari_arsip_masuk', [DashboardController::class, 'cariArsipMasuk'])->name('pengguna.cariArsipMasuk');
-Route::get('cari_arsip_keluar', [DashboardController::class, 'cariArsipKeluar'])->name('pengguna.cariArsipKeluar');
-Route::get('cari_arsip_dokumen', [DashboardController::class, 'cariArsipDokumen'])->name('pengguna.cariArsipDokumen');
+// Route::get('cari_arsip_masuk', [DashboardController::class, 'cariArsipMasuk'])->name('pengguna.cariArsipMasuk');
+// Route::get('cari_arsip_keluar', [DashboardController::class, 'cariArsipKeluar'])->name('pengguna.cariArsipKeluar');
+// Route::get('cari_arsip_dokumen', [DashboardController::class, 'cariArsipDokumen'])->name('pengguna.cariArsipDokumen');
 
 Route::get('/arsip-masuk', [ArsipMasukController::class, 'index'])->name('pengguna.arsip_masuk.index');
 Route::get('/arsip-masuk/{id}', [ArsipMasukController::class, 'show'])->name('pengguna.arsip_masuk.show');

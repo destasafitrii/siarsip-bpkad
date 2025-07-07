@@ -56,12 +56,12 @@
       <div class="modal-body">
         <div class="mb-3">
           <label class="form-label">Nama Kategori</label>
-          <input type="text" class="form-control" name="nama_kategori" required>
+          <input type="text" class="form-control" name="nama_kategori" placeholder="Masukkan Nama Kategori" required>
         </div>
         <div class="mb-3">
           <label class="form-label">Bidang</label>
           <select name="bidang_id" class="form-select" required>
-            <option value="" disabled selected>Pilih Bidang</option>
+            <option value="" disabled selected>-- Pilih Bidang --</option>
             @foreach ($bidang as $b)
               <option value="{{ $b->bidang_id }}">{{ $b->nama_bidang }}</option>
             @endforeach

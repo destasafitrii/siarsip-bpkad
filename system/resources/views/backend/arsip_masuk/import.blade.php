@@ -30,8 +30,7 @@
                         <div class="form-group mb-3">
                             <label for="file" class="fw-semibold">Pilih File Excel</label>
                             <input type="file" name="file" class="form-control" accept=".xlsx,.xls" required>
-                            <small class="form-text text-muted">Hanya file berekstensi .xlsx atau .xls yang
-                                diperbolehkan</small>
+                            <small class="form-text text-muted">Maksimal ukuran file 3MB. Format: .xlsx atau .xls</small>
                         </div>
                         <div class="d-flex justify-content-start gap-2">
                             <button type="submit" class="btn btn-primary">

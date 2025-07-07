@@ -137,7 +137,7 @@
                                             <label for="file_surat_masuk" class="form-label">Unggah File</label>
                                             <input type="file" class="form-control" id="file_surat_masuk"
                                                 name="file_surat_masuk">
-                                            <small class="text-muted">Maksimal ukuran file 1MB. Format PDF.</small>
+                                            <small class="text-muted">Maksimal ukuran file 1MB. Format PDF, JPEG, PNG, JPG.</small>
                                             @if ($arsip_surat_masuk->file_surat_masuk)
                                                 <div class="mt-2">
                                                     <small>File saat ini:

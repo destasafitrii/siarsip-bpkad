@@ -27,7 +27,7 @@ class AuthController extends Controller
         } elseif ($user->role === 'pengelola') {
             return redirect()->route('pengelola.dashboard');
         } elseif ($user->role === 'pengguna') {
-            return redirect('/pengguna.dashboard'); // kalau ada
+            return redirect()->route('pengguna.dashboard'); // kalau ada
         }
 
         return redirect('/'); // fallback

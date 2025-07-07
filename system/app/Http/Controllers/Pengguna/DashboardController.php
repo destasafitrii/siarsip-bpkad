@@ -18,7 +18,7 @@ class DashboardController extends Controller
         $jumlahSuratKeluar = ArsipSuratKeluar::where('opd_id', $opdId)->count();
         $jumlahDokumen = ArsipDokumen::where('opd_id', $opdId)->count();
 
-        return view('pengguna/dashboard', compact(
+        return view('pengguna.dashboard', compact(
             'jumlahSuratMasuk',
             'jumlahSuratKeluar',
             'jumlahDokumen'

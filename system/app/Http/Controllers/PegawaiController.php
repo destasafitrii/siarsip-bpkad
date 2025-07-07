@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\Imports\PegawaiImport;
-
+use Illuminate\Support\Facades\Session;
 class PegawaiController extends Controller
 {
     public function index(Request $request)
@@ -137,7 +137,7 @@ class PegawaiController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:xlsx,xls,csv|max:2048',
+            'file' => 'required|mimes:xlsx,xls,csv|max:3072',
         ]);
 
         (new FastExcel)->import($request->file('file'), function ($row) {
@@ -188,4 +188,43 @@ class PegawaiController extends Controller
             'status' => 'not_found'
         ]);
     }
+
+    public function importPreview(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls,csv|max:3072',
+    ]);
+
+    $rows = (new FastExcel)->import($request->file('file'));
+
+    // Simpan data sementara ke session
+    Session::put('preview_pegawai', $rows);
+
+    return view('backend.pegawai.preview', compact('rows'));
+}
+
+public function importSave(Request $request)
+{
+    $rows = Session::get('preview_pegawai');
+
+    if (!$rows) {
+        return redirect()->route('pegawai.import.form')->withErrors(['Tidak ada data yang bisa disimpan.']);
+    }
+
+    foreach ($rows as $row) {
+        Pegawai::create([
+            'nama' => $row['Nama'] ?? '-',
+            'status_kepegawaian' => $row['Status Kepegawaian'] ?? 'Honor',
+            'nip' => ($row['Status Kepegawaian'] ?? '') === 'ASN' ? ($row['NIP'] ?? null) : null,
+            'nik' => ($row['Status Kepegawaian'] ?? '') === 'Honor' ? ($row['NIK'] ?? null) : null,
+            'golongan' => trim($row['Golongan'] ?? '') ?: '-',
+            'jabatan' => trim($row['Jabatan'] ?? '') ?: '-',
+            'opd_id' => auth()->user()->opd_id,
+        ]);
+    }
+
+    Session::forget('preview_pegawai');
+
+    return redirect()->route('pegawai.index')->with('success', 'Data pegawai berhasil disimpan.');
+}
 }

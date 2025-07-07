@@ -58,19 +58,19 @@
       <div class="modal-body">
         <div class="mb-3">
           <label class="form-label">Kode Ruangan</label>
-          <input type="text" class="form-control" name="kode_ruangan" required>
+          <input type="text" class="form-control" name="kode_ruangan" placeholder="Masukkan Kode Ruangan" required>
         </div>
         <div class="mb-3">
           <label class="form-label">Nama Ruangan</label>
-          <input type="text" class="form-control" name="nama_ruangan" required>
+          <input type="text" class="form-control" name="nama_ruangan" placeholder="Masukkan Nama Ruangan" required>
         </div>
         <div class="mb-3">
           <label class="form-label">Alamat</label>
-          <input type="text" class="form-control" name="alamat">
+          <input type="text" class="form-control" name="alamat" placeholder="Masukkan Alamat Ruangan">
         </div>
         <div class="mb-3">
           <label class="form-label">Keterangan</label>
-          <textarea class="form-control" name="keterangan"></textarea>
+          <textarea class="form-control" name="keterangan" placeholder="Masukkan Keterangan"></textarea>
         </div>
       </div>
       <div class="modal-footer">

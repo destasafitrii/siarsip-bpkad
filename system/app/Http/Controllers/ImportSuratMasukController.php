@@ -13,19 +13,30 @@ class ImportSuratMasukController extends Controller
     {
         return view('backend.arsip_masuk.import');
     }
+    
 
-    public function preview(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:xlsx,xls',
-        ]);
+ public function preview(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls|max:3072',
+    ]);
 
-        $rows = (new FastExcel)->import($request->file('file'));
-        $expectedHeaders = ['Nomor Surat', 'Nama Surat', 'Tanggal Surat', 'Asal Surat', 'Urutan', 'Bidang', 'Jenis Arsip', 'Ruangan', 'Lemari', 'Box'];
+    $rows = (new FastExcel)->import($request->file('file'));
 
-    $actualHeaders = array_keys($rows[0]); // Ambil kolom dari baris pertama
+    // Konversi tanggal sebelum dikirim ke view
+    $rows = collect($rows)->map(function ($row) {
+        foreach ($row as $key => $value) {
+            if ($value instanceof \DateTimeInterface) {
+                $row[$key] = $value->format('Y-m-d');
+            }
+        }
+        return $row;
+    })->toArray();
 
-    // Ubah jadi lowercase untuk case-insensitive perbandingan
+    $expectedHeaders = ['Nomor Surat', 'Nama Surat', 'Tanggal Surat', 'Asal Surat', 'Urutan', 'Bidang', 'Jenis Arsip', 'Ruangan', 'Lemari', 'Box'];
+
+    $actualHeaders = array_keys($rows[0]);
+
     $expected = array_map('strtolower', $expectedHeaders);
     $actual = array_map('strtolower', $actualHeaders);
 
@@ -33,8 +44,9 @@ class ImportSuratMasukController extends Controller
         return back()->withErrors(['File Excel tidak sesuai dengan format Arsip Surat Masuk.']);
     }
 
-        return view('backend.arsip_masuk.preview', compact('rows'));
-    }
+    return view('backend.arsip_masuk.preview', compact('rows'));
+}
+
 
     public function save(Request $request)
     {

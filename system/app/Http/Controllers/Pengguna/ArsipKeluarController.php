@@ -19,7 +19,7 @@ class ArsipKeluarController extends Controller
 
             $data = ArsipSuratKeluar::with(['bidang', 'kategori', 'box.lemari.ruangan', 'opd'])
                 ->where('opd_id', $user->opd_id)
-                ->select('arsip_surat_keluar.*');
+                ->select(['arsip_surat_keluar.*', 'arsip_surat_keluar.surat_keluar_id']);
 
             if ($request->filled('bidang_id')) {
                 $data->where('bidang_id', $request->bidang_id);
@@ -33,7 +33,7 @@ class ArsipKeluarController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     return '<a href="' . route('pengguna.arsip_keluar.show', $row->surat_keluar_id) . '" class="btn btn-info btn-sm" title="Detail">
-                                <i class="mdi mdi-eye-outline" style="font-size: 10px"></i>
+                                <i class="mdi mdi-eye-outline"></i>
                             </a>';
                 })
                 ->editColumn('bidang_id', fn($row) => $row->bidang->nama_bidang ?? 'Tidak ada bidang')

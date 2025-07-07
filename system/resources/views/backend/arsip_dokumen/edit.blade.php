@@ -122,7 +122,7 @@
                                     <div class="mb-3">
                                         <label for="file_dokumen" class="form-label">Unggah File Baru (Opsional)</label>
                                         <input type="file" class="form-control" id="file_dokumen" name="file_dokumen">
-                                        <small class="text-muted">Kosongkan jika tidak ingin mengganti file. Maks 1MB, PDF.</small>
+                                        <small class="text-muted">Kosongkan jika tidak ingin mengganti file. Maks 1MB, PDF, JPEG, PNG, JPG.</small>
                                         @if ($arsip_dokumen->file_dokumen)
                                             <div class="mt-2">
                                                 <a href="{{ asset('storage/arsip_dokumen/' . $arsip_dokumen->file_dokumen) }}" target="_blank">Lihat File Saat Ini</a>

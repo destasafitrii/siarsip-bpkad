@@ -57,15 +57,15 @@
       <div class="modal-body">
         <div class="mb-3">
           <label class="form-label">Kode Bidang</label>
-          <input type="text" class="form-control" name="kode_bidang" required>
+          <input type="text" class="form-control" name="kode_bidang" placeholder="Masukkan Kode Bidang" required>
         </div>
         <div class="mb-3">
           <label class="form-label">Nama Bidang</label>
-          <input type="text" class="form-control" name="nama_bidang" required>
+          <input type="text" class="form-control" name="nama_bidang" placeholder="Masukkan Nama Bidang" required>
         </div>
         <div class="mb-3">
           <label class="form-label">Penanggung Jawab</label>
-          <input type="text" class="form-control" name="penanggung_jawab" required>
+          <input type="text" class="form-control" name="penanggung_jawab" placeholder="Masukkan Nama Penanggung Jawab" required>
         </div>
       </div>
       <div class="modal-footer">
@@ -90,7 +90,7 @@
         <input type="hidden" name="bidang_id" id="edit_bidang_id">
         <div class="mb-3">
           <label class="form-label">Kode Bidang</label>
-          <input type="text" class="form-control" name="kode_bidang" id="edit_kode_bidang" required>
+          <input type="text" class="form-control" name="kode_bidang" id="edit_kode_bidang"  required>
         </div>
         <div class="mb-3">
           <label class="form-label">Nama Bidang</label>

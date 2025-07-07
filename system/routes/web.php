@@ -7,6 +7,7 @@ use App\Http\Controllers\PencarianArsipSuratMasukController;
 use App\Http\Controllers\PencarianArsipSuratKeluarController;
 use App\Http\Controllers\frontend\PencarianController;
 use App\Http\Controllers\SuperAdmin\OpdController;
+use App\Http\Controllers\QrController;
 
 Route::get('/', function () {
     return view('frontend.landing');
@@ -31,6 +32,7 @@ Route::get('/notif', function () {
     return view('utils.notif');
 });
 
+Route::get('/box/{id}', [QrController::class, 'tampilkanIsiBox'])->name('qr.box');
 
 // Route::get('/', [PencarianController::class, 'index'])->name('pencarian');
 // Route::get('/hasil-pencarian', [PencarianController::class, 'search'])->name('hasil-pencarian');

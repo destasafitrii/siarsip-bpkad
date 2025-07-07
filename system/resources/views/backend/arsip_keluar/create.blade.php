@@ -110,7 +110,7 @@
                                     <div class="mb-3">
                                         <label for="file_surat_keluar" class="form-label">Unggah File</label>
                                         <input type="file" class="form-control" id="file_surat_keluar" name="file_surat_keluar">
-                                        <small class="text-muted">Maksimal ukuran file 1MB. Format: PDF.</small>
+                                        <small class="text-muted">Maksimal ukuran file 1MB. Format: PDF, JPEG, PNG, JPG.</small>
                                     </div>
                                 </div>
                             </div>

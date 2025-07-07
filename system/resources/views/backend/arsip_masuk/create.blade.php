@@ -62,7 +62,7 @@
                                         <div class="mb-3">
                                             <label for="kategori_id" class="form-label">Kategori</label>
                                             <select name="kategori_id" id="kategori_id" class="form-control">
-                                                <option value="">-- Pilih Kategori (Opsional) --</option>
+                                                <option value="">-- Pilih Kategori --</option>
                                             </select>
                                         </div>
 
@@ -129,7 +129,7 @@
                                             <input type="file" class="form-control" id="file_surat_masuk"
                                                 name="file_surat_masuk">
                                             <small class="text-muted">Maksimal ukuran file 1MB. Format yang diperbolehkan:
-                                                PDF.</small>
+                                                PDF, JPEG, PNG, JPG.</small>
                                         </div>
                                     </div>
 

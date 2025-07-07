@@ -17,7 +17,7 @@ class ImportSuratKeluarController extends Controller
     public function preview(Request $request)
 {
     $request->validate([
-        'file' => 'required|mimes:xlsx,xls',
+        'file' => 'required|mimes:xlsx,xls|max:3072',
     ]);
 
     $rows = (new FastExcel)->import($request->file('file'));

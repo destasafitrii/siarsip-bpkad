@@ -158,31 +158,41 @@ class ArsipSuratMasukController extends Controller
         return view('backend.arsip_masuk.edit', compact('arsip_surat_masuk', 'list_bidang', 'list_kategori', 'list_ruangan', 'list_lemari', 'list_box'));
     }
 
-    public function update(Request $request, $id)
-    {
-        // Validasi input untuk memperbarui arsip surat masuk
-        $validatedData = $request->validate([
-            'no_surat_masuk' => 'required',
-            'nama_surat_masuk' => 'required',
-            'bidang_id' => 'required|exists:bidang,bidang_id',
-            'kategori_id' => 'nullable|exists:kategori,kategori_id',
-            'ruangan_id' => 'required|exists:ruangan,ruangan_id',
-            'lemari_id' => 'required|exists:lemari,lemari_id',
-            'box_id' => 'required|exists:box,box_id',
-            'urutan_surat_masuk' => 'required',
-            'tanggal_surat_masuk' => 'required|date',
-            'asal_surat_masuk' => 'required',
-            'file_surat_masuk' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
-            'keterangan' => 'nullable',
-        ]);
+public function update(Request $request, $id)
+{
+    $validatedData = $request->validate([
+        'no_surat_masuk' => 'required',
+        'nama_surat_masuk' => 'required',
+        'bidang_id' => 'required|exists:bidang,bidang_id',
+        'kategori_id' => 'nullable|exists:kategori,kategori_id',
+        'ruangan_id' => 'required|exists:ruangan,ruangan_id',
+        'lemari_id' => 'required|exists:lemari,lemari_id',
+        'box_id' => 'required|exists:box,box_id',
+        'urutan_surat_masuk' => 'required',
+        'tanggal_surat_masuk' => 'required|date',
+        'asal_surat_masuk' => 'required',
+        'file_surat_masuk' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
+        'keterangan' => 'nullable',
+    ]);
 
-        // Menemukan arsip surat masuk yang akan diperbarui dan memperbarui data
-        $arsip_surat_masuk = ArsipSuratMasuk::findOrFail($id);
-        $arsip_surat_masuk->update($validatedData);
+    $arsip_surat_masuk = ArsipSuratMasuk::findOrFail($id);
 
-        // Redirect ke halaman arsip surat masuk dengan pesan sukses
-        return redirect()->route('arsip_masuk.index')->with('success', 'Data berhasil diperbarui!');
+    // Kalau ada file baru diupload
+    if ($request->hasFile('file_surat_masuk')) {
+        // Optional: hapus file lama kalau ada
+        if ($arsip_surat_masuk->file_surat_masuk && \Storage::disk('public')->exists($arsip_surat_masuk->file_surat_masuk)) {
+            \Storage::disk('public')->delete($arsip_surat_masuk->file_surat_masuk);
+        }
+
+        // Simpan file baru
+        $validatedData['file_surat_masuk'] = $request->file('file_surat_masuk')->store('uploads/surat_masuk', 'public');
     }
+
+    $arsip_surat_masuk->update($validatedData);
+
+    return redirect()->route('arsip_masuk.index')->with('success', 'Data berhasil diperbarui!');
+}
+
 
     public function destroy($id)
     {

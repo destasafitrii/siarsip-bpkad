@@ -67,8 +67,8 @@
                                     <tr>
                                         <th>File Arsip</th>
                                         <td>
-                                            @if ($arsip_dokumen->file)
-                                                <a href="{{ asset('system/storage/app/public/' . $arsip_dokumen->file) }}" target="_blank" class="btn btn-info btn-sm">
+                                            @if ($arsip_dokumen->file_dokumen)
+                                                <a href="{{ asset('system/storage/app/public/' . $arsip_dokumen->file_dokumen) }}" target="_blank" class="btn btn-info btn-sm">
                                                     <i class="fas fa-file-alt"></i> Lihat File
                                                 </a>
                                             @else
@@ -81,10 +81,10 @@
                         </div>
 
                         <!-- Pratinjau Dokumen -->
-                        @if ($arsip_dokumen->file)
+                        @if ($arsip_dokumen->file_dokumen)
                         <div class="mt-4">
                             <h5>Pratinjau Arsip</h5>
-                            <iframe src="{{ asset('system/storage/app/public/' . $arsip_dokumen->file) }}" width="100%" height="600px" frameborder="0"></iframe>
+                            <iframe src="{{ asset('system/storage/app/public/' . $arsip_dokumen->file_dokumen) }}" width="100%" height="600px" frameborder="0"></iframe>
                         </div>
                         @endif
 

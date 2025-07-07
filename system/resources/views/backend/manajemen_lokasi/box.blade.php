@@ -93,7 +93,7 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                      <button type="submit" class="btn btn-primary">Simpan</button>
+                      <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                     </div>
                   </form>
                 </div>
@@ -143,7 +143,7 @@
         <div class="modal-body">
           <div class="mb-3">
             <label class="form-label">Nama Box</label>
-            <input type="text" class="form-control" name="nama_box" required>
+            <input type="text" class="form-control" name="nama_box" placeholder="Masukkan Nama Box" required>
           </div>
           <div class="mb-3">
             <label class="form-label">Lemari</label>

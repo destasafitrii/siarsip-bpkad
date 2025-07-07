@@ -19,7 +19,7 @@ class ArsipDokumenController extends Controller
 
             $data = ArsipDokumen::with(['bidang', 'kategori', 'box.lemari.ruangan', 'opd'])
                 ->where('opd_id', $user->opd_id)
-                ->select('arsip_dokumen.*');
+                ->select(['arsip_dokumen.*', 'arsip_dokumen.dokumen_id']);
 
             if ($request->filled('bidang_id')) {
                 $data->where('bidang_id', $request->bidang_id);
@@ -33,7 +33,7 @@ class ArsipDokumenController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     return '<a href="' . route('pengguna.arsip_dokumen.show', $row->dokumen_id) . '" class="btn btn-info btn-sm" title="Detail">
-                                <i class="mdi mdi-eye-outline" style="font-size: 10px"></i>
+                                <i class="mdi mdi-eye-outline" ></i>
                             </a>';
                 })
                 ->editColumn('bidang_id', fn($row) => $row->bidang->nama_bidang ?? 'Tidak ada bidang')

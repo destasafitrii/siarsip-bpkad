@@ -26,9 +26,12 @@
                                         @foreach ($rows as $row)
                                             @if (!empty(array_filter($row)))
                                             <tr>
-                                                @foreach ($row as $val)
-                                                    <td>{{ $val }}</td>
-                                                @endforeach
+                                               @foreach ($row as $val)
+    <td>
+        {{ $val instanceof \DateTimeInterface ? $val->format('Y-m-d') : $val }}
+    </td>
+@endforeach
+
                                             </tr>
                                             @endif
                                         @endforeach

@@ -10,7 +10,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="card-title">Data Pegawai</h4>
                         <div class="d-flex gap-2">
-                            <a href="{{ route('pegawai.import') }}"
+                            <a href="{{ route('pegawai.import.form') }}"
                                 class="btn btn-success btn-sm d-flex align-items-center" title="Import Pegawai">
                                 <i class="fas fa-file-excel me-1"></i> <span>Import Data Pegawai</span>
                             </a>
