@@ -71,6 +71,6 @@ class ImportDokumenController extends Controller
             ]);
         }
 
-        return redirect()->route('arsip_dokumen.index')->with('success', 'Data berhasil diimport.');
+        return redirect()->route('arsip_dokumen.index')->with('success', 'Data Arsip Dokumen berhasil diimport.');
     }
 }

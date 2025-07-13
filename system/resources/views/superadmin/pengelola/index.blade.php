@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="page-title-box">
-                        <h4 class="page-title">Manajemen Pengelola</h4>
+                        <h4 class="page-title">Manajemen Pengelola OPD</h4>
                     </div>
                 </div>
             </div>
@@ -16,7 +16,7 @@
                         <div class="card-body">
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <h4 class="card-title">Daftar Pengelola</h4>
+                                    <h4 class="card-title">Daftar Pengelola OPD</h4>
                                 </div>
                                 <div class="col-md-6 text-end">
                                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Tambah
@@ -102,7 +102,7 @@
                                                             @csrf
                                                             @method('PUT')
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title">Edit Pengelola</h5>
+                                                                <h5 class="modal-title">Edit Pengelola OPD</h5>
                                                                 <button type="button" class="btn-close"
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
@@ -185,7 +185,7 @@
                                                 <div class="modal-dialog modal-dialog-scrollable">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title">Detail Pengelola</h5>
+                                                            <h5 class="modal-title">Detail Pengelola OPD</h5>
                                                             <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
@@ -240,7 +240,7 @@
                 <form action="{{ route('pengelola.store') }}" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title">Tambah Pengelola</h5>
+                        <h5 class="modal-title">Tambah Pengelola OPD</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">

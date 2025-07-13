@@ -86,6 +86,6 @@ class ImportSuratMasukController extends Controller
             ]);
         }
 
-        return redirect()->route('arsip_masuk.index')->with('success', 'Data berhasil diimport.');
+        return redirect()->route('arsip_masuk.index')->with('success', 'Data Arsip Surat Masuk berhasil diimport.');
     }
 }

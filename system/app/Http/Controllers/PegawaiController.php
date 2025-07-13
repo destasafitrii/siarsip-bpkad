@@ -225,6 +225,6 @@ public function importSave(Request $request)
 
     Session::forget('preview_pegawai');
 
-    return redirect()->route('pegawai.index')->with('success', 'Data pegawai berhasil disimpan.');
+    return redirect()->route('pegawai.index')->with('success', 'Data pegawai berhasil diimport.');
 }
 }
