@@ -122,21 +122,20 @@ Route::delete('pengguna/{pengguna}', [App\Http\Controllers\PenggunaController::c
 
 
 Route::controller(ArsipDokumenController::class)->group(function () {
-    Route::get('arsip_dokumen', 'index')->name('arsip_dokumen.index'); // HARUS DI ATAS
+    Route::get('arsip_dokumen', 'index')->name('arsip_dokumen.index');
     Route::get('arsip_dokumen/create', 'create')->name('arsip_dokumen.create');
     Route::post('arsip_dokumen', 'store')->name('arsip_dokumen.store');
     Route::get('arsip_dokumen/{arsip_dokumen}/edit', 'edit')->name('arsip_dokumen.edit');
     Route::put('arsip_dokumen/{arsip_dokumen}', 'update')->name('arsip_dokumen.update');
     Route::delete('arsip_dokumen/{arsip_dokumen}', 'destroy')->name('arsip_dokumen.destroy');
-
-    // 🛑 Route ini HARUS PALING BAWAH
     Route::get('arsip_dokumen/{arsip_dokumen}', 'show')->name('arsip_dokumen.show');
 
-    Route::delete('/{id}', [ArsipDokumenController::class, 'destroy'])->name('destroy');
-    Route::get('arsip_dokumen/getKategoriByBidang/{bidang_id}', [App\Http\Controllers\ArsipDokumenController::class, 'getKategoriByBidang']);
-    Route::get('arsip_dokumen/getLemariByRuangan/{ruangan_id}', [App\Http\Controllers\ArsipDokumenController::class, 'getLemariByRuangan']);
-    Route::get('arsip_dokumen/getBoxByLemari/{lemari_id}', [App\Http\Controllers\ArsipDokumenController::class, 'getBoxByLemari']);
+    // Dropdown dinamis
+    Route::get('/arsip_dokumen/getKategoriByBidang/{bidang_id}', 'getKategoriByBidang')->name('arsip_dokumen.getKategoriByBidang');
+    Route::get('/arsip_dokumen/getLemariByRuangan/{ruangan_id}', 'getLemariByRuangan')->name('arsip_dokumen.getLemariByRuangan');
+    Route::get('/arsip_dokumen/getBoxByLemari/{lemari_id}', 'getBoxByLemari')->name('arsip_dokumen.getBoxByLemari');
 });
+
 
 Route::get('/get-pegawai-by-nip/{nip}', [PegawaiController::class, 'getPegawaiByNip']);
 Route::get('/pengguna/getPegawaiByNipNik', [PenggunaController::class, 'getPegawaiByNipNik'])->name('pengguna.getPegawaiByNipNik');

@@ -12,7 +12,7 @@
           <div class="mb-3"><label>Nama OPD</label><input type="text" name="nama_opd" class="form-control" placeholder="Masukkan Nama OPD" required></div>
           <div class="mb-3"><label>Alamat</label><input type="text" name="alamat" class="form-control" placeholder="Masukkan Alamat"></div>
           <div class="mb-3"><label>Email</label><input type="email" name="surel" class="form-control" placeholder="Masukkan Email"></div>
-          <div class="mb-3"><label>Link Maps</label><input type="textarea" name="maps" class="form-control" placeholder="Masukkan Link Maps"></div>
+          <div class="mb-3"><label>Link Maps</label><input type="url" name="maps" class="form-control" placeholder="Masukkan Link Maps"></div>
           <div class="mb-3"><label>Kepala Dinas</label><input type="text" name="kepala_dinas" class="form-control" placeholder="Masukkan Kepala Dinas"></div>
         </div>
         <div class="modal-footer">

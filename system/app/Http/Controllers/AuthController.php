@@ -12,14 +12,25 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function login(Request $request)
+public function login(Request $request)
 {
+    // Tambahkan validasi
+   
+
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required'
+    ], [
+        'email.required' => 'Email wajib diisi.',
+        'email.email' => 'Format email tidak valid.',
+        'password.required' => 'Kata sandi wajib diisi.',
+    ]);
+
+    // Lanjutkan proses login seperti biasa
     $credentials = $request->only('email', 'password');
 
     if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
-
-        // Cek role dan redirect sesuai role
         $user = auth()->user();
 
         if ($user->role === 'superadmin') {
@@ -27,16 +38,18 @@ class AuthController extends Controller
         } elseif ($user->role === 'pengelola') {
             return redirect()->route('pengelola.dashboard');
         } elseif ($user->role === 'pengguna') {
-            return redirect()->route('pengguna.dashboard'); // kalau ada
+            return redirect()->route('pengguna.dashboard');
         }
 
-        return redirect('/'); // fallback
+        return redirect('/');
     }
 
-    return back()->withErrors([
-        'email' => 'Email atau password salah.',
-    ]);
+   return back()->withErrors([
+    'login' => 'Email atau password salah.',
+])->withInput();
+
 }
+
 
 
     public function logout(Request $request)

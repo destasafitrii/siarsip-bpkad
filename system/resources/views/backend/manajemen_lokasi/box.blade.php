@@ -111,7 +111,7 @@
                   <form action="{{ route('box.destroy', $b->box_id) }}" method="POST">
                     @csrf @method('DELETE')
                     <div class="modal-body">
-                      <p>Yakin ingin menghapus box <strong>{{ $b->nama_box }}</strong>?</p>
+                      <p>Yakin ingin menghapus data ini </strong>?</p>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

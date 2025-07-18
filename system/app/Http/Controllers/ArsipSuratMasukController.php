@@ -116,9 +116,11 @@ class ArsipSuratMasukController extends Controller
             'box_id' => 'required|exists:box,box_id',
             'tanggal_surat_masuk' => 'required|date',
             'asal_surat_masuk' => 'required',
-            'file_surat_masuk' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
+            'file_surat_masuk' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:5120',
             'keterangan' => 'nullable',
-        ]);
+        ], [
+    'file_surat_masuk.mimes' => 'Format file harus PDF, JPG, atau PNG.',
+    'file_surat_masuk.max' => 'Ukuran file tidak boleh melebihi 5 MB.',]);
   $validatedData['opd_id'] = auth()->user()->opd_id;
         // Menyimpan file jika ada
         if ($request->hasFile('file_surat_masuk')) {
@@ -129,7 +131,7 @@ class ArsipSuratMasukController extends Controller
         ArsipSuratMasuk::create($validatedData);
 
         // Redirect ke halaman arsip surat masuk dengan pesan sukses
-        return redirect()->route('arsip_masuk.index')->with('success', 'Data berhasil ditambahkan!');
+        return redirect()->route('arsip_masuk.index')->with('success', 'Data Arsip Surat Masuk berhasil ditambahkan!');
     }
 
     public function show($id)
@@ -171,7 +173,7 @@ public function update(Request $request, $id)
         'urutan_surat_masuk' => 'required',
         'tanggal_surat_masuk' => 'required|date',
         'asal_surat_masuk' => 'required',
-        'file_surat_masuk' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
+        'file_surat_masuk' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:5120',
         'keterangan' => 'nullable',
     ]);
 
@@ -190,7 +192,7 @@ public function update(Request $request, $id)
 
     $arsip_surat_masuk->update($validatedData);
 
-    return redirect()->route('arsip_masuk.index')->with('success', 'Data berhasil diperbarui!');
+    return redirect()->route('arsip_masuk.index')->with('success', 'Data Arsip Surat Masuk berhasil diperbarui!');
 }
 
 
@@ -201,7 +203,7 @@ public function update(Request $request, $id)
         $arsip_surat_masuk->delete();
 
         // Redirect ke halaman arsip surat masuk dengan pesan sukses
-        return redirect()->route('arsip_masuk.index')->with('success', 'Data berhasil dihapus!');
+        return redirect()->route('arsip_masuk.index')->with('success', 'Data Arsip Surat Masuk berhasil dihapus!');
     }
 }
                 

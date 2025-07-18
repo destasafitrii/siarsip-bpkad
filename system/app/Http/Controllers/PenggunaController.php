@@ -58,7 +58,7 @@ class PenggunaController extends Controller
             'opd_id' => auth()->user()->opd_id, // pastikan opd_id terisi
         ]);
 
-        return back()->with('success', 'Pengguna berhasil ditambahkan.');
+        return back()->with('success', 'Akun Pengguna berhasil ditambahkan.');
     }
 
     public function show(User $pengguna)
@@ -91,7 +91,7 @@ class PenggunaController extends Controller
 
         $pengguna->save();
 
-        return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil diperbarui.');
+        return redirect()->route('pengguna.index')->with('success', 'Akun Pengguna berhasil diperbarui.');
     }
 
     public function destroy(User $pengguna)
@@ -99,7 +99,7 @@ class PenggunaController extends Controller
         $this->authorizePengguna($pengguna);
         $pengguna->delete();
 
-        return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil dihapus.');
+        return redirect()->route('pengguna.index')->with('success', 'Akun Pengguna berhasil dihapus.');
     }
 
     protected function authorizePengguna(User $pengguna)

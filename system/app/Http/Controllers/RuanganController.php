@@ -69,7 +69,7 @@ class RuanganController extends Controller
         'opd_id' => Auth::user()->opd_id,
     ]);
 
-    return back()->with('success', 'Ruangan berhasil ditambahkan.');
+    return back()->with('success', 'Data Ruangan berhasil ditambahkan.');
 }
 
 
@@ -100,14 +100,15 @@ class RuanganController extends Controller
         'keterangan' => $request->keterangan,
     ]);
 
-    return back()->with('success', 'Ruangan berhasil diperbarui.');
-}
+   return back()->with('success', 'Data Ruangan berhasil diperbarui.');
+    }
+
 
 
     public function destroy($id)
     {
         Ruangan::findOrFail($id)->delete();
-        return back()->with('success', 'Ruangan berhasil dihapus.');
+        return back()->with('success', 'Data Ruangan berhasil dihapus.');
     }
     public function edit($id)
 {

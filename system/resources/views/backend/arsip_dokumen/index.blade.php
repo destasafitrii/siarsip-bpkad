@@ -3,7 +3,6 @@
 @section('content')
     <div class="page-content">
         <div class="container-fluid">
-            <!-- Data Arsipan Table -->
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -11,7 +10,7 @@
                             <h4 class="card-title">Data Arsip Dokumen</h4>
                             <a href="{{ route('arsip_dokumen.create') }}"
                                 class="btn btn-primary btn-sm d-flex align-items-center" title="Tambah Data">
-                                <i class="f"></i> <span>Tambah Data</span>
+                                <i class=""></i> <span>Tambah Data</span>
                             </a>
                         </div>
                         <div class="card-body">
@@ -36,10 +35,10 @@
                                     <button id="reset_filter" class="btn btn-secondary ms-2">Reset</button>
                                 </div>
                             </div>
-                           
-                            <table id="tabel_arsip_dokumen"
+
+                            <table id="arsip_dokumen"
                                 class="table table-hover table-bordered table-striped dt-responsive nowrap"
-                                style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -57,112 +56,109 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Diisi oleh DataTables -->
+                                    <!-- Data diisi oleh DataTables -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                </div> <!-- end col -->
+                </div>
             </div>
         </div>
     </div>
-    <!-- Modal Konfirmasi Hapus -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <form method="POST" id="deleteForm">
-        @csrf
-        @method('DELETE')
-        <div class="modal-header">
-          <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>Apakah Anda Yakin Ingin Menghapus Data Ini?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-danger">Hapus</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <form method="POST" id="deleteForm">
+            @csrf
+            @method('DELETE')
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Apakah Anda Yakin Ingin Menghapus Data Ini?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="submit" class="btn btn-danger">Hapus</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 @endsection
 
 @section('scripts')
-    <script>
-        $(document).ready(function() {
-            var table = $('#tabel_arsip_dokumen').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: "{{ route('arsip_dokumen.index') }}",
-                    data: function(d) {
-                        d.bidang_id = $('#bidang_filter').val();
-                        d.kategori_id = $('#kategori_filter').val();
-                    }
-                },
-                columns: [
-                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                    { data: 'no_dokumen', name: 'no_dokumen' },
-                    { data: 'nama_dokumen', name: 'nama_dokumen' },
-                    { data: 'bidang.nama_bidang', name: 'bidang.nama_bidang' },
-                    { data: 'kategori.nama_kategori', name: 'kategori.nama_kategori' },
-                    { data: 'box.lemari.ruangan.nama_ruangan', name: 'box.lemari.ruangan.nama_ruangan', defaultContent: '-' },
-                    { data: 'box.lemari.nama_lemari', name: 'box.lemari.nama_lemari', defaultContent: '-' },
-                    { data: 'box.nama_box', name: 'box.nama_box', defaultContent: '-' },
-                    { data: 'urutan', name: 'urutan' },
-                    { data: 'tanggal_dokumen', name: 'tanggal_dokumen' },
-                    { data: 'keterangan', name: 'keterangan' },
-                    { data: 'action', name: 'action', orderable: false, searchable: false },
-                ],
-                responsive: true,
-                language: {
-                    paginate: {
-                        previous: "<i class='fas fa-chevron-left'></i>",
-                        next: "<i class='fas fa-chevron-right'></i>"
-                    }
+<script>
+    $(document).ready(function() {
+        var table = $('#arsip_dokumen').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('arsip_dokumen.index') }}",
+                data: function(d) {
+                    d.bidang_id = $('#bidang_filter').val();
+                    d.kategori_id = $('#kategori_filter').val();
                 }
-            });
-
-            $('#bidang_filter').change(function() {
-                var bidang_id = $(this).val();
-                $('#kategori_filter').html('<option value="">Semua Kategori</option>');
-
-                if (bidang_id) {
-                    $.ajax({
-                        url: "{{ url('/arsip-dokumen/kategori/by-bidang') }}/" + bidang_id,
-                        type: "GET",
-                        dataType: "json",
-                        success: function(data) {
-                            $.each(data, function(key, value) {
-                                $('#kategori_filter').append('<option value="' + value.kategori_id + '">' + value.nama_kategori + '</option>');
-                            });
-                        }
-                    });
+            },
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                { data: 'no_dokumen', name: 'no_dokumen' },
+                { data: 'nama_dokumen', name: 'nama_dokumen' },
+                { data: 'bidang_id', name: 'bidang.nama_bidang' },
+                { data: 'kategori_id', name: 'kategori.nama_kategori' },
+                { data: 'box.lemari.ruangan.nama_ruangan', name: 'box.lemari.ruangan.nama_ruangan', defaultContent: '-' },
+                { data: 'box.lemari.nama_lemari', name: 'box.lemari.nama_lemari', defaultContent: '-' },
+                { data: 'box.nama_box', name: 'box.nama_box', defaultContent: '-' },
+                { data: 'urutan', name: 'urutan' },
+                { data: 'tanggal_dokumen', name: 'tanggal_dokumen' },
+                { data: 'keterangan', name: 'keterangan' },
+                { data: 'action', name: 'action', orderable: false, searchable: false },
+            ],
+            responsive: true,
+            language: {
+                paginate: {
+                    previous: "<i class='fas fa-chevron-left'></i>",
+                    next: "<i class='fas fa-chevron-right'></i>"
                 }
-            });
-
-            $('#filter_button').click(function() {
-                table.ajax.reload();
-            });
-
-            $('#reset_filter').click(function() {
-                $('#bidang_filter').val('');
-                $('#kategori_filter').val('').html('<option value="">Semua Kategori</option>');
-                table.ajax.reload();
-            });
+            }
         });
-             // Modal hapus
-$(document).on('click', '.btn-delete', function() {
-    let id = $(this).data('id');
-    let nama = $(this).data('nama');
-    $('#namaSurat').text(nama);
-    $('#deleteForm').attr('action', '{{ url('pengelola/arsip_dokumen') }}/' + id);
 
-});
+        // Filter Bidang → load kategori
+        $('#bidang_filter').change(function() {
+            var bidang_id = $(this).val();
+            $('#kategori_filter').html('<option value="">Semua Kategori</option>');
 
-    </script>
+            if (bidang_id) {
+                $.ajax({
+                    url: "{{ route('getKategoriByBidang', '') }}/" + bidang_id,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $.each(data, function(key, value) {
+                            $('#kategori_filter').append('<option value="' + value.kategori_id + '">' + value.nama_kategori + '</option>');
+                        });
+                    }
+                });
+            }
+        });
+
+        $('#filter_button').click(function() {
+            table.ajax.reload();
+        });
+
+        $('#reset_filter').click(function() {
+            $('#bidang_filter').val('');
+            $('#kategori_filter').val('').html('<option value="">Semua Kategori</option>');
+            table.ajax.reload();
+        });
+    });
+
+    $(document).on('click', '.btn-delete', function() {
+        let id = $(this).data('id');
+        $('#deleteForm').attr('action', '{{ url('pengelola/arsip_dokumen') }}/' + id);
+    });
+</script>
 @endsection

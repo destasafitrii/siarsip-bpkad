@@ -92,7 +92,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        Apakah Anda yakin ingin menghapus ruangan <strong id="namaRuanganToDelete"></strong>?
+        Apakah Anda yakin ingin menghapus data ini </strong>?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -224,25 +224,8 @@
       });
     });
   });
-  $('#editRuanganForm').submit(function(e) {
-    e.preventDefault(); // Mencegah submit form biasa
-    const form = $(this);
-    const actionUrl = form.attr('action');
-    const formData = form.serialize();
+  
 
-    $.ajax({
-        url: actionUrl,
-        method: 'POST',
-        data: formData,
-        success: function(res) {
-            $('#editRuanganModal').modal('hide');
-            $('#ruanganTable').DataTable().ajax.reload(null, false); // reload data
-        },
-        error: function(xhr) {
-            alert('Gagal menyimpan perubahan!');
-        }
-    });
-});
 
   // Tombol detail
 $(document).on('click', '.btn-detail', function () {

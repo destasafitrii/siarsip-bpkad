@@ -50,7 +50,7 @@ class BidangController extends Controller
             
         ]);
 
-        return redirect()->route('bidang.index')->with('success', 'Bidang berhasil ditambahkan!');
+        return redirect()->route('bidang.index')->with('success', 'Data Bidang berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -74,7 +74,7 @@ class BidangController extends Controller
             'penanggung_jawab' => $request->penanggung_jawab,
         ]);
 
-        return redirect()->route('bidang.index')->with('success', 'Bidang berhasil diperbarui!');
+        return redirect()->route('bidang.index')->with('success', 'Data Bidang berhasil diperbarui!');
     }
 
     public function destroy($id)
@@ -82,6 +82,6 @@ class BidangController extends Controller
         $bidang = Bidang::findOrFail($id);
         $bidang->delete();
 
-        return redirect()->route('bidang.index')->with('success', 'Bidang berhasil dihapus!');
+        return redirect()->route('bidang.index')->with('success', 'Data Bidang berhasil dihapus!');
     }
 }

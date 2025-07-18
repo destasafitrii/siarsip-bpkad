@@ -66,7 +66,9 @@ class ArsipDokumenController extends Controller
         }
 
        $list_bidang = Bidang::where('opd_id', auth()->user()->opd_id)->get();
-        return view('backend.arsip_dokumen.index', compact('list_bidang'));
+       $list_kategori = Kategori::whereIn('bidang_id', $list_bidang->pluck('bidang_id'))->get();
+        return view('backend.arsip_dokumen.index', compact('list_bidang', 'list_kategori'));
+        
     }
 
     public function getKategoriByBidang($bidang_id)
@@ -118,11 +120,16 @@ class ArsipDokumenController extends Controller
             'ruangan_id' => 'required|exists:ruangan,ruangan_id',
             'lemari_id' => 'required|exists:lemari,lemari_id',
             'box_id' => 'required|exists:box,box_id',
-            'urutan' => 'required',
+            'urutan' => 'required|integer|min:1',
             'tanggal_dokumen' => 'required|date',
             'file_dokumen' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
             'keterangan' => 'nullable',
-        ]);
+        ], [
+              'no_dokumen.required' => 'Nomor dokumen wajib diisi.',
+        'urutan.integer' => 'Urutan harus berupa angka.',
+        'tanggal_dokumen.date' => 'Format tanggal tidak valid.',
+    'file_dokumen.mimes' => 'Format file harus PDF, JPG, atau PNG.',
+    'file_dokumen.max' => 'Ukuran file tidak boleh melebihi 5 MB.',]);
         
         $validatedData['opd_id'] = auth()->user()->opd_id;
 
@@ -131,7 +138,7 @@ class ArsipDokumenController extends Controller
         }
 
         ArsipDokumen::create($validatedData);
-        return redirect()->route('arsip_dokumen.index')->with('success', 'Data dokumen berhasil ditambahkan!');
+        return redirect()->route('arsip_dokumen.index')->with('success', 'Data Arsip Dokumen berhasil ditambahkan!');
     }
 
     public function show($id)
@@ -165,7 +172,7 @@ class ArsipDokumenController extends Controller
             'ruangan_id' => 'required|exists:ruangan,ruangan_id',
             'lemari_id' => 'required|exists:lemari,lemari_id',
             'box_id' => 'required|exists:box,box_id',
-            'urutan' => 'required',
+            'urutan' => 'required|integer|min:1',
             'tanggal_dokumen' => 'required|date',
             'file_dokumen' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
             'keterangan' => 'nullable',
@@ -178,13 +185,13 @@ class ArsipDokumenController extends Controller
         }
 
         $arsip_dokumen->update($validatedData);
-        return redirect()->route('arsip_dokumen.index')->with('success', 'Data dokumen berhasil diperbarui!');
+        return redirect()->route('arsip_dokumen.index')->with('success', 'Data Arsip Dokumen berhasil diperbarui!');
     }
 
     public function destroy($id)
     {
         $arsip_dokumen = ArsipDokumen::findOrFail($id);
         $arsip_dokumen->delete();
-        return redirect()->route('arsip_dokumen.index')->with('success', 'Data dokumen berhasil dihapus!');
+        return redirect()->route('arsip_dokumen.index')->with('success', 'Data Arsip Dokumen berhasil dihapus!');
     }
 }

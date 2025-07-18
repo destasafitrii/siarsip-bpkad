@@ -111,7 +111,7 @@
 
 <!-- Modal Konfirmasi Hapus -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <form method="POST" id="deleteForm" class="modal-content">
       @csrf
       @method('DELETE')
@@ -120,7 +120,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        Apakah Anda yakin ingin menghapus bidang <strong id="namaBidangToDelete"></strong>?
+        Apakah Anda yakin ingin menghapus data ini</strong>?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

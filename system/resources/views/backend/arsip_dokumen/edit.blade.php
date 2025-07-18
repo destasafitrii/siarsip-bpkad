@@ -116,7 +116,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="urutan" class="form-label">Urutan</label>
-                                        <input type="text" class="form-control" id="urutan" name="urutan"
+                                        <input type="number" class="form-control" id="urutan" name="urutan"
                                             value="{{ old('urutan', $arsip_dokumen->urutan) }}" required>
                                     </div>
                                     <div class="mb-3">

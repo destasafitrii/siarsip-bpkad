@@ -78,7 +78,7 @@ public function data()
 
         ]);
 
-        return redirect('/pengelola/lemari')->with('success', 'Lemari berhasil ditambahkan.');
+        return redirect('/pengelola/lemari')->with('success', 'Data Lemari berhasil ditambahkan.');
     }
 
     public function update(Request $request, $id)
@@ -98,7 +98,7 @@ public function data()
             'ruangan_id' => $request->ruangan_id,
         ]);
 
-        return redirect('/pengelola/lemari')->with('success', 'Lemari berhasil diperbarui.');
+        return redirect('/pengelola/lemari')->with('success', 'Data Lemari berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -106,7 +106,7 @@ public function data()
         $lemari = Lemari::findOrFail($id);
         $lemari->delete();
 
-        return redirect('/pengelola/lemari')->with('success', 'Lemari berhasil dihapus.');
+        return redirect('/pengelola/lemari')->with('success', 'Data Lemari berhasil dihapus.');
     }
     public function edit($id)
 {

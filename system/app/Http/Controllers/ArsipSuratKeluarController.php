@@ -114,9 +114,11 @@ class ArsipSuratKeluarController extends Controller
             'box_id' => 'required|exists:box,box_id',
             'tanggal_surat_keluar' => 'required|date',
             'tujuan_surat_keluar' => 'required',
-            'file_surat_keluar' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
+            'file_surat_keluar' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:5120',
             'keterangan_surat_keluar' => 'nullable',
-        ]);
+        ],[
+    'file_surat_keluar.mimes' => 'Format file harus PDF, JPG, atau PNG.',
+    'file_surat_keluar.max' => 'Ukuran file tidak boleh melebihi 5 MB.',]);
         $validatedData['opd_id'] = auth()->user()->opd_id;
         // Menyimpan file jika ada
         if ($request->hasFile('file_surat_keluar')) {
@@ -127,7 +129,7 @@ class ArsipSuratKeluarController extends Controller
         ArsipSuratKeluar::create($validatedData);
 
         // Redirect ke halaman arsip surat keluar dengan pesan sukses
-        return redirect()->route('arsip_keluar.index')->with('success', 'Data berhasil ditambahkan!');
+        return redirect()->route('arsip_keluar.index')->with('success', 'Data Arsip Surat Keluar berhasil ditambahkan!');
     }
 
     public function show($id)
@@ -182,7 +184,7 @@ public function update(Request $request, $id)
 
     $arsip_surat_keluar->update($validatedData);
 
-    return redirect()->route('arsip_keluar.index')->with('success', 'Data berhasil diperbarui!');
+    return redirect()->route('arsip_keluar.index')->with('success', 'Data Arsip Surat Keluar berhasil diperbarui!');
 }
 
 
@@ -193,6 +195,6 @@ public function update(Request $request, $id)
         $arsip_surat_keluar->delete();
 
         // Redirect ke halaman arsip surat keluar dengan pesan sukses
-        return redirect()->route('arsip_keluar.index')->with('success', 'Data berhasil dihapus!');
+        return redirect()->route('arsip_keluar.index')->with('success', 'Data Arsip Surat Keluar berhasil dihapus!');
     }
 }

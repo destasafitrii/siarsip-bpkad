@@ -155,28 +155,26 @@
         </div>
     </div>
 
-    <!-- Modal Hapus -->
-    <div class="modal fade" id="hapusModal" tabindex="-1" aria-labelledby="hapusModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="formHapusPengguna" method="POST">
-                @csrf
-                @method('DELETE')
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="hapusModalLabel">Konfirmasi Hapus</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Apakah Anda yakin ingin menghapus pengguna <strong id="namaPenggunaHapus"></strong>?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger">Ya, Hapus</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+  <div class="modal fade" id="hapusModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form method="POST" id="formHapusPengguna" class="modal-content">
+      @csrf
+      @method('DELETE')
+      <div class="modal-header">
+        <h5 class="modal-title">Konfirmasi Hapus</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Apakah Anda yakin ingin menghapus akun <strong id="namaPenggunaHapus"></strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="submit" class="btn btn-danger">Hapus</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 
     <!-- Modal Tambah Pengguna -->
     <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">

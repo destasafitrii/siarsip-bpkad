@@ -128,7 +128,7 @@
                                             <label for="file_surat_masuk" class="form-label">Unggah File</label>
                                             <input type="file" class="form-control" id="file_surat_masuk"
                                                 name="file_surat_masuk">
-                                            <small class="text-muted">Maksimal ukuran file 1MB. Format yang diperbolehkan:
+                                            <small class="text-muted">Maksimal ukuran file 5MB. Format yang diperbolehkan:
                                                 PDF, JPEG, PNG, JPG.</small>
                                         </div>
                                     </div>

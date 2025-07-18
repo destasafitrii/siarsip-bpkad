@@ -99,7 +99,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        Apakah Anda yakin ingin menghapus lemari <strong id="namaLemariToDelete"></strong>?
+        Apakah Anda yakin ingin menghapus data ini</strong>?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -209,21 +209,21 @@
     });
 
     // Submit form edit
-    $('#editLemariForm').submit(function (e) {
-      e.preventDefault();
-      const form = $(this);
-      const actionUrl = form.attr('action');
-      const formData = form.serialize();
+    // $('#editLemariForm').submit(function (e) {
+    //   e.preventDefault();
+    //   const form = $(this);
+    //   const actionUrl = form.attr('action');
+    //   const formData = form.serialize();
 
-      $.post(actionUrl, formData)
-        .done(function () {
-          $('#editLemariModal').modal('hide');
-          $('#lemariTable').DataTable().ajax.reload(null, false);
-        })
-        .fail(function () {
-          alert('Gagal menyimpan perubahan!');
-        });
-    });
+    //   $.post(actionUrl, formData)
+    //     .done(function () {
+    //       $('#editLemariModal').modal('hide');
+    //       $('#lemariTable').DataTable().ajax.reload(null, false);
+    //     })
+    //     .fail(function () {
+    //       alert('Gagal menyimpan perubahan!');
+    //     });
+    // });
   });
 </script>
 @endsection

@@ -62,7 +62,7 @@ class KategoriController extends Controller
             'bidang_id' => $request->bidang_id,
         ]);
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
+        return redirect()->route('kategori.index')->with('success', 'Data Kategori berhasil ditambahkan.');
     }
 
     public function update(Request $request, $id)
@@ -87,7 +87,7 @@ class KategoriController extends Controller
             'bidang_id' => $request->bidang_id,
         ]);
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui.');
+        return redirect()->route('kategori.index')->with('success', 'Data Kategori berhasil diperbarui.');
     }
 
     public function destroy(Kategori $kategori)
@@ -98,7 +98,7 @@ class KategoriController extends Controller
 
         $kategori->delete();
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus.');
+        return redirect()->route('kategori.index')->with('success', 'Data Kategori berhasil dihapus.');
     }
 
     public function edit(Kategori $kategori)

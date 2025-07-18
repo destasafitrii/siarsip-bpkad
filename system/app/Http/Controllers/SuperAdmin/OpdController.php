@@ -35,7 +35,7 @@ class OpdController extends Controller
 
     Opd::create($request->all());
 
-    return redirect()->route('opd.index')->with('success', 'OPD berhasil ditambahkan.');
+    return redirect()->route('opd.index')->with('success', 'Data OPD berhasil ditambahkan.');
 }
 
 
@@ -58,7 +58,7 @@ class OpdController extends Controller
 
         $opd->update($request->all());
 
-        return redirect()->route('opd.index')->with('success', 'OPD berhasil diperbarui.');
+        return redirect()->route('opd.index')->with('success', 'Data OPD berhasil diperbarui.');
     }
 
     public function show(Opd $opd)
@@ -71,6 +71,6 @@ class OpdController extends Controller
     public function destroy(Opd $opd)
     {
         $opd->delete();
-        return redirect()->route('opd.index')->with('success', 'OPD berhasil dihapus.');
+        return redirect()->route('opd.index')->with('success', 'Data OPD berhasil dihapus.');
     }
 }
