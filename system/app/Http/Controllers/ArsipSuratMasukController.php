@@ -105,22 +105,40 @@ class ArsipSuratMasukController extends Controller
     public function store(Request $request)
     {
         // Validasi input untuk menyimpan arsip surat masuk
-        $validatedData = $request->validate([
-            'no_surat_masuk' => 'required',
-            'nama_surat_masuk' => 'required',
-            'bidang_id' => 'required|exists:bidang,bidang_id',
-            'kategori_id' => 'nullable|exists:kategori,kategori_id',
-            'ruangan_id' => 'required|exists:ruangan,ruangan_id',
-            'urutan_surat_masuk' => 'required',
-            'lemari_id' => 'required|exists:lemari,lemari_id',
-            'box_id' => 'required|exists:box,box_id',
-            'tanggal_surat_masuk' => 'required|date',
-            'asal_surat_masuk' => 'required',
-            'file_surat_masuk' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:5120',
-            'keterangan' => 'nullable',
-        ], [
-    'file_surat_masuk.mimes' => 'Format file harus PDF, JPG, atau PNG.',
-    'file_surat_masuk.max' => 'Ukuran file tidak boleh melebihi 5 MB.',]);
+   $validatedData = $request->validate([
+    'no_surat_masuk' => 'required|unique:arsip_surat_masuk,no_surat_masuk',
+    'nama_surat_masuk' => 'required',
+    'bidang_id' => 'required|exists:bidang,bidang_id',
+    'kategori_id' => 'nullable|exists:kategori,kategori_id',
+    'ruangan_id' => 'required|exists:ruangan,ruangan_id',
+    'urutan_surat_masuk' => 'required',
+    'lemari_id' => 'required|exists:lemari,lemari_id',
+    'box_id' => 'required|exists:box,box_id',
+    'tanggal_surat_masuk' => 'required|date',
+    'asal_surat_masuk' => 'required',
+    'file_surat_masuk' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:5120',
+    'keterangan' => 'nullable',
+], [
+    'no_surat_masuk.required' => 'Nomor surat wajib diisi.',
+    'no_surat_masuk.unique' => 'Nomor surat sudah digunakan.',
+    'nama_surat_masuk.required' => 'Nama surat wajib diisi.',
+    'bidang_id.required' => 'Bidang wajib dipilih.',
+    'bidang_id.exists' => 'Bidang tidak ditemukan.',
+    'kategori_id.exists' => 'Kategori tidak ditemukan.',
+    'ruangan_id.required' => 'Ruangan wajib dipilih.',
+    'ruangan_id.exists' => 'Ruangan tidak ditemukan.',
+    'lemari_id.required' => 'Lemari wajib dipilih.',
+    'lemari_id.exists' => 'Lemari tidak ditemukan.',
+    'box_id.required' => 'Box wajib dipilih.',
+    'box_id.exists' => 'Box tidak ditemukan.',
+    'urutan_surat_masuk.required' => 'Urutan surat wajib diisi.',
+    'tanggal_surat_masuk.required' => 'Tanggal surat wajib diisi.',
+    'tanggal_surat_masuk.date' => 'Format tanggal tidak valid.',
+    'asal_surat_masuk.required' => 'Asal surat wajib diisi.',
+    'file_surat_masuk.mimes' => 'Format file harus PDF, JPG, PNG, DOC, atau DOCX.',
+    'file_surat_masuk.max' => 'Ukuran file tidak boleh lebih dari 5 MB.',
+]);
+
   $validatedData['opd_id'] = auth()->user()->opd_id;
         // Menyimpan file jika ada
         if ($request->hasFile('file_surat_masuk')) {
@@ -163,7 +181,7 @@ class ArsipSuratMasukController extends Controller
 public function update(Request $request, $id)
 {
     $validatedData = $request->validate([
-        'no_surat_masuk' => 'required',
+        'no_surat_masuk' => 'required|unique:arsip_surat_masuk,no_surat_masuk,' . $id . ',surat_masuk_id',
         'nama_surat_masuk' => 'required',
         'bidang_id' => 'required|exists:bidang,bidang_id',
         'kategori_id' => 'nullable|exists:kategori,kategori_id',
@@ -175,7 +193,26 @@ public function update(Request $request, $id)
         'asal_surat_masuk' => 'required',
         'file_surat_masuk' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:5120',
         'keterangan' => 'nullable',
-    ]);
+    ], [
+    'no_surat_masuk.required' => 'Nomor surat wajib diisi.',
+    'no_surat_masuk.unique' => 'Nomor surat sudah digunakan.',
+    'nama_surat_masuk.required' => 'Nama surat wajib diisi.',
+    'bidang_id.required' => 'Bidang wajib dipilih.',
+    'bidang_id.exists' => 'Bidang tidak ditemukan.',
+    'kategori_id.exists' => 'Kategori tidak ditemukan.',
+    'ruangan_id.required' => 'Ruangan wajib dipilih.',
+    'ruangan_id.exists' => 'Ruangan tidak ditemukan.',
+    'lemari_id.required' => 'Lemari wajib dipilih.',
+    'lemari_id.exists' => 'Lemari tidak ditemukan.',
+    'box_id.required' => 'Box wajib dipilih.',
+    'box_id.exists' => 'Box tidak ditemukan.',
+    'urutan_surat_masuk.required' => 'Urutan surat wajib diisi.',
+    'tanggal_surat_masuk.required' => 'Tanggal surat wajib diisi.',
+    'tanggal_surat_masuk.date' => 'Format tanggal tidak valid.',
+    'asal_surat_masuk.required' => 'Asal surat wajib diisi.',
+    'file_surat_masuk.mimes' => 'Format file harus PDF, JPG, PNG, DOC, atau DOCX.',
+    'file_surat_masuk.max' => 'Ukuran file tidak boleh lebih dari 5 MB.',
+]);
 
     $arsip_surat_masuk = ArsipSuratMasuk::findOrFail($id);
 

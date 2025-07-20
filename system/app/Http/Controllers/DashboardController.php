@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ArsipSuratMasuk;
 use App\Models\ArsipSuratKeluar;
+use App\Models\ArsipDokumen;
 use Carbon\Carbon;
-use DB;
 
 class DashboardController extends Controller
 {
@@ -17,6 +17,7 @@ class DashboardController extends Controller
         $akhirMinggu = Carbon::now()->endOfWeek();
         $awalBulan = Carbon::now()->startOfMonth();
         $akhirBulan = Carbon::now()->endOfMonth();
+
         // 📬 Surat Masuk
         $arsipMasukHarian = ArsipSuratMasuk::whereDate('created_at', $hariIni)->count();
         $arsipMasukBulanan = ArsipSuratMasuk::whereBetween('created_at', [$awalBulan, $akhirBulan])->count();
@@ -27,18 +28,17 @@ class DashboardController extends Controller
         $arsipKeluarBulanan = ArsipSuratKeluar::whereBetween('created_at', [$awalBulan, $akhirBulan])->count();
         $arsipKeluarTotal = ArsipSuratKeluar::count();
 
+        // 📎 Arsip Dokumen
+        $arsipDokumenHarian = ArsipDokumen::whereDate('created_at', $hariIni)->count();
+        $arsipDokumenBulanan = ArsipDokumen::whereBetween('created_at', [$awalBulan, $akhirBulan])->count();
+        $arsipDokumenTotal = ArsipDokumen::count();
 
-        // Hitung jumlah arsip masuk dan keluar (digabung) hari ini
-        $arsipHarian = ArsipSuratMasuk::whereDate('created_at', $hariIni)->count()
-            + ArsipSuratKeluar::whereDate('created_at', $hariIni)->count();
-
-        // Mingguan
+        // Hitung total harian, mingguan, bulanan semua arsip
+        $arsipHarian = $arsipMasukHarian + $arsipKeluarHarian + $arsipDokumenHarian;
         $arsipMingguan = ArsipSuratMasuk::whereBetween('created_at', [$awalMinggu, $akhirMinggu])->count()
-            + ArsipSuratKeluar::whereBetween('created_at', [$awalMinggu, $akhirMinggu])->count();
-
-        // Bulanan
-        $arsipBulanan = ArsipSuratMasuk::whereBetween('created_at', [$awalBulan, $akhirBulan])->count()
-            + ArsipSuratKeluar::whereBetween('created_at', [$awalBulan, $akhirBulan])->count();
+            + ArsipSuratKeluar::whereBetween('created_at', [$awalMinggu, $akhirMinggu])->count()
+            + ArsipDokumen::whereBetween('created_at', [$awalMinggu, $akhirMinggu])->count();
+        $arsipBulanan = $arsipMasukBulanan + $arsipKeluarBulanan + $arsipDokumenBulanan;
 
         // Statistik bulanan untuk grafik (6 bulan terakhir)
         $chartData = [];
@@ -52,10 +52,14 @@ class DashboardController extends Controller
             $keluar = ArsipSuratKeluar::whereYear('created_at', $bulan->year)
                 ->whereMonth('created_at', $bulan->month)->count();
 
+            $dokumen = ArsipDokumen::whereYear('created_at', $bulan->year)
+                ->whereMonth('created_at', $bulan->month)->count();
+
             $chartData[] = [
                 'bulan' => $bulanLabel,
                 'masuk' => $masuk,
                 'keluar' => $keluar,
+                'dokumen' => $dokumen,
             ];
         }
 
@@ -70,7 +74,9 @@ class DashboardController extends Controller
             'arsipKeluarHarian',
             'arsipKeluarBulanan',
             'arsipKeluarTotal',
-
+            'arsipDokumenHarian',
+            'arsipDokumenBulanan',
+            'arsipDokumenTotal'
         ));
     }
 }

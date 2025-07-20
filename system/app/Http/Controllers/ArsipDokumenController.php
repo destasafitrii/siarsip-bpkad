@@ -112,24 +112,39 @@ class ArsipDokumenController extends Controller
     /*******  9f7f5ad6-d864-4da1-a467-a9c6cdda50cb  *******/
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'no_dokumen' => 'required',
-            'nama_dokumen' => 'required',
-            'bidang_id' => 'required|exists:bidang,bidang_id',
-            'kategori_id' => 'nullable|exists:kategori,kategori_id',
-            'ruangan_id' => 'required|exists:ruangan,ruangan_id',
-            'lemari_id' => 'required|exists:lemari,lemari_id',
-            'box_id' => 'required|exists:box,box_id',
-            'urutan' => 'required|integer|min:1',
-            'tanggal_dokumen' => 'required|date',
-            'file_dokumen' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
-            'keterangan' => 'nullable',
-        ], [
-              'no_dokumen.required' => 'Nomor dokumen wajib diisi.',
+           $validatedData = $request->validate([
+        'no_dokumen' => 'required|unique:arsip_dokumen,no_dokumen',
+        'nama_dokumen' => 'required',
+        'bidang_id' => 'required|exists:bidang,bidang_id',
+        'kategori_id' => 'nullable|exists:kategori,kategori_id',
+        'ruangan_id' => 'required|exists:ruangan,ruangan_id',
+        'lemari_id' => 'required|exists:lemari,lemari_id',
+        'box_id' => 'required|exists:box,box_id',
+        'urutan' => 'required|integer|min:1',
+        'tanggal_dokumen' => 'required|date',
+        'file_dokumen' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:5120',
+        'keterangan' => 'nullable',
+    ], [
+        'no_dokumen.required' => 'Nomor dokumen wajib diisi.',
+        'no_dokumen.unique' => 'Nomor dokumen sudah digunakan.',
+        'nama_dokumen.required' => 'Nama dokumen wajib diisi.',
+        'bidang_id.required' => 'Bidang wajib dipilih.',
+        'bidang_id.exists' => 'Bidang tidak ditemukan.',
+        'kategori_id.exists' => 'Kategori tidak ditemukan.',
+        'ruangan_id.required' => 'Ruangan wajib dipilih.',
+        'ruangan_id.exists' => 'Ruangan tidak ditemukan.',
+        'lemari_id.required' => 'Lemari wajib dipilih.',
+        'lemari_id.exists' => 'Lemari tidak ditemukan.',
+        'box_id.required' => 'Box wajib dipilih.',
+        'box_id.exists' => 'Box tidak ditemukan.',
+        'urutan.required' => 'Urutan dokumen wajib diisi.',
         'urutan.integer' => 'Urutan harus berupa angka.',
+        'urutan.min' => 'Urutan minimal 1.',
+        'tanggal_dokumen.required' => 'Tanggal dokumen wajib diisi.',
         'tanggal_dokumen.date' => 'Format tanggal tidak valid.',
-    'file_dokumen.mimes' => 'Format file harus PDF, JPG, atau PNG.',
-    'file_dokumen.max' => 'Ukuran file tidak boleh melebihi 5 MB.',]);
+        'file_dokumen.mimes' => 'Format file harus PDF, JPG, PNG, DOC, atau DOCX.',
+        'file_dokumen.max' => 'Ukuran file tidak boleh lebih dari 5 MB.',
+    ]);
         
         $validatedData['opd_id'] = auth()->user()->opd_id;
 
@@ -164,19 +179,39 @@ class ArsipDokumenController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'no_dokumen' => 'required',
-            'nama_dokumen' => 'required',
-            'bidang_id' => 'required|exists:bidang,bidang_id',
-            'kategori_id' => 'nullable|exists:kategori,kategori_id',
-            'ruangan_id' => 'required|exists:ruangan,ruangan_id',
-            'lemari_id' => 'required|exists:lemari,lemari_id',
-            'box_id' => 'required|exists:box,box_id',
-            'urutan' => 'required|integer|min:1',
-            'tanggal_dokumen' => 'required|date',
-            'file_dokumen' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:10240',
-            'keterangan' => 'nullable',
-        ]);
+         $validatedData = $request->validate([
+        'no_dokumen' => 'required|unique:arsip_dokumen,no_dokumen,' . $id . ',dokumen_id',
+        'nama_dokumen' => 'required',
+        'bidang_id' => 'required|exists:bidang,bidang_id',
+        'kategori_id' => 'nullable|exists:kategori,kategori_id',
+        'ruangan_id' => 'required|exists:ruangan,ruangan_id',
+        'lemari_id' => 'required|exists:lemari,lemari_id',
+        'box_id' => 'required|exists:box,box_id',
+        'urutan' => 'required|integer|min:1',
+        'tanggal_dokumen' => 'required|date',
+        'file_dokumen' => 'nullable|file|mimes:pdf,jpeg,png,jpg,doc,docx|max:5120',
+        'keterangan' => 'nullable',
+    ], [
+        'no_dokumen.required' => 'Nomor dokumen wajib diisi.',
+        'no_dokumen.unique' => 'Nomor dokumen sudah digunakan.',
+        'nama_dokumen.required' => 'Nama dokumen wajib diisi.',
+        'bidang_id.required' => 'Bidang wajib dipilih.',
+        'bidang_id.exists' => 'Bidang tidak ditemukan.',
+        'kategori_id.exists' => 'Kategori tidak ditemukan.',
+        'ruangan_id.required' => 'Ruangan wajib dipilih.',
+        'ruangan_id.exists' => 'Ruangan tidak ditemukan.',
+        'lemari_id.required' => 'Lemari wajib dipilih.',
+        'lemari_id.exists' => 'Lemari tidak ditemukan.',
+        'box_id.required' => 'Box wajib dipilih.',
+        'box_id.exists' => 'Box tidak ditemukan.',
+        'urutan.required' => 'Urutan dokumen wajib diisi.',
+        'urutan.integer' => 'Urutan harus berupa angka.',
+        'urutan.min' => 'Urutan minimal 1.',
+        'tanggal_dokumen.required' => 'Tanggal dokumen wajib diisi.',
+        'tanggal_dokumen.date' => 'Format tanggal tidak valid.',
+        'file_dokumen.mimes' => 'Format file harus PDF, JPG, PNG, DOC, atau DOCX.',
+        'file_dokumen.max' => 'Ukuran file tidak boleh lebih dari 5 MB.',
+    ]);
 
         $arsip_dokumen = ArsipDokumen::findOrFail($id);
 
