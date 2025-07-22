@@ -96,7 +96,7 @@
                                         <div class="mb-3">
                                             <label for="urutan" class="form-label">Urutan</label>
                                             <input type="number" class="form-control" id="urutan"
-                                                name="urutan" placeholder="Masukkan urutan penyimpanan" required
+                                                name="urutan" placeholder="Masukkan urutan arsip di dalam box" required
                                                 value="{{ old('urutan') }}">
                                         </div>
 

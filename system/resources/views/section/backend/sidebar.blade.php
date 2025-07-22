@@ -159,7 +159,25 @@
 
 
                     <li class="menu-title">Menu Utama</li>
-                    <li>
+                      <li>
+                        <a href="{{ url('pengguna/arsip-masuk') }}">
+                            <i class="mdi mdi-email"></i>
+                            <span>Arsip Surat Masuk</span>
+                        </a>
+                    </li>
+                      <li>
+                        <a href="{{ url('pengguna/arsip-keluar') }}">
+                            <i class="mdi mdi-email-open"></i>
+                            <span>Arsip Surat Keluar</span>
+                        </a>
+                    </li>
+                      <li>
+                        <a href="{{ url('pengguna/arsip-dokumen') }}">
+                            <i class="mdi mdi-archive"></i>
+                            <span>Arsip Dokumen</span>
+                        </a>
+                    </li>
+                    {{-- <li>
                         <a href="javascript: void(0);" class="has-arrow">
                             <i class="mdi mdi-bookshelf"></i>
                             <span>Data Arsip</span>
@@ -176,7 +194,7 @@
                                         class="mdi mdi-checkbox-blank-circle"></i>
                                     Arsip Dokumen</a></li>
                         </ul>
-                    </li>
+                    </li> --}}
 
 
                 @endif

@@ -9,47 +9,53 @@
         <div class="row">
             <!-- Arsip Surat Masuk -->
             <div class="col-md-4 mb-4">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:60px; height:60px;">
-                            <i class="fas fa-envelope-open-text fa-lg"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h6 class="mb-1 text-muted">Arsip Surat Masuk</h6>
-                            <h3 class="mb-0 text-primary">{{ $jumlahSuratMasuk }}</h3>
+                <a href="{{ url('pengguna/arsip-masuk') }}" style="text-decoration: none;">
+                    <div class="card shadow-sm border-0 hover-shadow">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:60px; height:60px;">
+                                <i class="fas fa-envelope-open-text fa-lg"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="mb-1 text-muted">Arsip Surat Masuk</h6>
+                                <h3 class="mb-0 text-primary">{{ $jumlahSuratMasuk }}</h3>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
 
             <!-- Arsip Surat Keluar -->
             <div class="col-md-4 mb-4">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width:60px; height:60px;">
-                            <i class="fas fa-paper-plane fa-lg"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h6 class="mb-1 text-muted">Arsip Surat Keluar</h6>
-                            <h3 class="mb-0 text-success">{{ $jumlahSuratKeluar }}</h3>
+                <a href="{{ url('pengguna/arsip-keluar') }}" style="text-decoration: none;">
+                    <div class="card shadow-sm border-0 hover-shadow">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width:60px; height:60px;">
+                                <i class="fas fa-paper-plane fa-lg"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="mb-1 text-muted">Arsip Surat Keluar</h6>
+                                <h3 class="mb-0 text-success">{{ $jumlahSuratKeluar }}</h3>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
 
             <!-- Arsip Dokumen -->
             <div class="col-md-4 mb-4">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width:60px; height:60px;">
-                            <i class="fas fa-file-alt fa-lg"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h6 class="mb-1 text-muted">Arsip Dokumen</h6>
-                            <h3 class="mb-0 text-warning">{{ $jumlahDokumen }}</h3>
+                <a href="{{ url('pengguna/arsip-dokumen') }}" style="text-decoration: none;">
+                    <div class="card shadow-sm border-0 hover-shadow">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width:60px; height:60px;">
+                                <i class="fas fa-file-alt fa-lg"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="mb-1 text-muted">Arsip Dokumen</h6>
+                                <h3 class="mb-0 text-warning">{{ $jumlahDokumen }}</h3>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>

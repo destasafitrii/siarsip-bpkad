@@ -189,7 +189,7 @@ class PegawaiController extends Controller
         ]);
     }
 
-    public function importPreview(Request $request)
+public function importPreview(Request $request)
 {
     $request->validate([
         'file' => 'required|mimes:xlsx,xls,csv|max:3072',
@@ -197,34 +197,65 @@ class PegawaiController extends Controller
 
     $rows = (new FastExcel)->import($request->file('file'));
 
-    // Simpan data sementara ke session
+    // Validasi jika file tidak ada data
+    if ($rows->isEmpty()) {
+        return redirect()->route('pegawai.import.form')->withErrors(['File Excel tidak berisi data.']);
+    }
+
     Session::put('preview_pegawai', $rows);
 
     return view('backend.pegawai.preview', compact('rows'));
 }
 
+
+
 public function importSave(Request $request)
 {
     $rows = Session::get('preview_pegawai');
 
-    if (!$rows) {
+    if (!$rows || count($rows) === 0) {
         return redirect()->route('pegawai.import.form')->withErrors(['Tidak ada data yang bisa disimpan.']);
     }
 
+    $opdId = auth()->user()->opd_id;
+    $dataBerhasil = 0;
+
     foreach ($rows as $row) {
+        $status = $row['Status Kepegawaian'] ?? 'Honor';
+
+        $nip = $status === 'ASN' ? ($row['NIP'] ?? null) : null;
+        $nik = $status === 'Honor' ? ($row['NIK'] ?? null) : null;
+
+        $exists = Pegawai::where('opd_id', $opdId)
+            ->when($nip, fn($q) => $q->where('nip', $nip))
+            ->when($nik, fn($q) => $q->orWhere('nik', $nik))
+            ->exists();
+
+        if ($exists) {
+            continue;
+        }
+
         Pegawai::create([
             'nama' => $row['Nama'] ?? '-',
-            'status_kepegawaian' => $row['Status Kepegawaian'] ?? 'Honor',
-            'nip' => ($row['Status Kepegawaian'] ?? '') === 'ASN' ? ($row['NIP'] ?? null) : null,
-            'nik' => ($row['Status Kepegawaian'] ?? '') === 'Honor' ? ($row['NIK'] ?? null) : null,
+            'status_kepegawaian' => $status,
+            'nip' => $nip,
+            'nik' => $nik,
             'golongan' => trim($row['Golongan'] ?? '') ?: '-',
             'jabatan' => trim($row['Jabatan'] ?? '') ?: '-',
-            'opd_id' => auth()->user()->opd_id,
+            'opd_id' => $opdId,
         ]);
+
+        $dataBerhasil++;
     }
 
     Session::forget('preview_pegawai');
 
-    return redirect()->route('pegawai.index')->with('success', 'Data pegawai berhasil diimport.');
+    if ($dataBerhasil === 0) {
+        return redirect()->route('pegawai.index')->with('warning', 'Tidak ada data baru yang diimpor. Semua data sudah ada.');
+    }
+
+    return redirect()->route('pegawai.index')->with('success', "$dataBerhasil data pegawai berhasil diimpor.");
 }
+
+
 }

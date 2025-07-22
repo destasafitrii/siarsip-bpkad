@@ -69,62 +69,72 @@ class ImportSuratKeluarController extends Controller
         return view('backend.arsip_keluar.preview', compact('rows'));
     }
 
-    public function save(Request $request)
-    {
-        $data = json_decode($request->input('data'), true);
+   public function save(Request $request)
+{
+    $data = json_decode($request->input('data'), true);
+    $dataBerhasil = 0;
 
-        foreach ($data as $row) {
-            if (strtolower($row['Status'] ?? '') !== 'siap diimpor') {
-                continue;
-            }
-
-            $bidang = Bidang::where('nama_bidang', trim($row['Bidang']))->first();
-            $kategori = Kategori::where('nama_kategori', trim($row['Jenis Arsip']))->first();
-
-            $box = Box::whereHas('lemari', function ($query) use ($row) {
-                $query->where('nama_lemari', trim($row['Lemari']))
-                      ->whereHas('ruangan', function ($q) use ($row) {
-                          $q->where('nama_ruangan', trim($row['Ruangan']));
-                      });
-            })->where('nama_box', trim($row['Box']))->first();
-
-            if (!$bidang || !$kategori || !$box) {
-                \Log::warning("Data relasi tidak lengkap", $row);
-                continue;
-            }
-
-            if (!is_numeric($row['Urutan'])) {
-                continue;
-            }
-
-            $isDuplicate = ArsipSuratKeluar::where('no_surat_keluar', trim($row['Nomor Surat']))->exists();
-            if ($isDuplicate) {
-                continue;
-            }
-
-            $tanggalSurat = $row['Tanggal Surat'];
-            $tanggal = date('Y-m-d', strtotime($tanggalSurat));
-            if ($tanggal === '1970-01-01') {
-                continue;
-            }
-
-            try {
-                ArsipSuratKeluar::create([
-                    'no_surat_keluar' => trim($row['Nomor Surat']),
-                    'nama_surat_keluar' => trim($row['Nama Surat']),
-                    'tanggal_surat_keluar' => $tanggal,
-                    'tujuan_surat_keluar' => trim($row['Tujuan Surat']),
-                    'urutan_surat_keluar' => $row['Urutan'],
-                    'bidang_id' => $bidang->bidang_id,
-                    'kategori_id' => $kategori->kategori_id,
-                    'box_id' => $box->box_id,
-                    'opd_id' => Auth::user()->opd_id,
-                ]);
-            } catch (\Exception $e) {
-                \Log::error('Gagal simpan arsip surat keluar: ' . $e->getMessage());
-            }
+    foreach ($data as $row) {
+        if (strtolower($row['Status'] ?? '') !== 'siap diimpor') {
+            continue;
         }
 
-        return redirect()->route('arsip_keluar.index')->with('success', 'Data Arsip Surat Keluar berhasil diimport.');
+        $bidang = Bidang::where('nama_bidang', trim($row['Bidang']))->first();
+        $kategori = Kategori::where('nama_kategori', trim($row['Jenis Arsip']))->first();
+
+        $box = Box::whereHas('lemari', function ($query) use ($row) {
+            $query->where('nama_lemari', trim($row['Lemari']))
+                  ->whereHas('ruangan', function ($q) use ($row) {
+                      $q->where('nama_ruangan', trim($row['Ruangan']));
+                  });
+        })->where('nama_box', trim($row['Box']))->first();
+
+        if (!$bidang || !$kategori || !$box) {
+            \Log::warning("Data relasi tidak lengkap", $row);
+            continue;
+        }
+
+        if (!is_numeric($row['Urutan'])) {
+            continue;
+        }
+
+        $isDuplicate = ArsipSuratKeluar::where('no_surat_keluar', trim($row['Nomor Surat']))->exists();
+        if ($isDuplicate) {
+            continue;
+        }
+
+        $tanggalSurat = $row['Tanggal Surat'];
+        $tanggal = date('Y-m-d', strtotime($tanggalSurat));
+        if ($tanggal === '1970-01-01') {
+            continue;
+        }
+
+        try {
+            ArsipSuratKeluar::create([
+                'no_surat_keluar' => trim($row['Nomor Surat']),
+                'nama_surat_keluar' => trim($row['Nama Surat']),
+                'tanggal_surat_keluar' => $tanggal,
+                'tujuan_surat_keluar' => trim($row['Tujuan Surat']),
+                'urutan_surat_keluar' => $row['Urutan'],
+                'bidang_id' => $bidang->bidang_id,
+                'kategori_id' => $kategori->kategori_id,
+                'box_id' => $box->box_id,
+                'opd_id' => Auth::user()->opd_id,
+            ]);
+            $dataBerhasil++;
+        } catch (\Exception $e) {
+            \Log::error('Gagal simpan arsip surat keluar: ' . $e->getMessage());
+        }
     }
+
+    // Notifikasi hasil impor
+    if ($dataBerhasil === 0) {
+        return redirect()->route('arsip_keluar.index')
+            ->with('warning', 'Tidak ada data baru yang diimpor. Semua data sudah ada atau gagal divalidasi.');
+    }
+
+    return redirect()->route('arsip_keluar.index')
+        ->with('success', "$dataBerhasil data arsip surat keluar berhasil diimpor.");
+}
+
 }

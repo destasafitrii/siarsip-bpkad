@@ -200,32 +200,32 @@
                         <input type="hidden" name="pegawai_id" id="pegawai_id">
                         <div class="mb-3">
                             <label>NIP / NIK</label>
-                            <input type="text" name="nip" id="nip" class="form-control" required>
+                            <input type="text" name="nip" id="nip" class="form-control" placeholder="Masukkan NIP / NIK" required>
                             <input type="hidden" name="nik" id="nik">
                         </div>
                         <div class="mb-3">
                             <label>Nama</label>
-                            <input type="text" name="name" id="nama" class="form-control" readonly required>
+                            <input type="text" name="name" id="nama" class="form-control" placeholder="Nama akan terisi otomatis setelah NIP/NIK diinput" readonly required>
                         </div>
                         <div class="mb-3">
                             <label>Golongan</label>
-                            <input type="text" name="golongan" id="golongan" class="form-control" readonly>
+                            <input type="text" name="golongan" id="golongan" class="form-control" placeholder="Golongan terisi otomatis dari NIP" readonly>
                         </div>
                         <div class="mb-3">
                             <label>Jabatan</label>
-                            <input type="text" name="jabatan" id="jabatan" class="form-control" readonly required>
+                            <input type="text" name="jabatan" id="jabatan" class="form-control" placeholder="Jabatan terisi otomatis dari NIP" readonly required>
                         </div>
                         <div class="mb-3">
                             <label>Email</label>
-                            <input type="email" name="email" class="form-control" required>
+                            <input type="email" name="email" class="form-control" placeholder="Masukkan Email" required>
                         </div>
                         <div class="mb-3">
                             <label>Password</label>
-                            <input type="password" name="password" class="form-control" required>
+                            <input type="password" name="password" class="form-control" placeholder="Masukkan Password Minimal 8 Karakter" required>
                         </div>
                         <div class="mb-3">
                             <label>Konfirmasi Password</label>
-                            <input type="password" name="password_confirmation" class="form-control" required>
+                            <input type="password" name="password_confirmation" class="form-control" placeholder="Masukkan Konfirmasi Password" required>
                         </div>
                     </div>
                     <div class="modal-footer">

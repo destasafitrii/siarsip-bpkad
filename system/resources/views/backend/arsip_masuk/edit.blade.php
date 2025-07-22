@@ -124,7 +124,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="urutan_surat_masuk" class="form-label">Urutan</label>
-                                            <input type="text" class="form-control" id="urutan_surat_masuk"
+                                            <input type="number" class="form-control" id="urutan_surat_masuk"
                                                 name="urutan_surat_masuk" required
                                                 value="{{ old('urutan_surat_masuk', $arsip_surat_masuk->urutan_surat_masuk) }}">
                                         </div>

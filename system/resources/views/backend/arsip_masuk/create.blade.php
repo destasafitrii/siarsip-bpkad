@@ -114,8 +114,8 @@
 
                                         <div class="mb-3">
                                             <label for="urutan_surat_masuk" class="form-label">Urutan</label>
-                                            <input type="text" class="form-control" id="urutan_surat_masuk"
-                                                name="urutan_surat_masuk" placeholder="Masukkan urutan penyimpanan" required
+                                            <input type="number" class="form-control" id="urutan_surat_masuk"
+                                                name="urutan_surat_masuk" placeholder="Masukkan urutan arsip di dalam box" required
                                                 value="{{ old('urutan_surat_masuk') }}">
                                         </div>
                                         <div class="mb-3">

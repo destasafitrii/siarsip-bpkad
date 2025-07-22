@@ -4,9 +4,14 @@
     <div class="page-content">
         <div class="container-fluid">
             <div class="card">
-                <div class="card-header">
-                    <h4>Tambah Pegawai</h4>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Tambah Pegawai</h4>
+                    <a href="{{ route('pegawai.index') }}" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-arrow-left"></i> Kembali
+                    </a>
                 </div>
+
+
                 <div class="card-body">
                     <form action="{{ route('pegawai.store') }}" method="POST">
                         @csrf
@@ -49,7 +54,6 @@
                             <input type="text" name="jabatan" id="jabatan" class="form-control"
                                 placeholder="Masukkan Jabatan">
                         </div>
-                        <a href="{{ route('pegawai.index') }}" class="btn btn-secondary">Batal</a>
                         <button type="submit" class="btn btn-primary">Simpan</button>
 
                     </form>

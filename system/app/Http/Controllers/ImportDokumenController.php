@@ -71,54 +71,79 @@ $row['Status'] = $isDuplicateExcel || $isDuplicateDatabase
 
 
 
-    public function save(Request $request)
-    {
-        $data = json_decode($request->input('data'), true);
+ public function save(Request $request)
+{
+    $data = json_decode($request->input('data'), true);
+    $dataBerhasil = 0;
 
-      foreach ($data as $row) {
-    // Validasi: lewati jika 'urutan' tidak valid (bukan angka)
-    if (!is_numeric($row['Urutan'])) {
-        continue;
+    foreach ($data as $row) {
+        // Lewati jika tidak siap diimpor
+        if (strtolower($row['Status'] ?? '') !== 'siap diimpor') {
+            continue;
+        }
+
+        // Validasi: lewati jika 'urutan' tidak valid (bukan angka)
+        if (!is_numeric($row['Urutan'])) {
+            continue;
+        }
+
+        // Validasi: lewati jika nomor dokumen sudah ada di database
+        $isDuplicate = ArsipDokumen::where('no_dokumen', $row['Nomor Dokumen'])->exists();
+        if ($isDuplicate) {
+            continue;
+        }
+
+        // Relasi
+        $bidang = Bidang::where('nama_bidang', $row['Bidang'])->first();
+        $kategori = Kategori::where('nama_kategori', $row['Jenis Arsip'])->first();
+        $box = Box::whereHas('lemari', function ($query) use ($row) {
+            $query->where('nama_lemari', $row['Lemari'])
+                  ->whereHas('ruangan', function ($q) use ($row) {
+                      $q->where('nama_ruangan', $row['Ruangan']);
+                  });
+        })->where('nama_box', $row['Box'])->first();
+
+        if (!$bidang || !$kategori || !$box) {
+            \Log::warning("Data relasi tidak lengkap", $row);
+            continue;
+        }
+
+        // Format tanggal
+        $tanggalDokumen = $row['Tanggal Dokumen'];
+        if (is_numeric($tanggalDokumen)) {
+            $tanggal = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($tanggalDokumen)->format('Y-m-d');
+        } elseif ($tanggalDokumen instanceof \DateTimeInterface) {
+            $tanggal = $tanggalDokumen->format('Y-m-d');
+        } else {
+            $tanggal = date('Y-m-d', strtotime($tanggalDokumen));
+        }
+
+        try {
+            ArsipDokumen::create([
+                'no_dokumen' => $row['Nomor Dokumen'],
+                'nama_dokumen' => $row['Nama Dokumen'],
+                'tanggal_dokumen' => $tanggal,
+                'urutan' => $row['Urutan'],
+                'keterangan' => $row['Keterangan'],
+                'bidang_id' => $bidang->bidang_id,
+                'kategori_id' => $kategori->kategori_id,
+                'box_id' => $box->box_id,
+                'opd_id' => Auth::user()->opd_id,
+            ]);
+            $dataBerhasil++;
+        } catch (\Exception $e) {
+            \Log::error('Gagal simpan arsip dokumen: ' . $e->getMessage());
+        }
     }
 
-    // Validasi: lewati jika no_dokumen sudah ada di database
-    $isDuplicate = ArsipDokumen::where('no_dokumen', $row['Nomor Dokumen'])->exists();
-    if ($isDuplicate) {
-        continue;
+    // Notifikasi hasil impor
+    if ($dataBerhasil === 0) {
+        return redirect()->route('arsip_dokumen.index')
+            ->with('warning', 'Tidak ada data baru yang diimpor. Semua data sudah ada atau gagal divalidasi.');
     }
 
-    $bidang = Bidang::where('nama_bidang', $row['Bidang'])->first();
-    $kategori = Kategori::where('nama_kategori', $row['Jenis Arsip'])->first();
-
-    $box = Box::whereHas('lemari', function ($query) use ($row) {
-        $query->where('nama_lemari', $row['Lemari'])
-              ->whereHas('ruangan', function ($q) use ($row) {
-                  $q->where('nama_ruangan', $row['Ruangan']);
-              });
-    })->where('nama_box', $row['Box'])->first();
-
-    $tanggalDokumen = $row['Tanggal Dokumen'];
-    if (is_numeric($tanggalDokumen)) {
-        $tanggal = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($tanggalDokumen)->format('Y-m-d');
-    } elseif ($tanggalDokumen instanceof \DateTimeInterface) {
-        $tanggal = $tanggalDokumen->format('Y-m-d');
-    } else {
-        $tanggal = date('Y-m-d', strtotime($tanggalDokumen));
-    }
-
-    ArsipDokumen::create([
-        'no_dokumen' => $row['Nomor Dokumen'],
-        'nama_dokumen' => $row['Nama Dokumen'],
-        'tanggal_dokumen' => $tanggal,
-        'urutan' => $row['Urutan'],
-        'keterangan' => $row['Keterangan'],
-        'bidang_id' => $bidang?->bidang_id,
-        'kategori_id' => $kategori?->kategori_id,
-        'box_id' => $box?->box_id,
-        'opd_id' => Auth::user()->opd_id,
-    ]);
+    return redirect()->route('arsip_dokumen.index')
+        ->with('success', "$dataBerhasil data arsip dokumen berhasil diimpor.");
 }
 
-        return redirect()->route('arsip_dokumen.index')->with('success', 'Data Arsip Dokumen berhasil diimport.');
-    }
 }

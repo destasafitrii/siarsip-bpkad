@@ -48,7 +48,7 @@
     {{-- TABEL RINGKAS AKTIVITAS PER OPD --}}
     <div class="card mt-4 shadow-sm">
         <div class="card-header bg-white border-bottom">
-            <h5 class="card-title mb-0">Aktivitas Arsip per OPD</h5>
+            <h5 class="card-title mb-0">Rekapitulasi Arsip per OPD</h5>
         </div>
         <div class="card-body">
             <div class="table-responsive">

@@ -6,12 +6,16 @@ use Illuminate\Http\Request;
 use App\Models\ArsipSuratMasuk;
 use App\Models\ArsipSuratKeluar;
 use App\Models\ArsipDokumen;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+        $opdId = $user->opd_id; // Ambil opd_id dari user yang login
+
         $hariIni = Carbon::today();
         $awalMinggu = Carbon::now()->startOfWeek();
         $akhirMinggu = Carbon::now()->endOfWeek();
@@ -19,44 +23,53 @@ class DashboardController extends Controller
         $akhirBulan = Carbon::now()->endOfMonth();
 
         // 📬 Surat Masuk
-        $arsipMasukHarian = ArsipSuratMasuk::whereDate('created_at', $hariIni)->count();
-        $arsipMasukBulanan = ArsipSuratMasuk::whereBetween('created_at', [$awalBulan, $akhirBulan])->count();
-        $arsipMasukTotal = ArsipSuratMasuk::count();
+        $arsipMasukHarian = ArsipSuratMasuk::where('opd_id', $opdId)
+            ->whereDate('created_at', $hariIni)->count();
+        $arsipMasukBulanan = ArsipSuratMasuk::where('opd_id', $opdId)
+            ->whereBetween('created_at', [$awalBulan, $akhirBulan])->count();
+        $arsipMasukTotal = ArsipSuratMasuk::where('opd_id', $opdId)->count();
 
         // 📤 Surat Keluar
-        $arsipKeluarHarian = ArsipSuratKeluar::whereDate('created_at', $hariIni)->count();
-        $arsipKeluarBulanan = ArsipSuratKeluar::whereBetween('created_at', [$awalBulan, $akhirBulan])->count();
-        $arsipKeluarTotal = ArsipSuratKeluar::count();
+        $arsipKeluarHarian = ArsipSuratKeluar::where('opd_id', $opdId)
+            ->whereDate('created_at', $hariIni)->count();
+        $arsipKeluarBulanan = ArsipSuratKeluar::where('opd_id', $opdId)
+            ->whereBetween('created_at', [$awalBulan, $akhirBulan])->count();
+        $arsipKeluarTotal = ArsipSuratKeluar::where('opd_id', $opdId)->count();
 
         // 📎 Arsip Dokumen
-        $arsipDokumenHarian = ArsipDokumen::whereDate('created_at', $hariIni)->count();
-        $arsipDokumenBulanan = ArsipDokumen::whereBetween('created_at', [$awalBulan, $akhirBulan])->count();
-        $arsipDokumenTotal = ArsipDokumen::count();
+        $arsipDokumenHarian = ArsipDokumen::where('opd_id', $opdId)
+            ->whereDate('created_at', $hariIni)->count();
+        $arsipDokumenBulanan = ArsipDokumen::where('opd_id', $opdId)
+            ->whereBetween('created_at', [$awalBulan, $akhirBulan])->count();
+        $arsipDokumenTotal = ArsipDokumen::where('opd_id', $opdId)->count();
 
-        // Hitung total harian, mingguan, bulanan semua arsip
+        // Total Harian, Mingguan, Bulanan
         $arsipHarian = $arsipMasukHarian + $arsipKeluarHarian + $arsipDokumenHarian;
-        $arsipMingguan = ArsipSuratMasuk::whereBetween('created_at', [$awalMinggu, $akhirMinggu])->count()
-            + ArsipSuratKeluar::whereBetween('created_at', [$awalMinggu, $akhirMinggu])->count()
-            + ArsipDokumen::whereBetween('created_at', [$awalMinggu, $akhirMinggu])->count();
+        $arsipMingguan = ArsipSuratMasuk::where('opd_id', $opdId)->whereBetween('created_at', [$awalMinggu, $akhirMinggu])->count()
+            + ArsipSuratKeluar::where('opd_id', $opdId)->whereBetween('created_at', [$awalMinggu, $akhirMinggu])->count()
+            + ArsipDokumen::where('opd_id', $opdId)->whereBetween('created_at', [$awalMinggu, $akhirMinggu])->count();
         $arsipBulanan = $arsipMasukBulanan + $arsipKeluarBulanan + $arsipDokumenBulanan;
 
-        // Statistik bulanan untuk grafik (6 bulan terakhir)
+        // Statistik grafik 6 bulan terakhir
         $chartData = [];
         for ($i = 5; $i >= 0; $i--) {
             $bulan = Carbon::now()->subMonths($i);
-            $bulanLabel = $bulan->format('M Y');
+            $label = $bulan->format('M Y');
 
-            $masuk = ArsipSuratMasuk::whereYear('created_at', $bulan->year)
+            $masuk = ArsipSuratMasuk::where('opd_id', $opdId)
+                ->whereYear('created_at', $bulan->year)
                 ->whereMonth('created_at', $bulan->month)->count();
 
-            $keluar = ArsipSuratKeluar::whereYear('created_at', $bulan->year)
+            $keluar = ArsipSuratKeluar::where('opd_id', $opdId)
+                ->whereYear('created_at', $bulan->year)
                 ->whereMonth('created_at', $bulan->month)->count();
 
-            $dokumen = ArsipDokumen::whereYear('created_at', $bulan->year)
+            $dokumen = ArsipDokumen::where('opd_id', $opdId)
+                ->whereYear('created_at', $bulan->year)
                 ->whereMonth('created_at', $bulan->month)->count();
 
             $chartData[] = [
-                'bulan' => $bulanLabel,
+                'bulan' => $label,
                 'masuk' => $masuk,
                 'keluar' => $keluar,
                 'dokumen' => $dokumen,
