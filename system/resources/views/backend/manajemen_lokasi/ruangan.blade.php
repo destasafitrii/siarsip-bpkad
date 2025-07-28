@@ -30,7 +30,7 @@
                     <th>No</th>
                     <th>Kode</th>
                     <th>Nama</th>
-                    <th>Alamat</th>
+                    <th>Lokasi</th>
                     <th>Keterangan</th>
                     <th>Aksi</th>
                   </tr>
@@ -65,8 +65,8 @@
           <input type="text" class="form-control" name="nama_ruangan" placeholder="Masukkan Nama Ruangan" required>
         </div>
         <div class="mb-3">
-          <label class="form-label">Alamat</label>
-          <input type="text" class="form-control" name="alamat" placeholder="Masukkan Alamat Ruangan">
+          <label class="form-label">Lokasi</label>
+          <input type="text" class="form-control" name="alamat" placeholder="Masukkan Lokasi Ruangan">
         </div>
         <div class="mb-3">
           <label class="form-label">Keterangan</label>
@@ -114,23 +114,29 @@
       </div>
       <div class="modal-body">
         <input type="hidden" name="ruangan_id" id="edit_ruangan_id">
+
         <div class="mb-3">
           <label class="form-label">Kode Ruangan</label>
-          <input type="text" class="form-control" name="kode_ruangan" id="edit_kode_ruangan" required>
+          <input type="text" class="form-control" name="kode_ruangan" id="edit_kode_ruangan" readonly>
+          <small class="text-muted fst-italic">Kode ruangan tidak dapat diubah</small>
         </div>
+
         <div class="mb-3">
           <label class="form-label">Nama Ruangan</label>
           <input type="text" class="form-control" name="nama_ruangan" id="edit_nama_ruangan" required>
         </div>
+
         <div class="mb-3">
-          <label class="form-label">Alamat</label>
+          <label class="form-label">Lokasi</label>
           <input type="text" class="form-control" name="alamat" id="edit_alamat">
         </div>
+
         <div class="mb-3">
           <label class="form-label">Keterangan</label>
           <textarea class="form-control" name="keterangan" id="edit_keterangan"></textarea>
         </div>
       </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
@@ -138,6 +144,7 @@
     </form>
   </div>
 </div>
+
 <!-- Modal Detail -->
 <div class="modal fade" id="detailRuanganModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
@@ -150,7 +157,7 @@
         <ul class="list-group">
           <li class="list-group-item"><strong>Kode:</strong> <span id="detail_kode_ruangan"></span></li>
           <li class="list-group-item"><strong>Nama:</strong> <span id="detail_nama_ruangan"></span></li>
-          <li class="list-group-item"><strong>Alamat:</strong> <span id="detail_alamat"></span></li>
+          <li class="list-group-item"><strong>Lokasi:</strong> <span id="detail_alamat"></span></li>
           <li class="list-group-item"><strong>Keterangan:</strong> <span id="detail_keterangan"></span></li>
         </ul>
       </div>

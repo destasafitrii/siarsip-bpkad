@@ -34,24 +34,27 @@ class BidangController extends Controller
             ->make(true);
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'kode_bidang' => 'required|string|max:50',
-            'nama_bidang' => 'required|string|max:100',
-            'penanggung_jawab' => 'required|string|max:100',
-        ]);
+  public function store(Request $request)
+{
+    $request->validate([
+        'nama_bidang' => 'required|string|max:100',
+        'penanggung_jawab' => 'required|string|max:100',
+    ]);
 
-        Bidang::create([
-            'opd_id' => Auth::user()->opd_id,
-            'kode_bidang' => $request->kode_bidang,
-            'nama_bidang' => $request->nama_bidang,
-            'penanggung_jawab' => $request->penanggung_jawab,
-            
-        ]);
+    // Buat kode bidang otomatis
+    $lastKode = Bidang::where('opd_id', Auth::user()->opd_id)->max('kode_bidang');
+    $newKode = 'BD-' . str_pad((intval(substr($lastKode, 3)) + 1), 3, '0', STR_PAD_LEFT);
 
-        return redirect()->route('bidang.index')->with('success', 'Data Bidang berhasil ditambahkan!');
-    }
+    Bidang::create([
+        'opd_id' => Auth::user()->opd_id,
+        'kode_bidang' => $newKode,
+        'nama_bidang' => $request->nama_bidang,
+        'penanggung_jawab' => $request->penanggung_jawab,
+    ]);
+
+    return redirect()->route('bidang.index')->with('success', 'Data Bidang berhasil ditambahkan!');
+}
+
 
     public function edit($id)
     {
@@ -59,23 +62,23 @@ class BidangController extends Controller
         return response()->json($bidang);
     }
 
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'kode_bidang' => 'required|string|max:50',
-            'nama_bidang' => 'required|string|max:100',
-            'penanggung_jawab' => 'required|string|max:100',
-        ]);
+ public function update(Request $request, $id)
+{
+    $request->validate([
+        'nama_bidang' => 'required|string|max:100',
+        'penanggung_jawab' => 'required|string|max:100',
+    ]);
 
-        $bidang = Bidang::findOrFail($id);
-        $bidang->update([
-            'kode_bidang' => $request->kode_bidang,
-            'nama_bidang' => $request->nama_bidang,
-            'penanggung_jawab' => $request->penanggung_jawab,
-        ]);
+    $bidang = Bidang::findOrFail($id);
+    $bidang->update([
+        // kode_bidang tidak diubah!
+        'nama_bidang' => $request->nama_bidang,
+        'penanggung_jawab' => $request->penanggung_jawab,
+    ]);
 
-        return redirect()->route('bidang.index')->with('success', 'Data Bidang berhasil diperbarui!');
-    }
+    return redirect()->route('bidang.index')->with('success', 'Data Bidang berhasil diperbarui!');
+}
+
 
     public function destroy($id)
     {

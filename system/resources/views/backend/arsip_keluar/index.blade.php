@@ -43,7 +43,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nomor Surat</th>
-                                        <th>Nama Surat</th>
+                                        <th>Perihal Surat</th>
                                         <th>Bidang</th>
                                         <th>Kategori</th>
                                         <th>Ruangan</th>

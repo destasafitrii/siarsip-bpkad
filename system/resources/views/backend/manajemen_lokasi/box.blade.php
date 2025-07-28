@@ -29,7 +29,7 @@
                 <thead>
                   <tr>
                     <th>No</th>
-                    <th>Nama Box</th>
+                    <th>Nomor Box</th>
                     <th>Lemari</th>
                     <th>QR Code</th>
                     <th>Aksi</th>
@@ -39,7 +39,7 @@
                   @forelse ($box as $b)
                   <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $b->nama_box }}</td>
+                    <td>{{ $b->nomor_box }}</td>
                     <td>{{ $b->lemari->nama_lemari ?? '-' }}</td>
                     <td>
                       @php
@@ -76,8 +76,8 @@
                     @csrf @method('PUT')
                     <div class="modal-body">
                       <div class="mb-3">
-                        <label class="form-label">Nama Box</label>
-                        <input type="text" name="nama_box" class="form-control" value="{{ $b->nama_box }}" required>
+                        <label class="form-label">Nomor Box</label>
+                        <input type="text" name="nomor_box" class="form-control" value="{{ $b->nomor_box }}" required>
                       </div>
                       <div class="mb-3">
                         <label class="form-label">Lemari</label>
@@ -142,8 +142,8 @@
         @csrf
         <div class="modal-body">
           <div class="mb-3">
-            <label class="form-label">Nama Box</label>
-            <input type="text" class="form-control" name="nama_box" placeholder="Masukkan Nama Box" required>
+            <label class="form-label">Nomor Box</label>
+            <input type="text" class="form-control" name="nomor_box" placeholder="Masukkan Nomor Box" required>
           </div>
           <div class="mb-3">
             <label class="form-label">Lemari</label>

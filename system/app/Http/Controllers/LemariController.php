@@ -43,6 +43,9 @@ public function data()
 
     return DataTables::of($data)
         ->addIndexColumn()
+         ->addColumn('nomor_lemari', function ($row) {
+        return $row->nomor_lemari;
+    })
         ->addColumn('ruangan', function ($row) {
             return $row->ruangan ? $row->ruangan->nama_ruangan : '-';
         })
@@ -64,14 +67,14 @@ public function data()
     public function store(Request $request)
     {
         $request->validate([
-            'kode_lemari' => 'required|unique:lemari,kode_lemari',
+            'nomor_lemari' => 'required|unique:lemari,nomor_lemari',
             'nama_lemari' => 'required',
             'jumlah_rak' => 'required|integer|min:1',
             'ruangan_id' => 'required|exists:ruangan,ruangan_id',
         ]);
 
         Lemari::create([
-            'kode_lemari' => $request->kode_lemari,
+            'nomor_lemari' => $request->nomor_lemari,
             'nama_lemari' => $request->nama_lemari,
             'jumlah_rak' => $request->jumlah_rak,
             'ruangan_id' => $request->ruangan_id,
@@ -84,7 +87,7 @@ public function data()
     public function update(Request $request, $id)
     {
         $request->validate([
-            'kode_lemari' => 'required|unique:lemari,kode_lemari,' . $id . ',lemari_id',
+            'nomor_lemari' => 'required|unique:lemari,nomor_lemari,' . $id . ',lemari_id',
             'nama_lemari' => 'required',
             'jumlah_rak' => 'required|integer|min:1',
             'ruangan_id' => 'required|exists:ruangan,ruangan_id',
@@ -92,7 +95,7 @@ public function data()
 
         $lemari = Lemari::findOrFail($id);
         $lemari->update([
-            'kode_lemari' => $request->kode_lemari,
+            'nomor_lemari' => $request->nomor_lemari,
             'nama_lemari' => $request->nama_lemari,
             'jumlah_rak' => $request->jumlah_rak,
             'ruangan_id' => $request->ruangan_id,

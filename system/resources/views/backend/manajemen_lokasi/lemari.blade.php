@@ -29,9 +29,7 @@
                 <thead>
                   <tr>
                     <th>No</th>
-                    <th>Kode Lemari</th>
-                    <th>Nama Lemari</th>
-                    <th>Jumlah Rak</th>
+                    <th>Nomor Lemari</th>
                     <th>Ruangan</th>
                     <th>Aksi</th>
                   </tr>
@@ -59,16 +57,8 @@
       </div>
       <div class="modal-body">
         <div class="mb-3">
-          <label class="form-label">Kode Lemari</label>
-          <input type="text" class="form-control" name="kode_lemari" placeholder="Masukkan Kode Lemari" required>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Nama Lemari</label>
-          <input type="text" class="form-control" name="nama_lemari" placeholder="Masukkan Nama Lemari" required>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Jumlah Rak</label>
-          <input type="number" class="form-control" name="jumlah_rak" placeholder="Masukkan Jumlah Rak" required>
+          <label class="form-label">Nomor Lemari</label>
+          <input type="text" class="form-control" name="nomor_lemari" placeholder="Masukkan Nomor Lemari" required>
         </div>
         <div class="mb-3">
           <label class="form-label">Ruangan</label>
@@ -122,16 +112,8 @@
       <div class="modal-body">
         <input type="hidden" name="lemari_id" id="edit_lemari_id">
         <div class="mb-3">
-          <label class="form-label">Kode Lemari</label>
-          <input type="text" class="form-control" name="kode_lemari" id="edit_kode_lemari" required>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Nama Lemari</label>
-          <input type="text" class="form-control" name="nama_lemari" id="edit_nama_lemari" required>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Jumlah Rak</label>
-          <input type="number" class="form-control" name="jumlah_rak" id="edit_jumlah_rak" required>
+          <label class="form-label">Nomor Lemari</label>
+          <input type="text" class="form-control" name="nomor_lemari" id="edit_nomor_lemari" required>
         </div>
         <div class="mb-3">
           <label class="form-label">Ruangan</label>
@@ -161,9 +143,7 @@
       ajax: "{{ route('lemari.data') }}",
       columns: [
         { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-        { data: 'kode_lemari', name: 'kode_lemari' },
-        { data: 'nama_lemari', name: 'nama_lemari' },
-        { data: 'jumlah_rak', name: 'jumlah_rak' },
+        { data: 'nomor_lemari', name: 'nomor_lemari' },
         { data: 'ruangan', name: 'ruangan.nama_ruangan' },
         { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
       ],
@@ -198,9 +178,7 @@
       $.get(`{{ url('pengelola/lemari') }}/${id}/edit`, function (data) {
         $('#editLemariForm').attr('action', `{{ url('pengelola/lemari') }}/${id}`);
         $('#edit_lemari_id').val(data.id);
-        $('#edit_kode_lemari').val(data.kode_lemari);
-        $('#edit_nama_lemari').val(data.nama_lemari);
-        $('#edit_jumlah_rak').val(data.jumlah_rak);
+        $('#edit_nomor_lemari').val(data.nomor_lemari);
         $('#edit_ruangan_id').val(data.ruangan_id);
         $('#editLemariModal').modal('show');
       }).fail(function () {

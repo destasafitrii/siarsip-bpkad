@@ -32,37 +32,71 @@ class BoxController extends Controller
 
 
     // Menyimpan box baru
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nama_box' => 'required|string|max:255',
-            'lemari_id' => 'required|exists:lemari,lemari_id',
-        ]);
+  public function store(Request $request)
+{
+    $request->validate([
+        'nomor_box' => [
+            'required',
+            'string',
+            'max:255',
+            function ($attribute, $value, $fail) use ($request) {
+                $user = Auth::user();
 
-        Box::create([
-            'nama_box' => $request->nama_box,
-            'lemari_id' => $request->lemari_id,
-        ]);
+                $duplicate = Box::where('nomor_box', $value)
+                    ->whereHas('lemari.ruangan', function ($query) use ($user) {
+                        $query->where('opd_id', $user->opd_id);
+                    })->exists();
 
-        return redirect()->back()->with('success', 'Data box berhasil ditambahkan.');
-    }
+                if ($duplicate) {
+                    $fail('Nomor box sudah digunakan di OPD Anda.');
+                }
+            }
+        ],
+        'lemari_id' => 'required|exists:lemari,lemari_id',
+    ]);
+
+    Box::create([
+        'nomor_box' => $request->nomor_box,
+        'lemari_id' => $request->lemari_id,
+    ]);
+
+    return redirect()->back()->with('success', 'Data box berhasil ditambahkan.');
+}
 
     // Mengupdate data box
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'nama_box' => 'required|string|max:255',
-            'lemari_id' => 'required|exists:lemari,lemari_id',
-        ]);
+   public function update(Request $request, $id)
+{
+    $request->validate([
+        'nomor_box' => [
+            'required',
+            'string',
+            'max:255',
+            function ($attribute, $value, $fail) use ($request, $id) {
+                $user = Auth::user();
 
-        $box = Box::findOrFail($id);
-        $box->update([
-            'nama_box' => $request->nama_box,
-            'lemari_id' => $request->lemari_id,
-        ]);
+                $duplicate = Box::where('nomor_box', $value)
+                    ->where('box_id', '!=', $id)
+                    ->whereHas('lemari.ruangan', function ($query) use ($user) {
+                        $query->where('opd_id', $user->opd_id);
+                    })->exists();
 
-        return redirect()->back()->with('success', 'Data box berhasil diperbarui.');
-    }
+                if ($duplicate) {
+                    $fail('Nomor box sudah digunakan di OPD Anda.');
+                }
+            }
+        ],
+        'lemari_id' => 'required|exists:lemari,lemari_id',
+    ]);
+
+    $box = Box::findOrFail($id);
+    $box->update([
+        'nomor_box' => $request->nomor_box,
+        'lemari_id' => $request->lemari_id,
+    ]);
+
+    return redirect()->back()->with('success', 'Data box berhasil diperbarui.');
+}
+
 
     // Menghapus data box
     public function destroy($id)

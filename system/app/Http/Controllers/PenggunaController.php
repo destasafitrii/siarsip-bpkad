@@ -7,6 +7,7 @@ use App\Models\Opd;
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class PenggunaController extends Controller
 {
@@ -26,41 +27,43 @@ class PenggunaController extends Controller
         return view('backend.pengguna.create');
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'pegawai_id' => 'required|exists:pegawai,id',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+ public function store(Request $request)
+{
+    $request->validate([
+        'pegawai_id' => 'required|exists:pegawai,id',
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+    ]);
 
-        // Cek apakah pegawai sudah memiliki user
-        $existing = User::where('pegawai_id', $request->pegawai_id)->first();
-        if ($existing) {
-            return back()->with('error', 'Pegawai ini sudah memiliki akun.');
-        }
-        $pegawai = Pegawai::find($request->pegawai_id);
-        $pegawai->nip = $request->nip;
-        $pegawai->nik = $request->nik;
-        $pegawai->jabatan = $request->jabatan;
-        $pegawai->golongan = $request->golongan;
-        $pegawai->save();
-
-
-
-        User::create([
-            'pegawai_id' => $request->pegawai_id,
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'pengguna',
-            'opd_id' => auth()->user()->opd_id, // pastikan opd_id terisi
-        ]);
-
-        return back()->with('success', 'Akun Pengguna berhasil ditambahkan.');
+    // Cek apakah pegawai sudah memiliki akun
+    $existing = User::where('pegawai_id', $request->pegawai_id)->first();
+    if ($existing) {
+        return back()->with('error', 'Pegawai ini sudah memiliki akun.');
     }
 
+    // Update data pegawai
+    $pegawai = Pegawai::find($request->pegawai_id);
+    $pegawai->nip = $request->nip;
+    $pegawai->nik = $request->nik;
+    $pegawai->jabatan = $request->jabatan;
+    $pegawai->golongan = $request->golongan;
+    $pegawai->save();
+
+    // 🔐 Generate password acak
+    $generatedPassword = Str::random(8);
+
+    // Simpan user
+    User::create([
+        'pegawai_id' => $request->pegawai_id,
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($generatedPassword),
+        'role' => 'pengguna',
+        'opd_id' => auth()->user()->opd_id,
+    ]);
+
+    return back()->with('success', 'Akun Pengguna berhasil ditambahkan. Password awal: ' . $generatedPassword);
+}
     public function show(User $pengguna)
     {
         return view('backend.pengguna.show', compact('pengguna'));

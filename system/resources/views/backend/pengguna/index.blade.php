@@ -219,18 +219,10 @@
                             <label>Email</label>
                             <input type="email" name="email" class="form-control" placeholder="Masukkan Email" required>
                         </div>
-                        <div class="mb-3">
-                            <label>Password</label>
-                            <input type="password" name="password" class="form-control" placeholder="Masukkan Password Minimal 8 Karakter" required>
-                        </div>
-                        <div class="mb-3">
-                            <label>Konfirmasi Password</label>
-                            <input type="password" name="password_confirmation" class="form-control" placeholder="Masukkan Konfirmasi Password" required>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="submit" class="btn btn-primary">Buat Akun</button>
                     </div>
                 </form>
             </div>
