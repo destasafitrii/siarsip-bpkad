@@ -10,7 +10,7 @@ use App\Http\Controllers\SuperAdmin\OpdController;
 use App\Http\Controllers\QrController;
 
 Route::get('/', function () {
-    return view('frontend.landing');
+    return view('frontend.index');
 });
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');

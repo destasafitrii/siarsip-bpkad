@@ -16,6 +16,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ArsipDokumenController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\ImportDokumenController;
+use App\Http\Controllers\ProfilController;
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('pengelola.dashboard');
 
@@ -53,6 +54,8 @@ Route::controller(BidangController::class)->group(function () {
     Route::get('bidang/{bidang}/edit', 'edit')->name('bidang.edit');
     Route::put('bidang/{bidang}', 'update')->name('bidang.update');
     Route::delete('bidang/{bidang}', 'destroy')->name('bidang.destroy');
+    Route::get('bidang/kode/otomatis', [BidangController::class, 'generateKode'])->name('bidang.generateKode');
+
 });
 
 // In your routes/web.php
@@ -166,3 +169,9 @@ Route::prefix('siarsip')->controller(ImportDokumenController::class)->group(func
     Route::post('/arsip_dokumen/import/preview', 'preview')->name('arsip_dokumen.import.preview');
     Route::post('/arsip_dokumen/import/save', 'save')->name('arsip_dokumen.import.save');
 });
+
+
+
+Route::get('/profil', [ProfilController::class, 'index'])->name('pengelola.profil');
+Route::put('/profil', [ProfilController::class, 'update'])->name('pengelola.profil.update');
+Route::put('/profil/password', [ProfilController::class, 'updatePassword'])->name('pengelola.profil.updatePassword');

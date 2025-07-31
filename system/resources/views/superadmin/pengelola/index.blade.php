@@ -49,7 +49,7 @@
                                                 <td>
                                                     <button class="btn btn-info btn-sm" data-bs-toggle="modal"
                                                         data-bs-target="#detailModal{{ $admin->id }}">
-                                                        <i class="mdi mdi-eye-outline" style="font-size: 14px;"></i> 
+                                                        <i class="mdi mdi-eye-outline" style="font-size: 14px;"></i>
                                                     </button>
 
                                                     <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
@@ -58,39 +58,45 @@
                                                     </button>
 
                                                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                    data-bs-target="#hapusPengelolaModal{{ $admin->id }}" title="Hapus">
-                                                    <i class="mdi mdi-trash-can-outline" style="font-size: 14px;"></i>
-                                                </button>
+                                                        data-bs-target="#hapusPengelolaModal{{ $admin->id }}"
+                                                        title="Hapus">
+                                                        <i class="mdi mdi-trash-can-outline" style="font-size: 14px;"></i>
+                                                    </button>
                                                 </td>
 
                                             </tr>
 
-                              <!-- Modal Konfirmasi Hapus -->
-<div class="modal fade" id="hapusPengelolaModal{{ $admin->id }}" tabindex="-1"
-    aria-labelledby="hapusPengelolaModalLabel{{ $admin->id }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-header">
-                <h5 class="modal-title" id="hapusPengelolaModalLabel{{ $admin->id }}">
-                    Konfirmasi Hapus</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Apakah Anda yakin ingin menghapus data ini
-                <strong>{{ $admin->nama }}</strong>?
-            </div>
-            <div class="modal-footer">
-                <form action="{{ route('pengelola.destroy', $admin->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-danger">Hapus</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+                                            <!-- Modal Konfirmasi Hapus -->
+                                            <div class="modal fade" id="hapusPengelolaModal{{ $admin->id }}"
+                                                tabindex="-1"
+                                                aria-labelledby="hapusPengelolaModalLabel{{ $admin->id }}"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content border-0 shadow">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title"
+                                                                id="hapusPengelolaModalLabel{{ $admin->id }}">
+                                                                Konfirmasi Hapus</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Apakah Anda yakin ingin menghapus data ini
+                                                            <strong>{{ $admin->nama }}</strong>?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <form action="{{ route('pengelola.destroy', $admin->id) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Batal</button>
+                                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             <!-- Modal Edit -->
                                             <div class="modal fade" id="editModal{{ $admin->id }}" tabindex="-1"
@@ -122,25 +128,27 @@
                                                                                 required>
                                                                         </div>
                                                                         <div class="mb-3">
-                                                                            <label class="form-label">Password
+                                                                            <label class="form-label">Password Baru
                                                                                 <small>(kosongkan jika tidak
                                                                                     diubah)</small></label>
-                                                                            <input type="password" class="form-control"
-                                                                                name="password">
-                                                                        </div>
-                                                                        <div class="mb-3">
-                                                                            <label class="form-label">Konfirmasi
-                                                                                Password</label>
-                                                                            <input type="password" class="form-control"
-                                                                                name="password_confirmation">
+                                                                            <div class="input-group">
+                                                                                <input type="password" class="form-control"
+                                                                                    name="password"
+                                                                                    id="passwordInput{{ $admin->id }}">
+                                                                                <button type="button"
+                                                                                    class="btn btn-outline-secondary toggle-password"
+                                                                                    data-target="passwordInput{{ $admin->id }}">
+                                                                                    <i class="mdi mdi-eye-off"></i>
+                                                                                </button>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-
                                                                     <div class="col-md-6">
                                                                         <div class="mb-3">
                                                                             <label class="form-label">NIP</label>
                                                                             <input type="text" class="form-control"
-                                                                                name="nip" value="{{ $admin->nip }}">
+                                                                                name="nip"
+                                                                                value="{{ $admin->nip }}">
                                                                         </div>
                                                                         <div class="mb-3">
                                                                             <label class="form-label">Jabatan</label>
@@ -154,26 +162,31 @@
                                                                                 name="golongan"
                                                                                 value="{{ $admin->golongan }}">
                                                                         </div>
-                                                                        <div class="mb-3">
-                                                                            <label class="form-label">OPD</label>
-                                                                            <select name="opd_id" class="form-control"
-                                                                                required>
-                                                                                @foreach (\App\Models\Opd::all() as $opd)
-                                                                                    <option value="{{ $opd->id }}"
-                                                                                        {{ $admin->opd_id == $opd->id ? 'selected' : '' }}>
-                                                                                        {{ $opd->nama_opd }}
-                                                                                    </option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </div>
+                                                                        
+
                                                                     </div>
+                                                                    <div class="col-12">
+                                                                            <div class="mb-3">
+                                                                                <label class="form-label">OPD</label>
+                                                                                <select name="opd_id"
+                                                                                    class="form-control" required>
+                                                                                    @foreach (\App\Models\Opd::all() as $opd)
+                                                                                        <option
+                                                                                            value="{{ $opd->id }}"
+                                                                                            {{ $admin->opd_id == $opd->id ? 'selected' : '' }}>
+                                                                                            {{ $opd->nama_opd }}
+                                                                                        </option>
+                                                                                    @endforeach
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
                                                                     data-bs-dismiss="modal">Batal</button>
-                                                                <button type="submit"
-                                                                    class="btn btn-primary">Simpan Perubahan</button>
+                                                                <button type="submit" class="btn btn-primary">Simpan
+                                                                    Perubahan</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -205,8 +218,12 @@
                                                                     {{ $admin->opd->nama_opd ?? '-' }}</li>
                                                                 <li class="list-group-item"><strong>Role:</strong>
                                                                     {{ ucfirst($admin->role) }}</li>
-                                                                <li class="list-group-item"><strong>Dibuat:</strong>
-                                                                    {{ $admin->created_at->format('d-m-Y H:i') }}</li>
+                                                                <li class="list-group-item"><strong>Password Awal:</strong>
+                                                                    {{ $admin->password_plain ?? '-' }}<br>
+                                                                    <small class="text-muted">Password ini hanya
+                                                                        ditampilkan saat akun dibuat dan sebelum pengguna
+                                                                        menggantinya.</small>
+                                                                </li>
                                                             </ul>
                                                         </div>
                                                         <div class="modal-footer">
@@ -232,7 +249,6 @@
             </div>
         </div>
     </div>
-
     <!-- Modal Tambah -->
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg"> <!-- modal-lg agar cukup menampung 2 kolom -->
@@ -248,34 +264,30 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Nama</label>
-                                    <input type="text" name="name" class="form-control" placeholder="Masukkan Nama" required>
+                                    <input type="text" name="name" class="form-control"
+                                        placeholder="Masukkan Nama" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Email</label>
-                                    <input type="email" name="email" class="form-control" placeholder="Masukkan Email" required>
+                                    <input type="email" name="email" class="form-control"
+                                        placeholder="Masukkan Email" required>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Password</label>
-                                    <input type="password" name="password" class="form-control" placeholder="8 Karakter" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Konfirmasi Password</label>
-                                    <input type="password" name="password_confirmation" class="form-control" placeholder="Konfirmasi Password"required>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">NIP</label>
-                                    <input type="text" name="nip" class="form-control" placeholder="Masukkan NIP">
+                                    <input type="text" name="nip" class="form-control"
+                                        placeholder="Masukkan NIP">
                                 </div>
+                            </div>
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Jabatan</label>
-                                    <input type="text" name="jabatan" class="form-control" placeholder="Masukkan Jabatan">
+                                    <input type="text" name="jabatan" class="form-control"
+                                        placeholder="Masukkan Jabatan">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Golongan</label>
-                                    <input type="text" name="golongan" class="form-control" placeholder="Masukkan Golongan">
+                                    <input type="text" name="golongan" class="form-control"
+                                        placeholder="Masukkan Golongan">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">OPD</label>
@@ -288,16 +300,19 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="alert alert-info mt-3">
+                            <strong>Info:</strong> Password awal akan dibuat otomatis oleh sistem dan hanya bisa dilihat
+                            sekali setelah akun dibuat.
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="submit" class="btn btn-primary">Buat Akun</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
 @endsection
 @section('scripts')
     <script>
@@ -305,17 +320,34 @@
             $('#pengelolaTable').DataTable({
                 responsive: true,
                 language: {
-                  search: "Cari:",
-                  lengthMenu: "Show _MENU_ entries",
-                  zeroRecords: "Data tidak ditemukan",
-                  info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                  infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
-                  paginate: {
-                    first: "Pertama",
-                    last: "Terakhir",
-                    next: "<i class='fas fa-chevron-right'></i>",
-                    previous: "<i class='fas fa-chevron-left'></i>"
-                  },
+                    search: "Cari:",
+                    lengthMenu: "Show _MENU_ entries",
+                    zeroRecords: "Data tidak ditemukan",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+                    paginate: {
+                        first: "Pertama",
+                        last: "Terakhir",
+                        next: "<i class='fas fa-chevron-right'></i>",
+                        previous: "<i class='fas fa-chevron-left'></i>"
+                    },
+                }
+            });
+        });
+        document.querySelectorAll('.toggle-password').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                const icon = this.querySelector('i');
+
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('mdi-eye-off');
+                    icon.classList.add('mdi-eye');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('mdi-eye');
+                    icon.classList.add('mdi-eye-off');
                 }
             });
         });

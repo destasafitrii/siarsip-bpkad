@@ -52,61 +52,62 @@
                                 </tr>
 
                                 <!-- Modal Edit -->
-                                <div class="modal fade" id="editModal{{ $p->id }}" tabindex="-1"
-                                    aria-labelledby="editModalLabel{{ $p->id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <form method="POST" action="{{ route('pengguna.update', $p->id) }}">
-                                                @csrf @method('PUT')
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="editModalLabel{{ $p->id }}">Edit
-                                                        Pengguna</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="mb-3">
-                                                        <label>Nama</label>
-                                                        <input type="text" name="name" value="{{ $p->name }}"
-                                                            class="form-control" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label>NIP / NIK</label>
-                                                    <input type="text"
-                                                        value="{{ $p->pegawai?->nip ?? ($p->pegawai?->nik ?? '-') }}"
-                                                        class="form-control" disabled>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label>Jabatan</label>
-                                                        <input type="text" name="jabatan"
-                                                            value="{{ $p->pegawai?->jabatan ?? '-' }}"
-                                                            class="form-control">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label>Email</label>
-                                                        <input type="email" name="email" value="{{ $p->email }}"
-                                                            class="form-control" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label>Password (Kosongkan jika tidak diubah)</label>
-                                                        <input type="password" name="password" class="form-control">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label>Konfirmasi Password</label>
-                                                        <input type="password" name="password_confirmation"
-                                                            class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Batal</button>
-                                                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                                                    
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+                              <div class="modal fade" id="editModal{{ $p->id }}" tabindex="-1"
+    aria-labelledby="editModalLabel{{ $p->id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form method="POST" action="{{ route('pengguna.update', $p->id) }}">
+                @csrf
+                @method('PUT')
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel{{ $p->id }}">Edit Pengguna</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>Nama</label>
+                        <input type="text" name="name" value="{{ $p->name }}" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>NIP / NIK</label>
+                        <input type="text"
+                            value="{{ $p->pegawai?->nip ?? ($p->pegawai?->nik ?? '-') }}"
+                            class="form-control" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label>Jabatan</label>
+                        <input type="text" name="jabatan"
+                            value="{{ $p->pegawai?->jabatan ?? '-' }}"
+                            class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input type="email" name="email" value="{{ $p->email }}"
+                            class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Password Baru <small>(kosongkan jika tidak diubah)</small></label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" name="password"
+                                id="passwordInput{{ $p->id }}">
+                            <button type="button" class="btn btn-outline-secondary toggle-password"
+                                data-target="passwordInput{{ $p->id }}">
+                                <i class="mdi mdi-eye-off"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
                                 <!-- Modal Detail -->
                                 <div class="modal fade" id="detailModal{{ $p->id }}" tabindex="-1"
@@ -137,13 +138,22 @@
                                                     <strong>Email:</strong><br> {{ $p->email }}
                                                 </div>
                                                 <div style="border-bottom: 1px solid #ccc; padding: 8px 0;">
+                                                    <strong>Password Awal:</strong><br>
+                                                    {{ $p->password_plain ?? '-' }}
+                                                    <br>
+                                                    <small class="text-muted">Password ini hanya ditampilkan saat akun
+                                                        dibuat dan sebelum pengguna menggantinya.</small>
+                                                </div>
+                                                <div style="border-bottom: 1px solid #ccc; padding: 8px 0;">
                                                     <strong>Role:</strong><br> {{ ucfirst($p->role) }}
                                                 </div>
+
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">Tutup</button>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -155,25 +165,25 @@
         </div>
     </div>
 
-  <div class="modal fade" id="hapusModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <form method="POST" id="formHapusPengguna" class="modal-content">
-      @csrf
-      @method('DELETE')
-      <div class="modal-header">
-        <h5 class="modal-title">Konfirmasi Hapus</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Apakah Anda yakin ingin menghapus akun <strong id="namaPenggunaHapus"></strong>?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-        <button type="submit" class="btn btn-danger">Hapus</button>
-      </div>
-    </form>
-  </div>
-</div>
+    <div class="modal fade" id="hapusModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form method="POST" id="formHapusPengguna" class="modal-content">
+                @csrf
+                @method('DELETE')
+                <div class="modal-header">
+                    <h5 class="modal-title">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin menghapus akun <strong id="namaPenggunaHapus"></strong>?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger">Hapus</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 
     <!-- Modal Tambah Pengguna -->
@@ -200,24 +210,33 @@
                         <input type="hidden" name="pegawai_id" id="pegawai_id">
                         <div class="mb-3">
                             <label>NIP / NIK</label>
-                            <input type="text" name="nip" id="nip" class="form-control" placeholder="Masukkan NIP / NIK" required>
+                            <input type="text" name="nip" id="nip" class="form-control"
+                                placeholder="Masukkan NIP / NIK" required>
                             <input type="hidden" name="nik" id="nik">
                         </div>
                         <div class="mb-3">
                             <label>Nama</label>
-                            <input type="text" name="name" id="nama" class="form-control" placeholder="Nama akan terisi otomatis setelah NIP/NIK diinput" readonly required>
+                            <input type="text" name="name" id="nama" class="form-control"
+                                placeholder="Nama akan terisi otomatis setelah NIP/NIK diinput" readonly required>
                         </div>
                         <div class="mb-3">
                             <label>Golongan</label>
-                            <input type="text" name="golongan" id="golongan" class="form-control" placeholder="Golongan terisi otomatis dari NIP" readonly>
+                            <input type="text" name="golongan" id="golongan" class="form-control"
+                                placeholder="Golongan terisi otomatis dari NIP" readonly>
                         </div>
                         <div class="mb-3">
                             <label>Jabatan</label>
-                            <input type="text" name="jabatan" id="jabatan" class="form-control" placeholder="Jabatan terisi otomatis dari NIP" readonly required>
+                            <input type="text" name="jabatan" id="jabatan" class="form-control"
+                                placeholder="Jabatan terisi otomatis dari NIP" readonly required>
                         </div>
                         <div class="mb-3">
                             <label>Email</label>
-                            <input type="email" name="email" class="form-control" placeholder="Masukkan Email" required>
+                            <input type="email" name="email" class="form-control" placeholder="Masukkan Email"
+                                required>
+                        </div>
+                        <div class="alert alert-info mt-3">
+                            <strong>Info:</strong> Password awal akan dibuat otomatis oleh sistem dan hanya bisa dilihat
+                            sekali setelah akun dibuat.
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -285,5 +304,18 @@
                 $('#namaPenggunaHapus').text(nama);
             });
         });
+        document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function () {
+            const targetId = this.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                this.innerHTML = '<i class="mdi mdi-eye"></i>';
+            } else {
+                input.type = 'password';
+                this.innerHTML = '<i class="mdi mdi-eye-off"></i>';
+            }
+        });
+    });
     </script>
 @endsection

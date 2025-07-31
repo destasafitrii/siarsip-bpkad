@@ -5,7 +5,7 @@ use App\Http\Controllers\Pengguna\DashboardController;
 use App\Http\Controllers\Pengguna\ArsipMasukController;
 use App\Http\Controllers\Pengguna\ArsipKeluarController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
-
+use App\Http\Controllers\Pengguna\PencarianController;
 Route::get('dashboard', [DashboardController::class, 'index'])->name('pengguna.dashboard');
 // Route::get('cari_arsip_masuk', [DashboardController::class, 'cariArsipMasuk'])->name('pengguna.cariArsipMasuk');
 // Route::get('cari_arsip_keluar', [DashboardController::class, 'cariArsipKeluar'])->name('pengguna.cariArsipKeluar');
@@ -27,3 +27,14 @@ Route::get('arsip-keluar/get-kategori-by-bidang/{bidang_id}', [ArsipKeluarContro
 Route::get('arsip-dokumen', [\App\Http\Controllers\Pengguna\ArsipDokumenController::class, 'index'])->name('pengguna.arsip_dokumen.index');
 Route::get('arsip-dokumen/{id}', [\App\Http\Controllers\Pengguna\ArsipDokumenController::class, 'show'])->name('pengguna.arsip_dokumen.show');
 Route::get('arsip-dokumen/get-kategori-by-bidang/{bidang_id}', [\App\Http\Controllers\Pengguna\ArsipDokumenController::class, 'getKategoriByBidang']);
+
+
+Route::get('/pencarian', [PencarianController::class, 'cari'])->name('arsip.cari');
+
+use App\Http\Controllers\ProfilController;
+
+Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
+Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
+Route::put('/profil/password', [ProfilController::class, 'updatePassword'])->name('profil.updatePassword');
+
+

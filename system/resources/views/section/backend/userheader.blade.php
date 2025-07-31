@@ -1,7 +1,7 @@
-<header id="page-topbar">
+<header id="page-topbar" style="background-color: #f9f9f9; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-bottom: 1px solid #eaeaea;"  >
     <div class="navbar-header">
         <!-- Logo -->
-        <div class="navbar-logo-box">
+        <div class="navbar-logo-box" style="background-color: #f9f9f9;  border-bottom: 1px solid #eaeaea;">
             <a class="logo logo-dark">
                 <span class="logo-sm">
                     <img src="{{ url('public') }}/assets/images/logo-ktg.png" alt="logo-sm-dark" height="45">
@@ -18,9 +18,7 @@
                     <img src="{{ url('public') }}/assets/images/download.jpeg" alt="logo-light" height="100">
                 </span>
             </a>
-            <button type="button" class="btn btn-sm top-icon sidebar-btn" id="sidebar-btn">
-                <i class="mdi mdi-menu-open align-middle fs-19"></i>
-            </button>
+        
         </div>
 
         <!-- Menu -->
@@ -72,7 +70,8 @@
 
             <!-- Body Menu -->
             <div class="card-body px-0 py-2">
-                 <a href="{{ route('pengelola.profil') }}" class="dropdown-item d-flex align-items-center px-3 py-2">
+                <div class="card-body px-0 py-2">
+                 <a href="{{ route('profil') }}" class="dropdown-item d-flex align-items-center px-3 py-2">
         <i class="fas fa-user me-2 text-primary"></i> Profil
     </a>
               <!-- Tombol logout pakai SweetAlert -->

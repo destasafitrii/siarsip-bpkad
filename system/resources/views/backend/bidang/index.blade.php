@@ -57,16 +57,19 @@
                 </div>
                 <div class="modal-body">
                     {{-- Ganti input kode_bidang jadi readonly dan auto-generated (bisa disembunyikan juga) --}}
-                    <div class="mb-3 d-none">
+                    <div class="mb-3">
                         <label class="form-label">Kode Bidang</label>
-                        <input type="text" class="form-control" name="kode_bidang" value="Auto" readonly>
+                        <input type="text" class="form-control" id="kode_bidang_input" name="kode_bidang" readonly
+                            required>
+                        <small class="text-muted fst-italic">Kode bidang dibuat otomatis</small>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Nama Bidang</label>
-                        <input type="text" class="form-control" name="nama_bidang" placeholder="Masukkan Nama Bidang"
-                            required>
+                        <input type="text" class="form-control" id="nama_bidang_input" name="nama_bidang" placeholder="Masukkan Nama Bidang" required>
+
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label">Penanggung Jawab</label>
                         <input type="text" class="form-control" name="penanggung_jawab"
@@ -82,42 +85,43 @@
     </div>
 
     <!-- Modal Edit -->
-<div class="modal fade" id="editBidangModal" tabindex="-1" aria-labelledby="editBidangModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form method="POST" id="editBidangForm" class="modal-content">
-            @csrf
-            @method('PUT')
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Penanggung Jawab</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" name="bidang_id" id="edit_bidang_id">
-
-                <div class="mb-3">
-                    <label class="form-label">Kode Bidang</label>
-                    <input type="text" class="form-control" id="edit_kode_bidang" name="kode_bidang" readonly>
-                    <small class="text-muted fst-italic">Kode tidak dapat diubah</small>
+    <div class="modal fade" id="editBidangModal" tabindex="-1" aria-labelledby="editBidangModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="POST" id="editBidangForm" class="modal-content">
+                @csrf
+                @method('PUT')
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Penanggung Jawab</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
+                <div class="modal-body">
+                    <input type="hidden" name="bidang_id" id="edit_bidang_id">
 
-                <div class="mb-3">
-                    <label class="form-label">Nama Bidang</label>
-                    <input type="text" class="form-control" name="nama_bidang" id="edit_nama_bidang" readonly>
-                    <small class="text-muted fst-italic">Nama tidak dapat diubah</small>
-                </div>
+                    <div class="mb-3">
+                        <label class="form-label">Kode Bidang</label>
+                        <input type="text" class="form-control" id="edit_kode_bidang" name="kode_bidang" readonly>
+                        <small class="text-muted fst-italic">Kode tidak dapat diubah</small>
+                    </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Penanggung Jawab</label>
-                    <input type="text" class="form-control" name="penanggung_jawab" id="edit_penanggung_jawab" required placeholder="Masukkan Penanggung Jawab">
+                    <div class="mb-3">
+                        <label class="form-label">Nama Bidang</label>
+                        <input type="text" class="form-control" name="nama_bidang" id="edit_nama_bidang" readonly>
+                        <small class="text-muted fst-italic">Nama tidak dapat diubah</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Penanggung Jawab</label>
+                        <input type="text" class="form-control" name="penanggung_jawab" id="edit_penanggung_jawab"
+                            required placeholder="Masukkan Penanggung Jawab">
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-            </div>
-        </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
 
     <!-- Modal Konfirmasi Hapus -->
@@ -221,5 +225,24 @@
                 });
             });
         });
+     $(document).ready(function() {
+    // ... kode DataTable dan lainnya
+
+    // Tambahkan ini ke dalam blok ready
+    $('#nama_bidang_input').on('input', function () {
+        const nama = $(this).val();
+
+        if (nama.length >= 3) {
+            $.get('{{ route('bidang.generateKode') }}', function (data) {
+                $('#kode_bidang_input').val(data.kode);
+            }).fail(function () {
+                alert('Gagal mengambil kode bidang otomatis.');
+            });
+        } else {
+            $('#kode_bidang_input').val('');
+        }
+    });
+});
+
     </script>
 @endsection

@@ -38,7 +38,7 @@ public function login(Request $request)
         } elseif ($user->role === 'pengelola') {
             return redirect()->route('pengelola.dashboard');
         } elseif ($user->role === 'pengguna') {
-            return redirect()->route('pengguna.dashboard');
+            return redirect()->route('arsip.cari');
         }
 
         return redirect('/');

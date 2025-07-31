@@ -8,6 +8,7 @@ use App\Models\Opd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class PengelolaController extends Controller
 {
@@ -23,31 +24,38 @@ class PengelolaController extends Controller
         return view('superadmin.pengelola.create', compact('opds'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
-            'opd_id' => 'required|exists:opds,id',
-            'nip' => 'nullable|string|unique:users,nip',
-            'jabatan' => 'nullable|string|max:255',
-            'golongan' => 'nullable|string|max:50',
-        ]);
+  public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'opd_id' => 'required|exists:opds,id',
+        'nip' => 'nullable|string|unique:users,nip',
+        'jabatan' => 'nullable|string|max:255',
+        'golongan' => 'nullable|string|max:50',
+    ]);
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'pengelola',
-            'opd_id' => $request->opd_id,
-            'nip' => $request->nip,
-            'jabatan' => $request->jabatan,
-            'golongan' => $request->golongan,
-        ]);
+    // Buat password otomatis
+   $password = Str::random(8);
 
-        return redirect()->route('pengelola.index')->with('success', 'Data Pengelola berhasil ditambahkan.');
-    }
+User::create([
+    'name' => $request->name,
+    'email' => $request->email,
+    'password' => Hash::make($password),
+    'password_plain' => $password, // disimpan sebagai teks biasa
+    'role' => 'pengelola',
+    'opd_id' => $request->opd_id,
+    'nip' => $request->nip,
+    'jabatan' => $request->jabatan,
+    'golongan' => $request->golongan,
+]);
+
+
+    // Jika ingin menampilkan password yang digenerate, bisa simpan di session
+    return redirect()->route('pengelola.index')
+        ->with('success', 'Data Pengelola berhasil ditambahkan. Password default: ' . $password);
+}
+
 
     public function edit($id)
     {

@@ -27,7 +27,7 @@ class PenggunaController extends Controller
         return view('backend.pengguna.create');
     }
 
- public function store(Request $request)
+public function store(Request $request)
 {
     $request->validate([
         'pegawai_id' => 'required|exists:pegawai,id',
@@ -35,9 +35,8 @@ class PenggunaController extends Controller
         'email' => 'required|email|unique:users,email',
     ]);
 
-    // Cek apakah pegawai sudah memiliki akun
-    $existing = User::where('pegawai_id', $request->pegawai_id)->first();
-    if ($existing) {
+    // Cek apakah pegawai sudah punya user
+    if (User::where('pegawai_id', $request->pegawai_id)->exists()) {
         return back()->with('error', 'Pegawai ini sudah memiliki akun.');
     }
 
@@ -49,21 +48,23 @@ class PenggunaController extends Controller
     $pegawai->golongan = $request->golongan;
     $pegawai->save();
 
-    // 🔐 Generate password acak
-    $generatedPassword = Str::random(8);
+    // ✅ Buat password otomatis
+    $generatedPassword = Str::random(8); // misalnya: Abc12345
 
-    // Simpan user
+    // Simpan user baru
     User::create([
         'pegawai_id' => $request->pegawai_id,
         'name' => $request->name,
         'email' => $request->email,
         'password' => Hash::make($generatedPassword),
+        'password_plain' => $generatedPassword, // hanya awal
         'role' => 'pengguna',
         'opd_id' => auth()->user()->opd_id,
     ]);
 
-    return back()->with('success', 'Akun Pengguna berhasil ditambahkan. Password awal: ' . $generatedPassword);
+    return back()->with('success', 'Akun Pengguna berhasil ditambahkan.');
 }
+
     public function show(User $pengguna)
     {
         return view('backend.pengguna.show', compact('pengguna'));
@@ -82,15 +83,17 @@ class PenggunaController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $pengguna->id,
-            'password' => 'nullable|string|min:6|confirmed',
+            'password' => 'nullable|string|min:6',
         ]);
 
         $pengguna->name = $request->name;
         $pengguna->email = $request->email;
 
         if ($request->filled('password')) {
-            $pengguna->password = Hash::make($request->password);
-        }
+    $pengguna->password = Hash::make($request->password);
+    $pengguna->password_plain = null; // ✅ hapus password lama yang disimpan plain
+}
+
 
         $pengguna->save();
 
